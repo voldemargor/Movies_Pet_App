@@ -1,14 +1,11 @@
 package com.example.moviespetapp.presentation
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.moviespetapp.R
-import com.example.moviespetapp.databinding.FragmentMineBinding
 import com.example.moviespetapp.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,9 +33,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.movies.observe(viewLifecycleOwner) {
-            //binding.textView.text = "МОЕ \n\n ${it.get(0)}"
-        }
     }
 
     private fun setListeners() {

@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:background="@color/design_default_color_primary"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     tools:context=".presentation.FirstFragment">
 
     <TextView

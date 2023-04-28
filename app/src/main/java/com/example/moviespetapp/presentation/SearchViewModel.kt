@@ -14,7 +14,6 @@ class SearchViewModel @Inject constructor() : ViewModel() {
 
     @Inject lateinit var getMoviesUseCase: GetMoviesUseCase
 
-    lateinit var movies: LiveData<List<Movie>>
 
     fun initLD() {
         viewModelScope.launch {

@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    tools:context=".presentation.MineFragment">
+    android:background="@color/material_dynamic_neutral90"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    tools:context=".presentation.BookmarkFragment">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Hello" />
+        android:text="Моё" />
 
 </FrameLayout>

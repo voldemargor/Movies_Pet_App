@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MineViewModel  @Inject constructor() : ViewModel() {
+class BookmarkViewModel  @Inject constructor() : ViewModel() {
 
     @Inject lateinit var getFavMoviesUseCase: GetFavMoviesUseCase
 
