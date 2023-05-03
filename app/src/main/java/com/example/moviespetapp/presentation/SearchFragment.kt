@@ -6,17 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentSearchBinding
+import com.example.moviespetapp.presentation.contract.BottomNavItem
+import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding is null")
 
     private val viewModel by viewModels<SearchViewModel>()
+
+    override fun getTitleRes(): Int = R.string.title_search
+    override fun getBottomNavItemId(): Int = R.id.navItemSearch
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

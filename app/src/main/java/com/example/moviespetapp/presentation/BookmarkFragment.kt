@@ -8,16 +8,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentBookmarkBinding
+import com.example.moviespetapp.presentation.contract.BottomNavItem
+import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BookmarkFragment : Fragment() {
+class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding: FragmentBookmarkBinding
         get() = _binding ?: throw RuntimeException("FragmentMineBinding is null")
 
     private val viewModel by viewModels<BookmarkViewModel>()
+
+    override fun getTitleRes(): Int = R.string.title_bookmark
+    override fun getBottomNavItemId(): Int = R.id.navItemBookmark
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +47,7 @@ class BookmarkFragment : Fragment() {
     private fun setListeners() {
         binding.textView.setOnClickListener() {
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MovieDetailsFragment.newInstance(2))
+                .replace(R.id.fragmentContainer, MovieDetailsFragment.newInstance(2))
                 .addToBackStack(MovieDetailsFragment.FRAGMENT_NAME)
                 .commit()
         }

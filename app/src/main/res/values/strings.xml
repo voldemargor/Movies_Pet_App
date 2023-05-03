@@ -5,4 +5,8 @@
     <string name="bottom_nav_main">Главное</string>
     <string name="bottom_nav_bookmark">Моё</string>
     <string name="bottom_nav_search">Поиск</string>
+    <string name="title_main">Главное</string>
+    <string name="title_bookmark">Моё</string>
+    <string name="title_search">Поиск</string>
+    <string name="title_movie">*Вставить название*</string>
 </resources>

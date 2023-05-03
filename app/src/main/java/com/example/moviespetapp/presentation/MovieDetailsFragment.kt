@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMovieDetailsBinding
+import com.example.moviespetapp.presentation.contract.HasBackIcon
+import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsFragment : Fragment() {
+class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding: FragmentMovieDetailsBinding
@@ -18,6 +21,8 @@ class MovieDetailsFragment : Fragment() {
 
     private var movieId: Int? = null
     private val viewModel by viewModels<MovieDetailsViewModel>()
+
+    override fun getTitleRes(): Int = R.string.title_movie
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/itemFirstScreen"
+        android:id="@+id/navItemFirstScreen"
         android:icon="@drawable/ic_home"
         android:orderInCategory="1"
         android:title="@string/bottom_nav_main" />
 
     <item
-        android:id="@+id/itemBookmark"
+        android:id="@+id/navItemBookmark"
         android:icon="@drawable/ic_bookmark"
         android:orderInCategory="2"
         android:title="@string/bottom_nav_bookmark" />
 
     <item
-        android:id="@+id/itemSearch"
+        android:id="@+id/navItemSearch"
         android:icon="@drawable/ic_search"
         android:orderInCategory="3"
         android:title="@string/bottom_nav_search" />
