@@ -10,8 +10,10 @@
 
     <TextView
         android:id="@+id/textView"
+        android:paddingTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:textColor="@color/black"
+        android:text="Загрузка..." />
 
 </FrameLayout>

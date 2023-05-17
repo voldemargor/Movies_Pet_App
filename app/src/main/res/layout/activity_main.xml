@@ -31,10 +31,11 @@
         android:id="@+id/splashLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:alpha="0.8"
         android:background="@color/design_default_color_primary"
         android:elevation="100dp">
 
-        <include layout="@layout/layout_splash" />
+        <include layout="@layout/layout_splash_screen" />
     </FrameLayout>
 
 

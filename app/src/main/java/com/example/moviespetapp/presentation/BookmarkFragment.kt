@@ -10,6 +10,7 @@ import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentBookmarkBinding
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +22,7 @@ class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private val viewModel by viewModels<BookmarkViewModel>()
 
-    override fun getTitleRes(): Int = R.string.title_bookmark
+    override fun getScreenTitleRes(): Int = R.string.title_bookmark
     override fun getBottomNavItemId(): Int = R.id.navItemBookmark
 
     override fun onCreateView(
@@ -46,10 +47,7 @@ class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private fun setListeners() {
         binding.textView.setOnClickListener() {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, MovieDetailsFragment.newInstance(2))
-                .addToBackStack(MovieDetailsFragment.FRAGMENT_NAME)
-                .commit()
+            navigator().displayMovieDetailsScreen(665, "Вдали от рая")
         }
     }
 

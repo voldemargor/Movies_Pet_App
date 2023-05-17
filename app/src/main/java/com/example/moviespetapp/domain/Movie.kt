@@ -7,10 +7,10 @@ import kotlinx.parcelize.Parcelize
 data class Movie(
 
     val year: Int,
-    val name: String,
-    val description: String,
-    val poster: Poster,
-    val rating: Rating,
+    val name: String?,
+    val description: String?,
+    val poster: Poster?,
+    val rating: Rating?,
     val id: Int = UNDEFINED_ID,
 
 ) : Parcelable {

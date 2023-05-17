@@ -1,7 +1,7 @@
 package com.example.moviespetapp
 
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
 import com.example.moviespetapp.presentation.BookmarkFragment
-import com.example.moviespetapp.presentation.FirstFragment
 import com.example.moviespetapp.presentation.MainActivityViewModel
+import com.example.moviespetapp.presentation.MainFragment
 import com.example.moviespetapp.presentation.MovieDetailsFragment
+import com.example.moviespetapp.presentation.MoviesListScreenFragment
 import com.example.moviespetapp.presentation.SearchFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
@@ -24,9 +25,6 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private lateinit var binding: ActivityMainBinding
 
-    //@Inject lateinit var repository: Repository
-    //@Inject lateinit var getMoviesUseCase: GetMoviesUseCase
-
     private val viewModel by viewModels<MainActivityViewModel>()
     private lateinit var currentFragment: Fragment
 
@@ -37,27 +35,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         observeViewModel()
         setListeners()
         if (savedInstanceState == null) displayMainScreenFirstTime()
-
-        //val fragments = supportFragmentManager.fragments
-        //Log.d("mylog", "Fragments: ${fragments.size}")
-
-
-        //Log.d("mylog", "MainActivity repository: $repository")
-        //Log.d("mylog", "MainActivity getMoviesUseCase: $getMoviesUseCase")
-
-        //val movies = repository.getMovies()
-        //
-        //lifecycleScope.launch {
-        //    delay(3_000)
-        //    Log.d("mylog", repository.getMovie(1).toString())
-        //}
-
-        //for (movie in movies.value!!) {
-        //    Log.d("mylog", movie.name)
-        //    Log.d("mylog", movie.year.toString())
-        //    Log.d("mylog", movie.description)
-        //}
-
     }
 
     private fun observeViewModel() {
@@ -90,13 +67,8 @@ class MainActivity : AppCompatActivity(), Navigator {
     //    return true
     //}
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
-    }
-
     private fun displayMainScreenFirstTime() {
-        val fragment = FirstFragment.newInstance()
+        val fragment = MainFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 androidx.appcompat.R.anim.abc_fade_in,
@@ -109,16 +81,23 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun displayMainScreen() {
-        FirstFragment.newInstance().also {
+        MainFragment.newInstance().also {
             launchFragment(it)
             updateUi(it)
         }
     }
 
-    override fun displayMovieDetailsScreen(movieId: Int) {
-        MovieDetailsFragment.newInstance(movieId).also {
+    override fun displayMoviesListScreen(genreName: String) {
+        MoviesListScreenFragment.newInstance(genreName).also {
             launchFragment(it)
             updateUi(it)
+        }
+    }
+
+    override fun displayMovieDetailsScreen(movieId: Int, movieName: String) {
+        MovieDetailsFragment.newInstance(movieId, movieName).also {
+            launchFragment(it)
+            updateUiForMovieDetails(it, movieName)
         }
     }
 
@@ -141,16 +120,36 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun goBack() {
-        Toast.makeText(this, "MainActivity: goBack()", Toast.LENGTH_SHORT).show()
-        onBackPressedDispatcher.onBackPressed()
+        onBackPressed()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        // Клик по кнопке назад в action bar
+        onBackPressed()
+        Log.d("mylog", "onSupportNavigateUp()")
+        return true
     }
 
     override fun onBackPressed() {
         onBackPressedDispatcher.onBackPressed()
-        Toast.makeText(this, "MainActivity: onBackPressed()", Toast.LENGTH_SHORT).show()
         val fragment = supportFragmentManager.fragments.get(0)
         updateUi(fragment)
+        if (fragment is MovieDetailsFragment)
+            updateUiForMovieDetails(fragment, fragment.movieName)
     }
+
+    override fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    //override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    //    // Клик по кнопке назад в action bar
+    //    if (item.itemId == android.R.id.home) {
+    //        onBackPressed()
+    //        return true
+    //    }
+    //    return false
+    //}
 
     private fun launchFragment(fragment: Fragment) {
 
@@ -174,12 +173,20 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     private fun updateUi(fragment: Fragment) {
-        setTitle(fragment)
+        if (fragment is HasCustomTitle)
+            setTitle(getString(fragment.getScreenTitleRes()))
+        updateBackIcon(fragment)
+        updateBottomNavSelection(fragment)
+    }
+
+    private fun updateUiForMovieDetails(fragment: Fragment, movieName: String?) {
+        setTitle(movieName)
         updateBackIcon(fragment)
         updateBottomNavSelection(fragment)
     }
 
     private fun updateBackIcon(fragment: Fragment) {
+        Log.d("mylog", "updateBackIcon")
         if (fragment is HasBackIcon) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -189,13 +196,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun setTitle(fragment: Fragment) {
-        if (fragment is HasCustomTitle)
-            supportActionBar?.title = getString(fragment.getTitleRes())
-        else
-            supportActionBar?.title = getString(R.string.app_name)
-    }
-
     private fun updateBottomNavSelection(fragment: Fragment) {
         val menu = binding.bottomNav.menu
         if (fragment is BottomNavItem) {
@@ -203,6 +203,10 @@ class MainActivity : AppCompatActivity(), Navigator {
             menu.findItem(fragment.getBottomNavItemId()).isChecked = true
         } else
             menu.setGroupCheckable(0, false, true)
+    }
+
+    private fun setTitle(movieName: String?) {
+        supportActionBar?.title = movieName
     }
 
 

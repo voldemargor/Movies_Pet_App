@@ -21,7 +21,7 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private val viewModel by viewModels<SearchViewModel>()
 
-    override fun getTitleRes(): Int = R.string.title_search
+    override fun getScreenTitleRes(): Int = R.string.title_search
     override fun getBottomNavItemId(): Int = R.id.navItemSearch
 
     override fun onCreateView(

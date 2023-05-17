@@ -18,7 +18,7 @@ class MainActivityViewModel @Inject constructor() : ViewModel() {
     init {
         _displaySplash.value = true
         viewModelScope.launch {
-            delay(3_000)
+            delay(2_000)
             _displaySplash.value = false
         }
     }

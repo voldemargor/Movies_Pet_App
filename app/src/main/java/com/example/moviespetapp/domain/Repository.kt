@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 
 interface Repository {
 
-    fun getMovies(): LiveData<List<Movie>>
+    suspend fun getMoviesForGenre(genreName: String): List<Movie>
 
     fun getFavMovies(): LiveData<List<Movie>>
 
@@ -13,6 +13,8 @@ interface Repository {
     suspend fun addToFavorites(movie: Movie): Long
 
     suspend fun deleteFromFavorites(movie: Movie)
+
+    suspend fun getGenres(): List<Genre>
 
 
 }
