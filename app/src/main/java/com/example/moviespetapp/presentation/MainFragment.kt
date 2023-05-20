@@ -65,7 +65,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
             for (genre in it) {
                 val itemView =
                     layoutInflater.inflate(
-                        R.layout.layout_genre_item,
+                        R.layout.item_genre,
                         binding.layoutGenresGroup,
                         false)
                 itemView.findViewById<TextView?>(R.id.tvGenreItem).text =

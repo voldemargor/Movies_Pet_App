@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    tools:context=".presentation.MovieDetailsFragment">
+    tools:context=".presentation.moviedetails.MovieDetailsFragment">
 
     <TextView
         android:id="@+id/textView"

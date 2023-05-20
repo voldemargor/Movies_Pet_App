@@ -1,4 +1,4 @@
-package com.example.moviespetapp.presentation
+package com.example.moviespetapp.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package com.example.moviespetapp.presentation
+package com.example.moviespetapp.presentation.movieslist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
+
+    private lateinit var rvAdapter: MoviesListAdapter
 
     private var _binding: FragmentMoviesListScreenBinding? = null
     private val binding: FragmentMoviesListScreenBinding
@@ -35,6 +39,7 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
         super.onViewCreated(view, savedInstanceState)
         parseParams()
         viewModel.initMovies(genreName)
+        setupRecyclerView()
         observeViewModel()
         setListeners()
     }
@@ -44,13 +49,22 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
             it.getString(ARG_GENRE_NAME) ?: throw RuntimeException("Param genreName is NULL")
     }
 
+    private fun setupRecyclerView() {
+        rvAdapter = MoviesListAdapter()
+        binding.rvMovies.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.rvMovies.adapter = rvAdapter
+
+        //binding.rvMovies.addItemDecoration(
+        //    MoviesListItemDecoration(3, 50, false))
+
+        rvAdapter.onMovieClickListener = {
+            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.movies.observe(viewLifecycleOwner) {
-            var text: String = ""
-            for (movie in it) {
-                text += movie.name + "\n"
-            }
-            binding.textView.text = text
+            rvAdapter.submitList(it)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.moviespetapp.presentation
+package com.example.moviespetapp.presentation.bookmark
 
 import android.os.Bundle
 import android.view.LayoutInflater

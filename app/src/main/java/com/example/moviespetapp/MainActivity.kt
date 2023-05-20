@@ -8,12 +8,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
-import com.example.moviespetapp.presentation.BookmarkFragment
+import com.example.moviespetapp.presentation.bookmark.BookmarkFragment
 import com.example.moviespetapp.presentation.MainActivityViewModel
 import com.example.moviespetapp.presentation.MainFragment
-import com.example.moviespetapp.presentation.MovieDetailsFragment
-import com.example.moviespetapp.presentation.MoviesListScreenFragment
-import com.example.moviespetapp.presentation.SearchFragment
+import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
+import com.example.moviespetapp.presentation.movieslist.MoviesListScreenFragment
+import com.example.moviespetapp.presentation.search.SearchFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
