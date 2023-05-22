@@ -1,6 +1,5 @@
 package com.example.moviespetapp.domain
 
-import androidx.lifecycle.LiveData
 import javax.inject.Inject
 
 class GetMoviesForGenreUseCase @Inject constructor(private val repository: Repository) {

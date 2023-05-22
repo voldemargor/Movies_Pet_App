@@ -1,6 +1,8 @@
 package com.example.moviespetapp.domain
 
 import androidx.lifecycle.LiveData
+import com.example.moviespetapp.data.network.model.ResponseMoviesListDto
+import retrofit2.Response
 
 interface Repository {
 

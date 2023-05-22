@@ -9,6 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
+import com.example.moviespetapp.presentation.MoviesLoading
+import com.example.moviespetapp.presentation.MoviesLoadingError
+import com.example.moviespetapp.presentation.MoviesLoadingResult
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
@@ -38,7 +41,7 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parseParams()
-        viewModel.initMovies(genreName)
+        viewModel.loadMovies(genreName)
         setupRecyclerView()
         observeViewModel()
         setListeners()
@@ -64,8 +67,18 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     private fun observeViewModel() {
         viewModel.movies.observe(viewLifecycleOwner) {
-            rvAdapter.submitList(it)
+            binding.pbLoading.visibility = View.GONE
+            when (it) {
+                is MoviesLoading -> binding.pbLoading.visibility = View.VISIBLE
+                is MoviesLoadingError -> {
+                    // Ошибка загрузки
+                }
+                is MoviesLoadingResult -> {
+                    rvAdapter.submitList(it.movies)
+                }
+            }
         }
+
     }
 
     private fun setListeners() {
