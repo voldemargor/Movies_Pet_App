@@ -1,5 +1,6 @@
 package com.example.moviespetapp.presentation.movieslist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,11 +31,17 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
     //val movies: LiveData<List<Movie>> get() = _movies
 
     fun loadMovies(genreName: String) {
+        // Если загрузка уже идет, то стартовать новую не нужно
+        if(movies.value is MoviesLoading) return
+
+        Log.d("mylog", "MoviesListScreenViewModel: loadMovies()")
+
         _movies.value = MoviesLoading
         viewModelScope.launch {
             _movies.value = MoviesLoadingResult(getMoviesForGenreUseCase.getMovies(genreName))
             if (_movies.value == null)
                 _movies.value = MoviesLoadingError
+            else moviesPage++
         }
     }
 

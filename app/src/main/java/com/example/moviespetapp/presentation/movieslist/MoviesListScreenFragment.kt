@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
 import com.example.moviespetapp.presentation.MoviesLoading
@@ -70,18 +71,33 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
             binding.pbLoading.visibility = View.GONE
             when (it) {
                 is MoviesLoading -> binding.pbLoading.visibility = View.VISIBLE
-                is MoviesLoadingError -> {
-                    // Ошибка загрузки
-                }
-                is MoviesLoadingResult -> {
-                    rvAdapter.submitList(it.movies)
-                }
+
+                is MoviesLoadingError -> navigator().showToast("Ошибка загрузки")
+
+                is MoviesLoadingResult -> rvAdapter.submitList(it.movies)
+
             }
         }
 
     }
 
     private fun setListeners() {
+
+        //binding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        //    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+        //        super.onScrollStateChanged(recyclerView, newState)
+        //        if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+        //            navigator().showToast("КОНЕЦ")
+        //            viewModel.loadMovies(genreName)
+        //        }
+        //    }
+        //})
+
+        rvAdapter.onReachEndListener = {
+            navigator().showToast("КОНЕЦ")
+            viewModel.loadMovies(genreName)
+        }
+
     }
 
     override fun onDestroyView() {

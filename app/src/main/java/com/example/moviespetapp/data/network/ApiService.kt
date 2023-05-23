@@ -15,7 +15,7 @@ interface ApiService {
         @Query(QUERY_PARAM_GENRES_NAME) genres: String,
         @Query(QUERY_PARAM_SORT_FIELD) sortField: String = "rating.kp",
         @Query(QUERY_PARAM_PAGE) page: Int = 1,
-        @Query(QUERY_PARAM_LIMIT) limit: Int = 10,
+        @Query(QUERY_PARAM_LIMIT) limit: Int = 21,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
     ): ResponseMoviesListDto
 

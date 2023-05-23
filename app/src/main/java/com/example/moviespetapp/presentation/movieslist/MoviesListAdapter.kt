@@ -1,5 +1,6 @@
 package com.example.moviespetapp.presentation.movieslist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -15,6 +16,7 @@ class MoviesListAdapter :
     ListAdapter<Movie, MoviesListAdapter.ItemViewHolder>(MovieItemDiffCallback()) {
 
     var onMovieClickListener: ((Movie) -> Unit)? = null
+    var onReachEndListener: (() -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemMovieBinding
@@ -36,7 +38,14 @@ class MoviesListAdapter :
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(ivPoster)
         }
+        checkIfReachEnd(position)
+    }
 
+    private fun checkIfReachEnd(position: Int) {
+        if (position == itemCount - 6) {
+            Log.d("mylog", "MoviesListAdapter: invoke onReachEndListener")
+            onReachEndListener?.invoke()
+        }
     }
 
     inner class ItemViewHolder(val binding: ItemMovieBinding) :
