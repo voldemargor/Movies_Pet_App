@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moviespetapp.domain.DataLoadingResult
+import com.example.moviespetapp.domain.DataLoadingResult.Failed
+import com.example.moviespetapp.domain.DataLoadingResult.Success
 import com.example.moviespetapp.domain.GetMoviesForGenreUseCase
 import com.example.moviespetapp.domain.Movie
 import com.example.moviespetapp.presentation.MoviesLoading
@@ -21,16 +24,10 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
 
     @Inject lateinit var getMoviesForGenreUseCase: GetMoviesForGenreUseCase
 
-    //lateinit var movies: LiveData<List<Movie>>
-    //var movies = MutableLiveData<List<Movie>>()
-
     private val _movies = MutableLiveData<MoviesLoadingState>()
     val movies: LiveData<MoviesLoadingState> get() = _movies
 
     var moviesPage = 1
-
-    //private val _movies = MutableLiveData<List<Movie>>()
-    //val movies: LiveData<List<Movie>> get() = _movies
 
     fun loadMovies(genreName: String) {
         // Если загрузка уже идет, то стартовать новую не нужно
@@ -40,23 +37,20 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
         Log.d("mylog", "MoviesListScreenViewModel: loadMovies()")
 
         viewModelScope.launch {
-            getMoviesForGenreUseCase.getMovies(genreName).apply {
-                if (loadingSuccess(this)) {
-                    _movies.value = MoviesLoadingResult(first)
-                    moviesPage++
-                } else
-                    _movies.value = MoviesLoadingError(second?.message)
-            }
+            getData(getMoviesForGenreUseCase.getMovies(genreName))
         }
     }
 
-    private fun loadingSuccess(result: Pair<List<Movie>, Exception?>) =
-        result.second == null
+    private fun getData(result: DataLoadingResult) {
+        when (result) {
+            is Success<*> -> {
+                _movies.value = MoviesLoadingResult(result.data as List<Movie>)
+                moviesPage++
+            }
 
-    //fun loadMovies(genreName: String) {
-    //    viewModelScope.launch {
-    //        movies.value = getMoviesForGenreUseCase.getMovies(genreName)
-    //    }
-    //}
+            is Failed ->
+                _movies.value = MoviesLoadingError(result.exception.message)
+        }
+    }
 
 }

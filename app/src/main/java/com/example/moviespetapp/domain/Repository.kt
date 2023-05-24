@@ -7,7 +7,7 @@ import java.lang.Exception
 
 interface Repository {
 
-    suspend fun getMoviesForGenre(genreName: String): Pair<List<Movie>, Exception?>
+    suspend fun getMoviesForGenre(genreName: String): DataLoadingResult
 
     fun getFavMovies(): LiveData<List<Movie>>
 

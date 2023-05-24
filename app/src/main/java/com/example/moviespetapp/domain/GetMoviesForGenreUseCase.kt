@@ -1,11 +1,10 @@
 package com.example.moviespetapp.domain
 
-import java.lang.Exception
 import javax.inject.Inject
 
 class GetMoviesForGenreUseCase @Inject constructor(private val repository: Repository) {
 
-    suspend fun getMovies(genreName: String): Pair<List<Movie>, Exception?> {
+    suspend fun getMovies(genreName: String): DataLoadingResult {
         return repository.getMoviesForGenre(genreName)
     }
 
