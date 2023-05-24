@@ -153,16 +153,18 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     private fun launchFragment(fragment: Fragment) {
 
-        if (isRepeatedMenuClick(fragment)) return // TODO Нужно скроллить наверх
+        //if (isRepeatedMenuClick(fragment)) return // TODO Нужно скроллить наверх
+        // TODO Какой-то баг с этой ерундой - на некоторых экранах клики по нижнему меню не работают
 
         currentFragment = fragment
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 androidx.appcompat.R.anim.abc_fade_in,
                 androidx.appcompat.R.anim.abc_fade_out)
-            .replace(R.id.fragmentContainer, fragment)
+            .add(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
+
     }
 
     private fun isRepeatedMenuClick(fragment: Fragment): Boolean {

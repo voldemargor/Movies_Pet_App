@@ -54,7 +54,9 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     private fun setupRecyclerView() {
-        rvAdapter = MoviesListAdapter()
+        rvAdapter = MoviesListAdapter().apply {
+            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
         binding.rvMovies.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.rvMovies.adapter = rvAdapter
 
@@ -94,8 +96,8 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
         //})
 
         rvAdapter.onReachEndListener = {
-            navigator().showToast("КОНЕЦ")
-            viewModel.loadMovies(genreName)
+            //navigator().showToast("КОНЕЦ")
+            //viewModel.loadMovies(genreName)
         }
 
     }
