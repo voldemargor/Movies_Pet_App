@@ -3,10 +3,11 @@ package com.example.moviespetapp.domain
 import androidx.lifecycle.LiveData
 import com.example.moviespetapp.data.network.model.ResponseMoviesListDto
 import retrofit2.Response
+import java.lang.Exception
 
 interface Repository {
 
-    suspend fun getMoviesForGenre(genreName: String): List<Movie>
+    suspend fun getMoviesForGenre(genreName: String): Pair<List<Movie>, Exception?>
 
     fun getFavMovies(): LiveData<List<Movie>>
 

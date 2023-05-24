@@ -4,6 +4,7 @@ import com.example.moviespetapp.data.network.model.GenreDto
 import com.example.moviespetapp.data.network.model.MovieInfoDto
 import com.example.moviespetapp.data.network.model.ResponseMoviesListDto
 import com.example.moviespetapp.utils.Constants
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,7 +18,7 @@ interface ApiService {
         @Query(QUERY_PARAM_PAGE) page: Int = 1,
         @Query(QUERY_PARAM_LIMIT) limit: Int = 21,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): ResponseMoviesListDto
+    ): Response<ResponseMoviesListDto>
 
     @GET("/v1.3/movie/{id}")
     suspend fun getMovie(

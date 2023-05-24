@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.domain.GetMoviesForGenreUseCase
+import com.example.moviespetapp.domain.Movie
 import com.example.moviespetapp.presentation.MoviesLoading
 import com.example.moviespetapp.presentation.MoviesLoadingError
 import com.example.moviespetapp.presentation.MoviesLoadingResult
 import com.example.moviespetapp.presentation.MoviesLoadingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,18 +34,24 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
 
     fun loadMovies(genreName: String) {
         // Если загрузка уже идет, то стартовать новую не нужно
-        if(movies.value is MoviesLoading) return
+        if (movies.value is MoviesLoading) return
+        _movies.value = MoviesLoading
 
         Log.d("mylog", "MoviesListScreenViewModel: loadMovies()")
 
-        _movies.value = MoviesLoading
         viewModelScope.launch {
-            _movies.value = MoviesLoadingResult(getMoviesForGenreUseCase.getMovies(genreName))
-            if (_movies.value == null)
-                _movies.value = MoviesLoadingError
-            else moviesPage++
+            getMoviesForGenreUseCase.getMovies(genreName).apply {
+                if (loadingSuccess(this)) {
+                    _movies.value = MoviesLoadingResult(first)
+                    moviesPage++
+                } else
+                    _movies.value = MoviesLoadingError(second?.message)
+            }
         }
     }
+
+    private fun loadingSuccess(result: Pair<List<Movie>, Exception?>) =
+        result.second == null
 
     //fun loadMovies(genreName: String) {
     //    viewModelScope.launch {
