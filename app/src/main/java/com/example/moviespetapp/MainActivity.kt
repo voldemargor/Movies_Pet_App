@@ -7,35 +7,61 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
-import com.example.moviespetapp.presentation.bookmark.BookmarkFragment
 import com.example.moviespetapp.presentation.MainActivityViewModel
 import com.example.moviespetapp.presentation.MainFragment
+import com.example.moviespetapp.presentation.bookmark.BookmarkFragment
+import com.example.moviespetapp.presentation.contract.BottomNavItem
+import com.example.moviespetapp.presentation.contract.HasBackIcon
+import com.example.moviespetapp.presentation.contract.Navigator
 import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
 import com.example.moviespetapp.presentation.movieslist.MoviesListScreenFragment
 import com.example.moviespetapp.presentation.search.SearchFragment
-import com.example.moviespetapp.presentation.contract.BottomNavItem
-import com.example.moviespetapp.presentation.contract.HasBackIcon
-import com.example.moviespetapp.presentation.contract.HasCustomTitle
-import com.example.moviespetapp.presentation.contract.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Navigator {
 
-    private lateinit var binding: ActivityMainBinding
-
     private val viewModel by viewModels<MainActivityViewModel>()
-    private lateinit var currentFragment: Fragment
+
+    private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
+    private lateinit var binding: ActivityMainBinding
+    private var currentFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
-
         observeViewModel()
-        setListeners()
-        if (savedInstanceState == null) displayMainScreenFirstTime()
+        setBottomNavListener()
+        setFragmentLifecycleListener()
+        if (savedInstanceState == null)
+            displayFirstScreen()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleListener)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        // Клик по кнопке назад в action bar
+        onBackPressedDispatcher.onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() = onBackPressedDispatcher.onBackPressed()
+
+    //private fun handleBackPressed() {
+    //    onBackPressedDispatcher.onBackPressed()
+    //    //val fragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
+    //    //updateUi(fragment ?: throw RuntimeException("fragment is NULL"))
+    //    //log("updateUi 1")
+    //    //fragment.onResume()
+    //    //currentFragment = fragment
+    //    log("Живых фрагментов в контейнере: ${supportFragmentManager.fragments.count()}")
+    //}
 
     private fun observeViewModel() {
         viewModel.displaySplash.observe(this) {
@@ -49,7 +75,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun setListeners() {
+    private fun setBottomNavListener() {
         binding.bottomNav.setOnItemSelectedListener() {
             when (it.itemId) {
                 R.id.navItemFirstScreen -> displayMainScreen()
@@ -60,58 +86,55 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    //override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-    //    // we've called setSupportActionBar in onCreate,
-    //    // that's why we need to override this method too
-    //    updateUi()
-    //    return true
-    //}
+    private fun setFragmentLifecycleListener() {
+        fragmentLifecycleListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentStarted(fm: FragmentManager, fragment: Fragment) {
+                super.onFragmentStarted(fm, fragment)
+                if (fragment is SupportRequestManagerFragment) return
+                updateUI(fragment)
+                currentFragment = fragment
+            }
+        }
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleListener, false)
+    }
 
-    private fun displayMainScreenFirstTime() {
+    private fun displayFirstScreen() {
         val fragment = MainFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 androidx.appcompat.R.anim.abc_fade_in,
                 androidx.appcompat.R.anim.abc_fade_out)
             .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
             .commit()
-        currentFragment = fragment
-        updateUi(fragment)
     }
 
     override fun displayMainScreen() {
         MainFragment.newInstance().also {
             launchFragment(it)
-            updateUi(it)
         }
     }
 
     override fun displayMoviesListScreen(genreName: String) {
         MoviesListScreenFragment.newInstance(genreName).also {
             launchFragment(it)
-            updateUi(it)
         }
     }
 
     override fun displayMovieDetailsScreen(movieId: Int, movieName: String) {
         MovieDetailsFragment.newInstance(movieId, movieName).also {
             launchFragment(it)
-            updateUiForMovieDetails(it, movieName)
         }
     }
 
     override fun displayBookmarksScreen() {
         BookmarkFragment.newInstance().also {
             launchFragment(it)
-            updateUi(it)
         }
     }
 
     override fun displaySearchScreen() {
         SearchFragment.newInstance().also {
             launchFragment(it)
-            updateUi(it)
         }
     }
 
@@ -123,72 +146,54 @@ class MainActivity : AppCompatActivity(), Navigator {
         onBackPressed()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        // Клик по кнопке назад в action bar
-        onBackPressed()
-        Log.d("mylog", "onSupportNavigateUp()")
-        return true
-    }
-
-    override fun onBackPressed() {
-        onBackPressedDispatcher.onBackPressed()
-        val fragment = supportFragmentManager.fragments.get(0)
-        updateUi(fragment)
-        if (fragment is MovieDetailsFragment)
-            updateUiForMovieDetails(fragment, fragment.movieName)
+    override fun setScreenTitle(title: String) {
+        supportActionBar?.title = title
     }
 
     override fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    //override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    //    // Клик по кнопке назад в action bar
-    //    if (item.itemId == android.R.id.home) {
-    //        onBackPressed()
-    //        return true
-    //    }
-    //    return false
-    //}
+    override fun log(message: String) {
+        Log.d("mylog", message)
+    }
 
     private fun launchFragment(fragment: Fragment) {
 
-        //if (isRepeatedMenuClick(fragment)) return // TODO Нужно скроллить наверх
-        // TODO Какой-то баг с этой ерундой - на некоторых экранах клики по нижнему меню не работают
+        if (isRepeatedMenuClick(fragment)) return
+        // TODO При повторном клике нужно скроллить наверх
 
-        currentFragment = fragment
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 androidx.appcompat.R.anim.abc_fade_in,
                 androidx.appcompat.R.anim.abc_fade_out)
-            .add(R.id.fragmentContainer, fragment)
+            .replace(R.id.fragmentContainer, fragment)
             .addToBackStack(null)
             .commit()
 
+        log("Живых фрагментов в контейнере: ${supportFragmentManager.fragments.count()}")
     }
 
     private fun isRepeatedMenuClick(fragment: Fragment): Boolean {
+
+        if (currentFragment is BottomNavItem && fragment !is BottomNavItem) return false
+        if (currentFragment !is BottomNavItem && fragment is BottomNavItem) return false
+
         if (fragment is BottomNavItem)
             if (fragment.getBottomNavItemId() == binding.bottomNav.selectedItemId)
                 return true
         return false
     }
 
-    private fun updateUi(fragment: Fragment) {
-        if (fragment is HasCustomTitle)
-            setTitle(getString(fragment.getScreenTitleRes()))
-        updateBackIcon(fragment)
-        updateBottomNavSelection(fragment)
-    }
-
-    private fun updateUiForMovieDetails(fragment: Fragment, movieName: String?) {
-        setTitle(movieName)
+    private fun updateUI(fragment: Fragment) {
+        //if (fragment is SupportRequestManagerFragment) return
+        //log("updateUI")
+        log("updateUI arg fragment: ${fragment.javaClass.simpleName}")
         updateBackIcon(fragment)
         updateBottomNavSelection(fragment)
     }
 
     private fun updateBackIcon(fragment: Fragment) {
-        Log.d("mylog", "updateBackIcon")
         if (fragment is HasBackIcon) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -206,10 +211,5 @@ class MainActivity : AppCompatActivity(), Navigator {
         } else
             menu.setGroupCheckable(0, false, true)
     }
-
-    private fun setTitle(movieName: String?) {
-        supportActionBar?.title = movieName
-    }
-
 
 }

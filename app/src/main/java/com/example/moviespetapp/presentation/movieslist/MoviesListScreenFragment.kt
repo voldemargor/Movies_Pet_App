@@ -30,22 +30,27 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     private lateinit var genreName: String
     private val viewModel by viewModels<MoviesListScreenViewModel>()
 
-    override fun getScreenTitleRes(): Int = R.string.title_movie
+    override fun setScreenTitle() =
+        navigator().setScreenTitle(genreName.replaceFirstChar { it.uppercase() })
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMoviesListScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        parseParams()
+        parseParams() //setScreenTitle()
         viewModel.loadMovies(genreName)
         setupRecyclerView()
         observeViewModel()
         setListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setScreenTitle()
     }
 
     private fun parseParams() = arguments?.let {
@@ -95,8 +100,7 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
         //    }
         //})
 
-        rvAdapter.onReachEndListener = {
-            //navigator().showToast("КОНЕЦ")
+        rvAdapter.onReachEndListener = { //navigator().showToast("КОНЕЦ")
             //viewModel.loadMovies(genreName)
         }
 

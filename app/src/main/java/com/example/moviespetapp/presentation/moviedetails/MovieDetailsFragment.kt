@@ -10,6 +10,7 @@ import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMovieDetailsBinding
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +24,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     var movieName: String? = null
     private val viewModel by viewModels<MovieDetailsViewModel>()
 
-    override fun getScreenTitleRes(): Int = R.string.title_movie
+    override fun setScreenTitle() = navigator().setScreenTitle(movieName.toString())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +36,15 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parseParams()
+        //setScreenTitle()
         viewModel.initMovie(movieId)
         observeViewModel()
         setListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setScreenTitle()
     }
 
     private fun parseParams() = arguments?.let {

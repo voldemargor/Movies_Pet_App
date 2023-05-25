@@ -23,10 +23,9 @@ interface Navigator {
 
     fun goBack()
 
+    fun setScreenTitle(title: String)
+
     fun showToast(message: String)
 
-    fun log(message: String) {
-        Log.d("mylog", message)
-    }
-
+    fun log(message: String)
 }

@@ -25,7 +25,9 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private val viewModel by viewModels<MainFragmentViewModel>()
 
-    override fun getScreenTitleRes(): Int = R.string.title_main
+    override fun setScreenTitle() =
+        navigator().setScreenTitle(resources.getString(R.string.title_main))
+
     override fun getBottomNavItemId(): Int = R.id.navItemFirstScreen
 
     override fun onCreateView(
@@ -37,11 +39,17 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //setScreenTitle()
         viewModel.initMoviesLD()
         viewModel.initGenres()
         observeViewModel()
         setListeners()
         generateGenresSection()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setScreenTitle()
     }
 
     private fun observeViewModel() {

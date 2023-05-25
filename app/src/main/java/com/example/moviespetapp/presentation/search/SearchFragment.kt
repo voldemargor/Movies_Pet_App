@@ -10,6 +10,7 @@ import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentSearchBinding
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +22,9 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private val viewModel by viewModels<SearchViewModel>()
 
-    override fun getScreenTitleRes(): Int = R.string.title_search
+    override fun setScreenTitle() =
+        navigator().setScreenTitle(resources.getString(R.string.title_search))
+
     override fun getBottomNavItemId(): Int = R.id.navItemSearch
 
     override fun onCreateView(
@@ -33,9 +36,15 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //setScreenTitle()
         viewModel.initLD()
         observeViewModel()
         setListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setScreenTitle()
     }
 
     private fun observeViewModel() {

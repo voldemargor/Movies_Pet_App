@@ -22,7 +22,9 @@ class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private val viewModel by viewModels<BookmarkViewModel>()
 
-    override fun getScreenTitleRes(): Int = R.string.title_bookmark
+    override fun setScreenTitle() =
+        navigator().setScreenTitle(resources.getString(R.string.title_bookmark))
+
     override fun getBottomNavItemId(): Int = R.id.navItemBookmark
 
     override fun onCreateView(
@@ -34,9 +36,15 @@ class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //setScreenTitle()
         viewModel.initFavMoviesLD()
         observeViewModel()
         setListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setScreenTitle()
     }
 
     private fun observeViewModel() {
