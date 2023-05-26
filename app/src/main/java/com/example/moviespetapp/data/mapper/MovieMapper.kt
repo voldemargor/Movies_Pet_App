@@ -2,8 +2,10 @@ package com.example.moviespetapp.data.mapper
 
 import com.example.moviespetapp.data.network.model.GenreDto
 import com.example.moviespetapp.data.network.model.MovieInfoDto
+import com.example.moviespetapp.data.network.model.TrailerDto
 import com.example.moviespetapp.domain.Genre
 import com.example.moviespetapp.domain.Movie
+import com.example.moviespetapp.domain.Trailer
 
 object MovieMapper {
 
@@ -27,7 +29,8 @@ object MovieMapper {
         description = dto.description,
         year = dto.year,
         poster = dto.poster,
-        rating = dto.rating
+        rating = dto.rating,
+        trailers = mapTrailersListDtoToListEntity(dto.videos?.trailers)
     )
 
     fun mapDtoToEntity(dto: GenreDto) = Genre(
@@ -35,7 +38,14 @@ object MovieMapper {
         slug = dto.slug
     )
 
-    fun mapListDtoToListEntity(listDto: List<GenreDto>): List<Genre> {
+    fun mapDtoToEntity(dto: TrailerDto) = Trailer(
+        url = dto.url,
+        name = dto.name,
+        site = dto.site,
+        type = dto.type,
+    )
+
+    fun mapGenresListDtoToListEntity(listDto: List<GenreDto>): List<Genre> {
         val listEntityFull = listDto.map { mapDtoToEntity(it) }
         val listToRemove = listOf(
             Genre("для взрослых", "dlya-vzroslyh"),
@@ -46,9 +56,16 @@ object MovieMapper {
             Genre("реальное ТВ", "realnoe-TV"),
             Genre("ток-шоу", "tok-shou"),
             Genre("церемония", "ceremoniya"),
+            Genre("игра", "igra"),
+            Genre("фильм-нуар", "film-nuar"),
         )
         return listEntityFull.minus(listToRemove.toSet())
     }
+
+    private fun mapTrailersListDtoToListEntity(listDto: List<TrailerDto>?): List<Trailer>? {
+        return listDto?.map { mapDtoToEntity(it) }
+    }
+
 
     //fun mapEntityToDtoModel(review: Review) = ReviewDto(
     //    id = folder.id,

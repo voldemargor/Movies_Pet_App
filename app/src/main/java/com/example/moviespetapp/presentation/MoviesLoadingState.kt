@@ -4,6 +4,6 @@ import com.example.moviespetapp.domain.Movie
 
 sealed class MoviesLoadingState
 
-object MoviesLoading : MoviesLoadingState()
-class MoviesLoadingError(val message: String?) : MoviesLoadingState()
-class MoviesLoadingResult(val movies: List<Movie>) : MoviesLoadingState()
+object Loading : MoviesLoadingState()
+class LoadingError(val message: String?) : MoviesLoadingState()
+class LoadingSuccess(val movies: List<Movie>) : MoviesLoadingState()

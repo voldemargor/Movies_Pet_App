@@ -6,7 +6,9 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Trailer(
 
-    val name: String,
-    val url: String
+    val url: String,
+    val name: String?,
+    val site: String?,
+    val type: String?,
 
 ) : Parcelable

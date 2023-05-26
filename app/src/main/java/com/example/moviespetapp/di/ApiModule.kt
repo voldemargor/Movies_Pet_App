@@ -1,7 +1,7 @@
 package com.example.moviespetapp.di
 
 import com.example.moviespetapp.data.network.ApiService
-import com.example.moviespetapp.utils.Constants
+import com.example.moviespetapp.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -2,7 +2,6 @@ package com.example.moviespetapp.data.network.model
 
 import com.example.moviespetapp.domain.Poster
 import com.example.moviespetapp.domain.Rating
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class MovieInfoDto(
@@ -23,6 +22,9 @@ data class MovieInfoDto(
     val poster: Poster? = null,
 
     @SerializedName("rating")
-    val rating: Rating? = null
+    val rating: Rating? = null,
 
-)
+    @SerializedName("videos")
+    val videos: TrailersListDto? = null,
+
+    )

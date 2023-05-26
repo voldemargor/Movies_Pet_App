@@ -8,11 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
-import com.example.moviespetapp.presentation.MoviesLoading
-import com.example.moviespetapp.presentation.MoviesLoadingError
-import com.example.moviespetapp.presentation.MoviesLoadingResult
+import com.example.moviespetapp.presentation.Loading
+import com.example.moviespetapp.presentation.LoadingError
+import com.example.moviespetapp.presentation.LoadingSuccess
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
@@ -74,36 +73,23 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     private fun observeViewModel() {
-        viewModel.movies.observe(viewLifecycleOwner) {
+        viewModel.moviesLoadingState.observe(viewLifecycleOwner) {
             binding.pbLoading.visibility = View.GONE
             when (it) {
-                is MoviesLoading -> binding.pbLoading.visibility = View.VISIBLE
+                is Loading -> binding.pbLoading.visibility = View.VISIBLE
 
-                is MoviesLoadingError -> navigator().showToast("Loading Error: ${it.message}")
+                is LoadingError -> navigator().showToast("Loading Error: ${it.message}")
 
-                is MoviesLoadingResult -> rvAdapter.submitList(it.movies)
-
+                is LoadingSuccess -> {
+                    rvAdapter.submitList(it.movies)
+                }
             }
         }
 
     }
 
     private fun setListeners() {
-
-        //binding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        //    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-        //        super.onScrollStateChanged(recyclerView, newState)
-        //        if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-        //            navigator().showToast("КОНЕЦ")
-        //            viewModel.loadMovies(genreName)
-        //        }
-        //    }
-        //})
-
-        rvAdapter.onReachEndListener = { //navigator().showToast("КОНЕЦ")
-            //viewModel.loadMovies(genreName)
-        }
-
+        rvAdapter.onReachEndListener = { viewModel.loadMovies(genreName) }
     }
 
     override fun onDestroyView() {
@@ -112,7 +98,6 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     companion object {
-        const val FRAGMENT_NAME = "movies_list_screen_fragment"
         const val ARG_GENRE_NAME = "genreName"
 
         fun newInstance(genreName: String) = MoviesListScreenFragment().apply {

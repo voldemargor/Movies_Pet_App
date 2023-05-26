@@ -12,6 +12,7 @@ data class Movie(
     val poster: Poster?,
     val rating: Rating?,
     val id: Int = UNDEFINED_ID,
+    val trailers: List<Trailer>?
 
 ) : Parcelable {
 

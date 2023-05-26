@@ -16,9 +16,9 @@ import javax.inject.Singleton
 @Singleton
 class RepositoryImpl @Inject constructor(private val apiService: ApiService) : Repository {
 
-    override suspend fun getMoviesForGenre(genreName: String): DataLoadingResult {
+    override suspend fun getMoviesForGenre(genreName: String, page: Int): DataLoadingResult {
         //return apiService.getMoviesForGenre(genres = genreName).movies
-        apiService.getMoviesForGenre(genres = genreName).apply {
+        apiService.getMoviesForGenre(genres = genreName, page).apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
@@ -33,8 +33,9 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
                     2222,
                     "Фильм в закладках",
                     "description",
-                    Poster("url"),
-                    Rating(kp = 5.0))))
+                    poster = Poster("url"),
+                    rating = Rating(kp = 5.0),
+                    trailers = null)))
     }
 
     override suspend fun getMovie(id: Int): Movie {
@@ -49,6 +50,6 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
     }
 
     override suspend fun getGenres(): List<Genre> {
-        return MovieMapper.mapListDtoToListEntity(apiService.getGenres())
+        return MovieMapper.mapGenresListDtoToListEntity(apiService.getGenres())
     }
 }
