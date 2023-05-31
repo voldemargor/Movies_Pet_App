@@ -1,16 +1,16 @@
 package com.example.moviespetapp.data.network.model
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class GenreDto(
+data class MovieShortDto(
+
+    @SerializedName("id")
+    val id: Int,
 
     @SerializedName("name")
     val name: String,
 
-    //@SerializedName("slug")
-    //val slug: String
+    @SerializedName("poster")
+    val poster: PosterDto?,
 
-) {
-
-}
+    )

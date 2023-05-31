@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportActionBar?.title = title
     }
 
-    override fun showToast(message: String) {
+    override fun toast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 

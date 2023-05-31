@@ -4,10 +4,10 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Rating(
+data class Votes(
 
-    val kp: Double,
-    val imdb: Double,
+    val kp: String,
+    val imdb: String
 
 ) : Parcelable {
 

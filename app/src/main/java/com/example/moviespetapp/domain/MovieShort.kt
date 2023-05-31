@@ -4,11 +4,12 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Rating(
+data class MovieShort(
 
-    val kp: Double,
-    val imdb: Double,
+    val id: Int,
+    val name: String,
+    val poster: Poster?,
 
-) : Parcelable {
+    ) : Parcelable {
 
 }

@@ -3,14 +3,14 @@ package com.example.moviespetapp.data.network.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class GenreDto(
+data class RatingDto(
 
-    @SerializedName("name")
-    val name: String,
+    @SerializedName("kp")
+    val kp: Double,
 
-    //@SerializedName("slug")
-    //val slug: String
+    @SerializedName("imdb")
+    val imdb: Double,
 
-) {
+    ) {
 
 }

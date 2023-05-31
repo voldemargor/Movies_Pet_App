@@ -4,10 +4,9 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Rating(
+data class Country(
 
-    val kp: Double,
-    val imdb: Double,
+    val name: String,
 
 ) : Parcelable {
 

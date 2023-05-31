@@ -1,19 +1,392 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:background="@color/material_dynamic_neutral90"
     android:layout_height="match_parent"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
+    android:background="@color/background"
     tools:context=".presentation.moviedetails.MovieDetailsFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:paddingTop="16dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@color/black"
-        android:text="Загрузка..." />
+        android:layout_height="wrap_content"
 
-</FrameLayout>
+        android:paddingBottom="40dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLineLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLineRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <ImageView
+            android:id="@+id/ivPosterBackground"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:alpha="0.6"
+            android:background="@color/rating_bg_neutral"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivPoster"
+            android:layout_width="match_parent"
+            android:layout_height="290dp"
+            android:layout_margin="40dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPosterBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivPosterBackground"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="16dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/ivPosterBackground"
+            tools:text="Подземелья и драконы: Честь среди воров" />
+
+        <Space
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <TextView
+            android:id="@+id/tvRatingHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textAlignment="center"
+            android:textColor="@color/rating_bg_positive"
+            app:layout_constraintEnd_toStartOf="@+id/tvVotesHeader"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/divider1"
+            tools:text="8.1" />
+
+        <TextView
+            android:id="@+id/tvVotesHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/tvEngTitle"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvRatingHeader"
+            app:layout_constraintTop_toTopOf="@id/tvRatingHeader"
+            tools:text="31K" />
+
+        <TextView
+            android:id="@+id/tvEngTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tvVotesHeader"
+            app:layout_constraintTop_toTopOf="@id/tvRatingHeader"
+            tools:text="Dungeons &amp; Dragons: Honor Among Thieves" />
+
+        <Space
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvRatingHeader" />
+
+        <TextView
+            android:id="@+id/tvYearAndGenres"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/divider2"
+            tools:text="1979, ужасы, фантастика, семейный" />
+
+        <Space
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            app:layout_constraintTop_toBottomOf="@id/tvYearAndGenres" />
+
+        <TextView
+            android:id="@+id/tvCountryDurationAgeRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/divider3"
+            tools:text="Канада, 1 ч 33 мин" />
+
+        <Space
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            app:layout_constraintTop_toBottomOf="@id/tvCountryDurationAgeRating" />
+
+        <LinearLayout
+            android:id="@+id/iconBookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider4">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bookmark"
+                app:tint="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_bookmark"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:maxLines="6"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/iconBookmark"
+            tools:text="@string/description_text" />
+
+        <ImageView
+            android:id="@+id/ivDescriptionCutoffGradient"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:clickable="false"
+            android:src="@drawable/gradient_description_cutoff"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tvDescription"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/sectionTrailer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tvHeadlineTrailer, layoutTrailer" />
+
+        <TextView
+            android:id="@+id/tvHeadlineTrailer"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="26dp"
+            android:paddingBottom="16dp"
+            android:text="@string/headline_trailer"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutTrailer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/tvHeadlineTrailer">
+
+            <ImageView
+                android:id="@+id/ivTrailer"
+                android:layout_width="300dp"
+                android:layout_height="160dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <ImageView
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:src="@drawable/circle_play_icon"
+                app:layout_constraintBottom_toBottomOf="@id/ivTrailer"
+                app:layout_constraintEnd_toEndOf="@id/ivTrailer"
+                app:layout_constraintStart_toStartOf="@id/ivTrailer"
+                app:layout_constraintTop_toTopOf="@id/ivTrailer" />
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/baseline_play_arrow_24"
+                app:layout_constraintBottom_toBottomOf="@id/ivTrailer"
+                app:layout_constraintEnd_toEndOf="@id/ivTrailer"
+                app:layout_constraintStart_toStartOf="@id/ivTrailer"
+                app:layout_constraintTop_toTopOf="@id/ivTrailer"
+                app:tint="@color/white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/sectionRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tvHeadlineRating, layoutRatingKp, layoutRatingImdb" />
+
+        <TextView
+            android:id="@+id/tvHeadlineRating"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="26dp"
+            android:paddingBottom="16dp"
+            android:text="@string/headline_rating"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/layoutTrailer" />
+
+        <LinearLayout
+            android:id="@+id/layoutRatingKp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:background="@color/rating_bg_neutral"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/layoutRatingImdb"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/tvHeadlineRating">
+
+            <TextView
+                android:id="@+id/tvRatingKp"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                tools:text="8.1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/raiting_kp"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvRatingKpVotesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                tools:text="902 637 оценок" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutRatingImdb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:background="@color/rating_bg_neutral"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toEndOf="@+id/layoutRatingKp"
+            app:layout_constraintTop_toBottomOf="@id/tvHeadlineRating">
+
+            <TextView
+                android:id="@+id/tvRatingImdb"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                tools:text="8.1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rating_imdb"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tvRatingImdbVotesCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                tools:text="902 637 оценок" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/sectionSimilar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tvHeadlineSimilarMovies, rvSimilarMovies" />
+
+        <TextView
+            android:id="@+id/tvHeadlineSimilarMovies"
+            style="@style/TextAppearance.AppCompat.Headline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="26dp"
+            android:paddingBottom="16dp"
+            android:text="@string/headline_similar_movies"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@id/layoutRatingKp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSimilarMovies"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="14dp"
+            android:paddingRight="20dp"
+            android:clipToPadding="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeadlineSimilarMovies"
+            tools:itemCount="7"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_movie_horizontal"
+            tools:orientation="horizontal"
+            tools:scrollbars="horizontal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -1,7 +1,7 @@
 package com.example.moviespetapp.data.network
 
 import com.example.moviespetapp.data.network.model.GenreDto
-import com.example.moviespetapp.data.network.model.MovieInfoDto
+import com.example.moviespetapp.data.network.model.MovieDto
 import com.example.moviespetapp.data.network.model.ResponseMoviesListDto
 import com.example.moviespetapp.Constants
 import retrofit2.Response
@@ -26,7 +26,7 @@ interface ApiService {
     suspend fun getMovie(
         @Path(QUERY_PARAM_MOVIE_ID) movieId: Int,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): MovieInfoDto
+    ): MovieDto
 
     @GET("/v1/movie/possible-values-by-field?field=genres.name")
     suspend fun getGenres(

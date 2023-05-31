@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Genre(
 
     val name: String,
-    val slug: String
+    //val slug: String
 
 ) : Parcelable {
 

@@ -87,7 +87,10 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    // Glide Transformations
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
 
     // Faker
     implementation 'com.github.javafaker:javafaker:1.0.2'
+
 }

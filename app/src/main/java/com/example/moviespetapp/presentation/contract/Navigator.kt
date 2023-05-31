@@ -1,6 +1,5 @@
 package com.example.moviespetapp.presentation.contract
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 
 fun Fragment.navigator(): Navigator {
@@ -25,7 +24,7 @@ interface Navigator {
 
     fun setScreenTitle(title: String)
 
-    fun showToast(message: String)
+    fun toast(message: String)
 
     fun log(message: String)
 }

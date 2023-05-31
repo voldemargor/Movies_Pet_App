@@ -78,7 +78,7 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
             when (it) {
                 is Loading -> binding.pbLoading.visibility = View.VISIBLE
 
-                is LoadingError -> navigator().showToast("Loading Error: ${it.message}")
+                is LoadingError -> navigator().toast("Loading Error: ${it.message}")
 
                 is LoadingSuccess -> {
                     rvAdapter.submitList(it.movies)

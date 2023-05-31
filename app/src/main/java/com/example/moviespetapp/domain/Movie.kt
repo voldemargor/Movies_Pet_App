@@ -1,6 +1,7 @@
 package com.example.moviespetapp.domain
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -8,13 +9,20 @@ data class Movie(
 
     val year: Int,
     val name: String?,
+    val alternativeName: String?,
     val description: String?,
     val poster: Poster?,
     val rating: Rating?,
     val id: Int = UNDEFINED_ID,
-    val trailers: List<Trailer>?
+    val trailers: List<Trailer>?,
+    val genres: List<Genre>?,
+    val votes: Votes,
+    val country: Country,
+    val movieLength: Int?,
+    val ageRating: Int?,
+    val similarMovies: List<MovieShort>?,
 
-) : Parcelable {
+    ) : Parcelable {
 
     companion object {
         const val UNDEFINED_ID = 0
