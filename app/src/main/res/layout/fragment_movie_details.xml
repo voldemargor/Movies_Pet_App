@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView"
+    android:id="@+id/svMovieScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -72,52 +72,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-        <TextView
-            android:id="@+id/tvRatingHeader"
+        <LinearLayout
+            android:id="@+id/layoutRatingVotesEngTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:textAlignment="center"
-            android:textColor="@color/rating_bg_positive"
-            app:layout_constraintEnd_toStartOf="@+id/tvVotesHeader"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
             app:layout_constraintTop_toBottomOf="@id/divider1"
-            tools:text="8.1" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvVotesHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/tvEngTitle"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvRatingHeader"
-            app:layout_constraintTop_toTopOf="@id/tvRatingHeader"
-            tools:text="31K" />
+            <TextView
+                android:id="@+id/tvRatingHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textAlignment="center"
+                android:textColor="@color/rating_bg_positive"
+                tools:text="8.1" />
 
-        <TextView
-            android:id="@+id/tvEngTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:padding="2dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/guideLineRight"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tvVotesHeader"
-            app:layout_constraintTop_toTopOf="@id/tvRatingHeader"
-            tools:text="Dungeons &amp; Dragons: Honor Among Thieves" />
+            <TextView
+                android:id="@+id/tvVotesHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                tools:text="31K" />
+
+            <TextView
+                android:id="@+id/tvEngTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                tools:text="Dungeons &amp; Dragons: Honor Among Thieves" />
+        </LinearLayout>
 
         <Space
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            app:layout_constraintTop_toBottomOf="@id/tvRatingHeader" />
+            app:layout_constraintTop_toBottomOf="@id/layoutRatingVotesEngTitle" />
 
         <TextView
             android:id="@+id/tvYearAndGenres"
@@ -375,15 +372,15 @@
             android:id="@+id/rvSimilarMovies"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="14dp"
-            android:paddingRight="20dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="20dp"
             android:clipToPadding="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHeadlineSimilarMovies"
             tools:itemCount="7"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_movie_horizontal"
+            tools:listitem="@layout/item_movie_similar"
             tools:orientation="horizontal"
             tools:scrollbars="horizontal" />
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.DataLoadingResult.Failed
 import com.example.moviespetapp.domain.DataLoadingResult.Success
-import com.example.moviespetapp.domain.GetMoviesForGenreUseCase
+import com.example.moviespetapp.domain.GetMoviesByGenreUseCase
 import com.example.moviespetapp.domain.Movie
 import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.LoadingError
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
 
-    @Inject lateinit var getMoviesForGenreUseCase: GetMoviesForGenreUseCase
+    @Inject lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
 
     private val _moviesLoadingState = MutableLiveData<MoviesLoadingState>()
     val moviesLoadingState: LiveData<MoviesLoadingState> get() = _moviesLoadingState
@@ -38,7 +38,7 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
         Log.d("mylog", "MoviesListScreenViewModel: loadMovies()")
 
         viewModelScope.launch {
-            getData(getMoviesForGenreUseCase.getMovies(genreName, moviesPage))
+            getData(getMoviesByGenreUseCase.getMovies(genreName, moviesPage))
         }
     }
 

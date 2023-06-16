@@ -18,12 +18,12 @@ import com.example.moviespetapp.domain.MovieShort
 import com.example.moviespetapp.domain.Rating
 import com.example.moviespetapp.domain.Votes
 import com.example.moviespetapp.presentation.Utils
+import com.example.moviespetapp.presentation.Utils.Companion.loadBlurredImage
+import com.example.moviespetapp.presentation.Utils.Companion.loadImage
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
-import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
@@ -35,6 +35,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     private var movieId: Int? = null
     var movieName: String? = null
     private val viewModel by viewModels<MovieDetailsViewModel>()
+    private lateinit var movie: Movie
 
     override fun setScreenTitle() = navigator().setScreenTitle(movieName.toString())
 
@@ -50,7 +51,6 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
         parseParams()
         viewModel.initMovie(movieId)
         observeViewModel()
-        //setListeners()
     }
 
     override fun onResume() {
@@ -65,50 +65,86 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     private fun observeViewModel() {
         viewModel.currentMovie.observe(viewLifecycleOwner) {
-            buildHeaderSection(it)
-            buildTrailerSection(it)
+            movie = it
+            buildHeaderSection()
+            buildTrailerSection()
             buildRatingSection(it.rating, it.votes)
             buildSimilarMoviesSection(it.similarMovies)
         }
     }
 
-    private fun buildHeaderSection(movie: Movie) {
+    private fun buildHeaderSection() {
         with(binding) {
-            if (movie.poster != null) {
-                Utils.loadImage(movie.poster.url, ivPoster)
-                Utils.loadPosterBackground(movie.poster.url, ivPosterBackground)
+            movie.poster?.let {
+                ivPoster.loadImage(it.url)
+                ivPosterBackground.loadBlurredImage(it.url)
             }
             tvTitle.text = movie.name
-            val ratingKp = Utils.getRatingRounded(movie.rating?.kp)
-            tvRatingHeader.text = ratingKp
-            tvRatingHeader.setTextColor(Utils.getRatingTextColor(requireContext(), ratingKp))
-            tvVotesHeader.text = Utils.getVotesInKilos(movie.votes)
-            tvEngTitle.text = movie.alternativeName
+
+            handleRating()
+
+            if (movie.votes.kp == "0") tvVotesHeader.visibility = View.GONE
+            else tvVotesHeader.text = Utils.getVotesInKilos(movie.votes)
+
+            if (movie.alternativeName.isNullOrEmpty()) tvEngTitle.visibility = View.GONE
+            else tvEngTitle.text = movie.alternativeName
+
             tvYearAndGenres.text = Utils.getStringYearAndGenres(movie)
             tvCountryDurationAgeRating.text = Utils.getStringCountryDurationAgeRating(movie)
             iconBookmark.setOnClickListener { navigator().toast("В закладки") }
-            tvDescription.text = movie.description
 
-            if (tvDescription.lineCount > 6) {
-                ivDescriptionCutoffGradient.visibility = View.VISIBLE
-                tvDescription.setOnClickListener {
-                    it as TextView
-                    val animation = ObjectAnimator.ofInt(it, "maxLines", it.getLineCount())
-                    animation.setDuration(200).start()
-                    ivDescriptionCutoffGradient.visibility = View.GONE
+            if (movie.shortDescription == null) tvDescription.text = movie.description
+            else tvDescription.text = movie.shortDescription + "\n\n" + movie.description
+            handleDescriptionCutoff()
+        }
+    }
+
+
+    private fun handleRating() {
+        val rating = movie.rating
+        with(binding) {
+            if (shouldHideRating())
+                tvRatingHeader.visibility = View.GONE
+            else {
+                val ratingKp = Utils.getRatingRounded(rating?.kp)
+                tvRatingHeader.text = ratingKp
+                tvRatingHeader.setTextColor(Utils.getRatingTextColor(requireContext(), ratingKp))
+            }
+        }
+    }
+
+    private fun shouldHideRating(): Boolean {
+        return movie.rating == null || movie.votes.kp == "0"
+    }
+
+    private fun handleDescriptionCutoff() {
+        with(binding) {
+            if (shouldHideRating()) {
+                val animation =
+                    ObjectAnimator.ofInt(tvDescription, "maxLines", tvDescription.getLineCount())
+                animation.setDuration(0).start()
+            } else {
+                if (tvDescription.lineCount > 6) {
+                    ivDescriptionCutoffGradient.visibility = View.VISIBLE
+                    tvDescription.setOnClickListener {
+                        it as TextView
+                        val animation = ObjectAnimator.ofInt(it, "maxLines", it.getLineCount())
+                        animation.setDuration(200).start()
+                        ivDescriptionCutoffGradient.visibility = View.GONE
+                    }
                 }
             }
         }
     }
 
-    private fun buildTrailerSection(it: Movie) {
-        val youtubeTrailer = Utils.getYoutubeTrailer(it.trailers)
+    private fun buildTrailerSection() {
+        val youtubeTrailer = Utils.getYoutubeTrailer(movie.trailers)
         if (youtubeTrailer == null) {
             disableTrailerSection()
             return
         }
 
-        Utils.loadImage(youtubeTrailer.previewUrl, binding.ivTrailer)
+        binding.ivTrailer.loadImage(youtubeTrailer.previewUrl)
 
         binding.ivTrailer.setOnClickListener {
             val youtubeUri = Uri.parse(youtubeTrailer.videoUrl)
@@ -117,7 +153,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     private fun buildRatingSection(rating: Rating?, votes: Votes) {
-        if (rating == null) {
+        if (rating == null || votes.kp == "0") {
             disableRatingSection()
             return
         }

@@ -1,13 +1,24 @@
 package com.example.moviespetapp.domain
 
 import androidx.lifecycle.LiveData
-import com.example.moviespetapp.data.network.model.ResponseMoviesListDto
-import retrofit2.Response
-import java.lang.Exception
 
 interface Repository {
 
-    suspend fun getMoviesForGenre(genreName: String, page: Int): DataLoadingResult
+    suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult
+
+    suspend fun getMainScreenNewMovies(): DataLoadingResult
+
+    suspend fun getMainScreenSoonMovies(): DataLoadingResult
+
+    suspend fun getMainScreenPopularMovies(): DataLoadingResult
+
+    suspend fun getMainScreenFictionMovies(): DataLoadingResult
+
+    suspend fun getMainScreenComedyMovies(): DataLoadingResult
+
+    suspend fun getMainScreenHorrorMovies(): DataLoadingResult
+
+    suspend fun getMainScreenKidMovies(): DataLoadingResult
 
     fun getFavMovies(): LiveData<List<Movie>>
 

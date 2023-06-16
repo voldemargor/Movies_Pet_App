@@ -11,6 +11,7 @@ data class Movie(
     val name: String?,
     val alternativeName: String?,
     val description: String?,
+    val shortDescription: String?,
     val poster: Poster?,
     val rating: Rating?,
     val id: Int = UNDEFINED_ID,

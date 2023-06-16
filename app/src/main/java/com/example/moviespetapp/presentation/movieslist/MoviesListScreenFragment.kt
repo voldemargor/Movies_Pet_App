@@ -58,7 +58,7 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     private fun setupRecyclerView() {
-        rvAdapter = MoviesListAdapter().apply {
+        rvAdapter = MoviesListAdapter(MoviesListAdapter.ListType.GRID).apply {
             stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         }
         binding.rvMovies.layoutManager = GridLayoutManager(requireContext(), 3)

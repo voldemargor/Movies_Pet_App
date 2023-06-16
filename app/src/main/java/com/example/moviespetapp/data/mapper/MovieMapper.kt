@@ -38,6 +38,7 @@ object MovieMapper {
         name = dto.name,
         alternativeName = dto.alternativeName,
         description = dto.description,
+        shortDescription = dto.shortDescription,
         year = dto.year,
         poster = mapDtoToEntity(dto.poster),
         rating = mapDtoToEntity(dto.rating),

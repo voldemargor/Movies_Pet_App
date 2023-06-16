@@ -55,7 +55,7 @@ class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private fun setListeners() {
         binding.textView.setOnClickListener() {
-            navigator().displayMovieDetailsScreen(665, "Вдали от рая")
+            navigator().displayMovieDetailsScreen(470185, "Обливион")
         }
     }
 

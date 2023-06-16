@@ -15,4 +15,12 @@
     <string name="headline_similar_movies">Похожие фильмы</string>
     <string name="raiting_kp">Рейтинг Кинопоиска</string>
     <string name="rating_imdb">Рейтинг IMDb</string>
+    <string name="headline_genres">Жанры</string>
+    <string name="headline_new">Новое</string>
+    <string name="headline_soon">Скоро выйдут</string>
+    <string name="headline_popular">Популярное</string>
+    <string name="headline_fiction">Фантастика</string>
+    <string name="headline_comedy">Комедии</string>
+    <string name="headline_horror">Ужасы</string>
+    <string name="headline_for_kids">Детям</string>
 </resources>

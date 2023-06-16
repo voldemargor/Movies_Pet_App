@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
 import com.example.moviespetapp.presentation.MainActivityViewModel
-import com.example.moviespetapp.presentation.MainFragment
+import com.example.moviespetapp.presentation.mainscreen.MainFragment
 import com.example.moviespetapp.presentation.bookmark.BookmarkFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon

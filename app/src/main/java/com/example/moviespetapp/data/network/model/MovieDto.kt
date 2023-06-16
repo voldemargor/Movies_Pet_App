@@ -17,6 +17,9 @@ data class MovieDto(
     @SerializedName("description")
     val description: String? = null,
 
+    @SerializedName("shortDescription")
+    val shortDescription: String? = null,
+
     @SerializedName("year")
     val year: Int = 0,
 

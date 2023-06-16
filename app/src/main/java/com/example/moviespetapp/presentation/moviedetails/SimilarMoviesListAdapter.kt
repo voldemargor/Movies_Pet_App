@@ -5,9 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.databinding.ItemMovieBinding
-import com.example.moviespetapp.databinding.ItemMovieHorizontalBinding
+import com.example.moviespetapp.databinding.ItemMovieSimilarBinding
 import com.example.moviespetapp.domain.MovieShort
 import com.example.moviespetapp.presentation.Utils
+import com.example.moviespetapp.presentation.Utils.Companion.loadImage
 
 class SimilarMoviesListAdapter :
     ListAdapter<MovieShort, SimilarMoviesListAdapter.ItemViewHolder>(SimilarMovieItemDiffCallback()) {
@@ -15,7 +16,7 @@ class SimilarMoviesListAdapter :
     var onMovieClickListener: ((MovieShort) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val binding = ItemMovieHorizontalBinding
+        val binding = ItemMovieSimilarBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
         return ItemViewHolder(binding)
     }
@@ -25,12 +26,11 @@ class SimilarMoviesListAdapter :
         with(holder.binding) {
             tvTitle.text = movie.name
             root.setOnClickListener { onMovieClickListener?.invoke(movie) }
-            if (movie.poster != null)
-                Utils.loadImage(movie.poster.url, ivPoster)
+            movie.poster?.let { ivPoster.loadImage(it.url) }
         }
     }
 
-    inner class ItemViewHolder(val binding: ItemMovieHorizontalBinding) :
+    inner class ItemViewHolder(val binding: ItemMovieSimilarBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 

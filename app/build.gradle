@@ -92,5 +92,6 @@ dependencies {
 
     // Faker
     implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.21"
 
 }

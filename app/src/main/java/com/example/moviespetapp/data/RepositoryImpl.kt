@@ -18,13 +18,75 @@ import javax.inject.Singleton
 @Singleton
 class RepositoryImpl @Inject constructor(private val apiService: ApiService) : Repository {
 
-    override suspend fun getMoviesForGenre(genreName: String, page: Int): DataLoadingResult {
-        //return apiService.getMoviesForGenre(genres = genreName).movies
-        apiService.getMoviesForGenre(genres = genreName, page).apply {
+    override suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult {
+        apiService.getMoviesByGenre(genres = genreName, page).apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies)
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+        }
+    }
+
+    override suspend fun getMainScreenNewMovies(): DataLoadingResult {
+        apiService.getMainScreenNewMovies().apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+        }
+    }
+
+    override suspend fun getMainScreenSoonMovies(): DataLoadingResult {
+        apiService.getMainScreenSoonMovies().apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+        }
+    }
+
+    override suspend fun getMainScreenPopularMovies(): DataLoadingResult {
+        apiService.getMainScreenPopularMovies().apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+        }
+    }
+
+    override suspend fun getMainScreenFictionMovies(): DataLoadingResult {
+        apiService.getMainScreenFictionMovies().apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+        }
+    }
+
+    override suspend fun getMainScreenComedyMovies(): DataLoadingResult {
+        apiService.getMainScreenComedyMovies().apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+        }
+    }
+
+    override suspend fun getMainScreenHorrorMovies(): DataLoadingResult {
+        apiService.getMainScreenHorrorMovies().apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+        }
+    }
+
+    override suspend fun getMainScreenKidMovies(): DataLoadingResult {
+        apiService.getMainScreenKidMovies().apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
         }
     }
 
@@ -36,6 +98,7 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
                     name = "Фильм в закладках",
                     alternativeName = "Alternative Name",
                     description = "description",
+                    shortDescription = "short description",
                     poster = Poster("url"),
                     rating = Rating(kp = 5.0, 9.2),
                     trailers = null,
@@ -62,4 +125,7 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
     override suspend fun getGenres(): List<Genre> {
         return MovieMapper.mapGenresListDtoToListEntity(apiService.getGenres())
     }
+
+    private fun filterIncompleted(movie: Movie) =
+        movie.poster != null && movie.name != null && movie.description != null
 }
