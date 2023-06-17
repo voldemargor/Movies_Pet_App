@@ -1,4 +1,4 @@
-package com.example.moviespetapp.presentation.bookmark
+package com.example.moviespetapp.presentation.bookmarks
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

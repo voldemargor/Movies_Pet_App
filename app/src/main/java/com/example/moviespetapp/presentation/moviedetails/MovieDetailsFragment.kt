@@ -2,12 +2,14 @@ package com.example.moviespetapp.presentation.moviedetails
 
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +26,7 @@ import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
@@ -71,6 +74,10 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
             buildRatingSection(it.rating, it.votes)
             buildSimilarMoviesSection(it.similarMovies)
         }
+        viewModel.isBookmark.observe(viewLifecycleOwner) {
+            if (it) DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.RED)
+            else DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.WHITE)
+        }
     }
 
     private fun buildHeaderSection() {
@@ -91,14 +98,15 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
             tvYearAndGenres.text = Utils.getStringYearAndGenres(movie)
             tvCountryDurationAgeRating.text = Utils.getStringCountryDurationAgeRating(movie)
-            iconBookmark.setOnClickListener { navigator().toast("В закладки") }
+
+            iconBookmark.setOnClickListener { viewModel.handleBookmarkAction() }
 
             if (movie.shortDescription == null) tvDescription.text = movie.description
             else tvDescription.text = movie.shortDescription + "\n\n" + movie.description
+
             handleDescriptionCutoff()
         }
     }
-
 
     private fun handleRating() {
         val rating = movie.rating
@@ -200,14 +208,10 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
         binding.sectionSimilar.visibility = View.GONE
     }
 
-    //private fun setListeners() {
-    //}
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 
     companion object {
         const val FRAGMENT_NAME = "movie_details_fragment"

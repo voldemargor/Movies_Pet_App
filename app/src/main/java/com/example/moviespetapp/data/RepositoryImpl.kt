@@ -1,9 +1,12 @@
 package com.example.moviespetapp.data
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.moviespetapp.App
 import com.example.moviespetapp.data.mapper.MovieMapper
 import com.example.moviespetapp.data.network.ApiService
+import com.example.moviespetapp.data.sharedprefs.BookmarkService
 import com.example.moviespetapp.domain.Country
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.Genre
@@ -16,7 +19,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RepositoryImpl @Inject constructor(private val apiService: ApiService) : Repository {
+class RepositoryImpl @Inject constructor(
+
+    private val apiService: ApiService,
+    private val bookmarkService: BookmarkService,
+    //private val app: App
+
+) : Repository {
 
     override suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult {
         apiService.getMoviesByGenre(genres = genreName, page).apply {
@@ -90,7 +99,7 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
         }
     }
 
-    override fun getFavMovies(): LiveData<List<Movie>> {
+    override fun getBookmarkMovies(): LiveData<List<Movie>> {
         return MutableLiveData(
             listOf(
                 Movie(
@@ -115,11 +124,12 @@ class RepositoryImpl @Inject constructor(private val apiService: ApiService) : R
         return MovieMapper.mapDtoToEntity(apiService.getMovie(movieId = id))
     }
 
-    override suspend fun addToFavorites(movie: Movie): Long {
-        return 111
+    override suspend fun addBookmark(movie: Movie) {
+        bookmarkService.addToBookmarks(movie.id)
     }
 
-    override suspend fun deleteFromFavorites(movie: Movie) {
+    override suspend fun removeBookmark(movie: Movie) {
+        bookmarkService.removeBookmark(movie.id)
     }
 
     override suspend fun getGenres(): List<Genre> {

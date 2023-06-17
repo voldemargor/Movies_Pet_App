@@ -20,13 +20,13 @@ interface Repository {
 
     suspend fun getMainScreenKidMovies(): DataLoadingResult
 
-    fun getFavMovies(): LiveData<List<Movie>>
+    fun getBookmarkMovies(): LiveData<List<Movie>>
 
     suspend fun getMovie(id: Int): Movie
 
-    suspend fun addToFavorites(movie: Movie): Long
+    suspend fun addBookmark(movie: Movie)
 
-    suspend fun deleteFromFavorites(movie: Movie)
+    suspend fun removeBookmark(movie: Movie)
 
     suspend fun getGenres(): List<Genre>
 

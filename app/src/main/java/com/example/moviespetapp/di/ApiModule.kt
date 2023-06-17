@@ -1,10 +1,14 @@
 package com.example.moviespetapp.di
 
+import android.content.Context
+import android.content.SharedPreferences
+import com.example.moviespetapp.App
 import com.example.moviespetapp.data.network.ApiService
 import com.example.moviespetapp.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -36,5 +40,11 @@ object ApiModule {
         .client(okHttpClient())
         .build()
         .create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideApplication(@ApplicationContext app: Context): App {
+        return app as App
+    }
 
 }

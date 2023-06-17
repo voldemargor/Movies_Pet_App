@@ -1,5 +1,6 @@
 package com.example.moviespetapp
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,11 +12,11 @@ import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
 import com.example.moviespetapp.presentation.MainActivityViewModel
-import com.example.moviespetapp.presentation.mainscreen.MainFragment
-import com.example.moviespetapp.presentation.bookmark.BookmarkFragment
+import com.example.moviespetapp.presentation.bookmarks.BookmarkFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.Navigator
+import com.example.moviespetapp.presentation.mainscreen.MainFragment
 import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
 import com.example.moviespetapp.presentation.movieslist.MoviesListScreenFragment
 import com.example.moviespetapp.presentation.search.SearchFragment
@@ -157,6 +158,16 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun log(message: String) {
         Log.d("mylog", message)
     }
+
+    //fun isBookmarked(movieId:String) :Boolean {
+    //    return true
+    //}
+
+    //private fun getBookmarks(): Set<String> {
+    //    getSharedPreferences("BOOKMARKS_PREFERENCES", Context.MODE_PRIVATE).apply {
+    //        getString("VALUE_KEY", "")
+    //    }
+    //}
 
     private fun launchFragment(fragment: Fragment) {
 

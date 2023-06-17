@@ -1,0 +1,11 @@
+package com.example.moviespetapp.domain
+
+import javax.inject.Inject
+
+class RemoveBookmarkUseCase @Inject constructor(private val repository: Repository) {
+
+    suspend fun remove(movie: Movie) {
+        repository.removeBookmark(movie)
+    }
+
+}
