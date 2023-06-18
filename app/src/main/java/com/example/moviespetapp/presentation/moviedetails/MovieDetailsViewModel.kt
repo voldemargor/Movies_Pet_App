@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
-import com.example.moviespetapp.domain.AddBookmarkUseCase
-import com.example.moviespetapp.domain.GetMovieUseCase
-import com.example.moviespetapp.domain.Movie
-import com.example.moviespetapp.domain.RemoveBookmarkUseCase
+import com.example.moviespetapp.domain.usecase.AddBookmarkUseCase
+import com.example.moviespetapp.domain.usecase.GetMovieUseCase
+import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.domain.usecase.RemoveBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

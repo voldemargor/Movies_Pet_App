@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviespetapp.databinding.ItemMovieBinding
 import com.example.moviespetapp.databinding.ItemMovieSimilarBinding
-import com.example.moviespetapp.domain.MovieShort
-import com.example.moviespetapp.presentation.Utils
+import com.example.moviespetapp.domain.entity.MovieShort
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage
 
 class SimilarMoviesListAdapter :

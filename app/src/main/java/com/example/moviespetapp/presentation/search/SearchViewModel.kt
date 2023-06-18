@@ -2,7 +2,7 @@ package com.example.moviespetapp.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moviespetapp.domain.GetMoviesByGenreUseCase
+import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

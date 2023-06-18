@@ -1,20 +1,18 @@
 package com.example.moviespetapp.data
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.moviespetapp.App
 import com.example.moviespetapp.data.mapper.MovieMapper
 import com.example.moviespetapp.data.network.ApiService
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
-import com.example.moviespetapp.domain.Country
+import com.example.moviespetapp.domain.entity.Country
 import com.example.moviespetapp.domain.DataLoadingResult
-import com.example.moviespetapp.domain.Genre
-import com.example.moviespetapp.domain.Movie
-import com.example.moviespetapp.domain.Poster
-import com.example.moviespetapp.domain.Rating
+import com.example.moviespetapp.domain.entity.Genre
+import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.domain.entity.Poster
+import com.example.moviespetapp.domain.entity.Rating
 import com.example.moviespetapp.domain.Repository
-import com.example.moviespetapp.domain.Votes
+import com.example.moviespetapp.domain.entity.Votes
 import javax.inject.Inject
 import javax.inject.Singleton
 

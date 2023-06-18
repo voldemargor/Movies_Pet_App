@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMainBinding
 import com.example.moviespetapp.domain.DataLoadingResult
-import com.example.moviespetapp.domain.Movie
+import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator

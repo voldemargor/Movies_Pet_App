@@ -1,8 +1,7 @@
 package com.example.moviespetapp.presentation.moviedetails
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.moviespetapp.domain.Movie
-import com.example.moviespetapp.domain.MovieShort
+import com.example.moviespetapp.domain.entity.MovieShort
 
 class SimilarMovieItemDiffCallback : DiffUtil.ItemCallback<MovieShort>() {
 

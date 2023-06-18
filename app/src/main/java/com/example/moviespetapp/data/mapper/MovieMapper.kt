@@ -8,14 +8,14 @@ import com.example.moviespetapp.data.network.model.PosterDto
 import com.example.moviespetapp.data.network.model.RatingDto
 import com.example.moviespetapp.data.network.model.TrailerDto
 import com.example.moviespetapp.data.network.model.VotesDto
-import com.example.moviespetapp.domain.Country
-import com.example.moviespetapp.domain.Genre
-import com.example.moviespetapp.domain.Movie
-import com.example.moviespetapp.domain.MovieShort
-import com.example.moviespetapp.domain.Poster
-import com.example.moviespetapp.domain.Rating
-import com.example.moviespetapp.domain.Trailer
-import com.example.moviespetapp.domain.Votes
+import com.example.moviespetapp.domain.entity.Country
+import com.example.moviespetapp.domain.entity.Genre
+import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.domain.entity.MovieShort
+import com.example.moviespetapp.domain.entity.Poster
+import com.example.moviespetapp.domain.entity.Rating
+import com.example.moviespetapp.domain.entity.Trailer
+import com.example.moviespetapp.domain.entity.Votes
 
 object MovieMapper {
 

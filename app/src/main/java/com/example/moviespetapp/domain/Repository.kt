@@ -1,6 +1,8 @@
 package com.example.moviespetapp.domain
 
 import androidx.lifecycle.LiveData
+import com.example.moviespetapp.domain.entity.Genre
+import com.example.moviespetapp.domain.entity.Movie
 
 interface Repository {
 

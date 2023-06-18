@@ -1,13 +1,5 @@
 package com.example.moviespetapp.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.moviespetapp.domain.Genre
-import com.example.moviespetapp.domain.Movie
-import com.example.moviespetapp.domain.Poster
-import com.example.moviespetapp.domain.Rating
-import com.example.moviespetapp.domain.Repository
-import com.github.javafaker.Faker
 import javax.inject.Inject
 import javax.inject.Singleton
 

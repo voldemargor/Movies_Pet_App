@@ -1,19 +1,15 @@
 package com.example.moviespetapp.presentation
 
 import android.content.Context
-import android.content.res.Resources
-import android.util.Log
-import android.util.TypedValue
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.moviespetapp.R
-import com.example.moviespetapp.domain.Movie
-import com.example.moviespetapp.domain.Trailer
-import com.example.moviespetapp.domain.Votes
-import com.example.moviespetapp.presentation.mainscreen.MainFragment
+import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.domain.entity.Trailer
+import com.example.moviespetapp.domain.entity.Votes
 import com.example.moviespetapp.presentation.moviedetails.YoutubeTrailer
 import jp.wasabeef.glide.transformations.BlurTransformation
 import org.apache.commons.lang3.text.StrBuilder

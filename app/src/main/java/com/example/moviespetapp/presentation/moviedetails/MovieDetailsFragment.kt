@@ -15,10 +15,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.databinding.FragmentMovieDetailsBinding
-import com.example.moviespetapp.domain.Movie
-import com.example.moviespetapp.domain.MovieShort
-import com.example.moviespetapp.domain.Rating
-import com.example.moviespetapp.domain.Votes
+import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.domain.entity.MovieShort
+import com.example.moviespetapp.domain.entity.Rating
+import com.example.moviespetapp.domain.entity.Votes
 import com.example.moviespetapp.presentation.Utils
 import com.example.moviespetapp.presentation.Utils.Companion.loadBlurredImage
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage

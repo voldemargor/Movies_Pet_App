@@ -1,6 +1,6 @@
 package com.example.moviespetapp.data.network.model
 
-import com.example.moviespetapp.domain.Review
+import com.example.moviespetapp.domain.entity.Review
 import com.google.gson.annotations.SerializedName
 
 data class ResponseReviewsListDto(

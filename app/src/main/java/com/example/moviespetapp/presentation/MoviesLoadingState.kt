@@ -1,6 +1,6 @@
 package com.example.moviespetapp.presentation
 
-import com.example.moviespetapp.domain.Movie
+import com.example.moviespetapp.domain.entity.Movie
 
 sealed class MoviesLoadingState
 
