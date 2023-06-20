@@ -121,6 +121,8 @@ interface ApiService {
     @GET("/v1.3/movie")
     suspend fun getBookedMovies(
         @Query(QUERY_PARAM_MOVIE_ID) idsArray: Array<String>,
+        @Query(QUERY_PARAM_PAGE) page: Int,
+        @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.QUERY_PAGE_LIMIT,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
     ): Response<ResponseMoviesListDto>
 

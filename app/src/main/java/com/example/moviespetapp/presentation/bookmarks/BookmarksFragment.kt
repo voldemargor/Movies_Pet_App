@@ -86,8 +86,8 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
         }
     }
 
-
     private fun setListeners() {
+        rvAdapter.onReachEndListener = { viewModel.loadMovies() }
     }
 
     override fun onDestroyView() {

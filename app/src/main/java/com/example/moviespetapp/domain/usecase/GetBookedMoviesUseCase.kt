@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class GetBookedMoviesUseCase @Inject constructor(private val repository: Repository) {
 
-    suspend fun getMovies(ids: Array<String>): DataLoadingResult {
-        return repository.getBookedMovies(ids)
+    suspend fun getMovies(ids: Array<String>, page: Int): DataLoadingResult {
+        return repository.getBookedMovies(ids, page)
     }
 
 }

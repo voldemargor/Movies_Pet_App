@@ -2,7 +2,6 @@ package com.example.moviespetapp.data.sharedprefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.moviespetapp.App
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,7 +20,7 @@ class BookmarkService @Inject constructor(
     val bookedIDs: Array<String> get() = _bookedIDs.toTypedArray()
 
     init {
-        loadIds()
+        loadIDs()
     }
 
     fun hasBookmark(movieId: Int?) =
@@ -37,7 +36,7 @@ class BookmarkService @Inject constructor(
         saveSharedPreferences()
     }
 
-    private fun loadIds() {
+    private fun loadIDs() {
         _bookedIDs =
             preferences.getStringSet(STRING_SET_KEY, mutableSetOf()) as MutableSet<String>
     }

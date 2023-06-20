@@ -1,5 +1,6 @@
 package com.example.moviespetapp.data
 
+import android.util.Log
 import com.example.moviespetapp.data.mapper.MovieMapper
 import com.example.moviespetapp.data.network.ApiService
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
@@ -91,8 +92,8 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getBookedMovies(ids: Array<String>): DataLoadingResult {
-        apiService.getBookedMovies(ids).apply {
+    override suspend fun getBookedMovies(ids: Array<String>, page: Int): DataLoadingResult {
+        apiService.getBookedMovies(ids, page).apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()

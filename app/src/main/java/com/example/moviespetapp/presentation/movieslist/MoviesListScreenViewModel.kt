@@ -1,6 +1,5 @@
 package com.example.moviespetapp.presentation.movieslist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,25 +26,24 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
     val moviesLoadingState: LiveData<MoviesLoadingState> get() = _moviesLoadingState
 
     // Pagination
-    private var moviesPage = 1
+    private var apiPage = 1
     private var allMovies = mutableListOf<Movie>()
 
     fun loadMovies(genreName: String) {
         // Если загрузка уже идет, то стартовать новую не нужно
         if (moviesLoadingState.value is Loading) return
+
         _moviesLoadingState.value = Loading
 
-        Log.d("mylog", "MoviesListScreenViewModel: loadMovies()")
-
         viewModelScope.launch {
-            getData(getMoviesByGenreUseCase.getMovies(genreName, moviesPage))
+            getData(getMoviesByGenreUseCase.getMovies(genreName, apiPage))
         }
     }
 
     private fun getData(loadingResult: DataLoadingResult) {
         when (loadingResult) {
             is Success<*> -> {
-                moviesPage++
+                apiPage++
                 allMovies.addAll(loadingResult.data as List<Movie>)
                 _moviesLoadingState.value = LoadingSuccess(allMovies.toList())
             }

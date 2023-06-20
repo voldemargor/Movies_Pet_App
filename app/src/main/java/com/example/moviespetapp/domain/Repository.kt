@@ -21,7 +21,7 @@ interface Repository {
 
     suspend fun getMainScreenKidMovies(): DataLoadingResult
 
-    suspend fun getBookedMovies(ids: Array<String>): DataLoadingResult
+    suspend fun getBookedMovies(ids: Array<String>, page: Int): DataLoadingResult
 
     suspend fun getMovieDetails(id: Int): Movie
 

@@ -1,5 +1,6 @@
 package com.example.moviespetapp.presentation.bookmarks
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,28 +28,40 @@ class BookmarksViewModel @Inject constructor() : ViewModel() {
     private val _moviesLoadingState = MutableLiveData<MoviesLoadingState>()
     val moviesLoadingState: LiveData<MoviesLoadingState> get() = _moviesLoadingState
 
+    // Pagination
+    private var apiPage = 1
+    private var allMovies = mutableListOf<Movie>()
+
     private val _showEmptyState = MutableLiveData<Any>()
     val showEmptyState: LiveData<Any> get() = _showEmptyState
 
     fun loadMovies() {
+        // Проверка на Empty State
         if (bookmarkService.bookedIDs.isEmpty()) {
             _showEmptyState.value = Any()
             return
         }
+
+        // Не дергать API, если все уже загружено
+        if (allMovies.size >= bookmarkService.bookedIDs.size) return
+
         // Если загрузка уже идет, то стартовать новую не нужно
         if (moviesLoadingState.value is Loading) return
 
         _moviesLoadingState.value = Loading
 
         viewModelScope.launch {
-            getData(getBookedMoviesUseCase.getMovies(bookmarkService.bookedIDs))
+            getData(getBookedMoviesUseCase.getMovies(bookmarkService.bookedIDs, apiPage))
         }
     }
 
     private fun getData(loadingResult: DataLoadingResult) {
         when (loadingResult) {
-            is Success<*> -> _moviesLoadingState.value =
-                LoadingSuccess(loadingResult.data as List<Movie>)
+            is Success<*> -> {
+                apiPage++
+                allMovies.addAll(loadingResult.data as List<Movie>)
+                _moviesLoadingState.value = LoadingSuccess(allMovies.toList())
+            }
 
             is Failed ->
                 _moviesLoadingState.value = LoadingError(loadingResult.exception.message)
