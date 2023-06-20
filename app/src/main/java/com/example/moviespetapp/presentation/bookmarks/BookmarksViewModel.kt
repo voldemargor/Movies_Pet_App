@@ -27,7 +27,14 @@ class BookmarksViewModel @Inject constructor() : ViewModel() {
     private val _moviesLoadingState = MutableLiveData<MoviesLoadingState>()
     val moviesLoadingState: LiveData<MoviesLoadingState> get() = _moviesLoadingState
 
+    private val _showEmptyState = MutableLiveData<Any>()
+    val showEmptyState: LiveData<Any> get() = _showEmptyState
+
     fun loadMovies() {
+        if (bookmarkService.bookedIDs.isEmpty()) {
+            _showEmptyState.value = Any()
+            return
+        }
         // Если загрузка уже идет, то стартовать новую не нужно
         if (moviesLoadingState.value is Loading) return
 

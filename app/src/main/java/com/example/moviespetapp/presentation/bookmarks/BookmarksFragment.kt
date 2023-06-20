@@ -13,14 +13,14 @@ import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
 import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.LoadingError
 import com.example.moviespetapp.presentation.LoadingSuccess
-import com.example.moviespetapp.presentation.contract.HasBackIcon
+import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
 import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BookmarksFragment : Fragment(), HasCustomTitle, HasBackIcon {
+class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private lateinit var rvAdapter: MoviesListAdapter
 
@@ -32,6 +32,8 @@ class BookmarksFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     override fun setScreenTitle() =
         navigator().setScreenTitle(resources.getString(R.string.title_bookmark))
+
+    override fun getBottomNavItemId(): Int = R.id.navItemBookmark
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -67,6 +69,7 @@ class BookmarksFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     private fun observeViewModel() {
         viewModel.moviesLoadingState.observe(viewLifecycleOwner) {
+            binding.emptyStateLayout.visibility = View.GONE
             binding.pbLoading.visibility = View.GONE
             when (it) {
                 is Loading -> binding.pbLoading.visibility = View.VISIBLE
@@ -77,6 +80,9 @@ class BookmarksFragment : Fragment(), HasCustomTitle, HasBackIcon {
                     rvAdapter.submitList(it.movies)
                 }
             }
+        }
+        viewModel.showEmptyState.observe(viewLifecycleOwner) {
+            binding.emptyStateLayout.visibility = View.VISIBLE
         }
     }
 

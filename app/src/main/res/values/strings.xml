@@ -23,4 +23,5 @@
     <string name="headline_comedy">Комедии</string>
     <string name="headline_horror">Ужасы</string>
     <string name="headline_for_kids">Детям</string>
+    <string name="bookmarks_empty_state">Тут пока ничего нет.\nДобавляйте фильмы в закладки\nи они появятся на этом экране</string>
 </resources>
