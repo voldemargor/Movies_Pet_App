@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
 import com.example.moviespetapp.domain.usecase.AddBookmarkUseCase
-import com.example.moviespetapp.domain.usecase.GetMovieUseCase
+import com.example.moviespetapp.domain.usecase.GetMovieDetailsUseCase
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.RemoveBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class MovieDetailsViewModel @Inject constructor() : ViewModel() {
 
     @Inject lateinit var bookmarkService: BookmarkService
-    @Inject lateinit var getMovieUseCase: GetMovieUseCase
+    @Inject lateinit var getMovieDetailsUseCase: GetMovieDetailsUseCase
     @Inject lateinit var addBookmarkUseCase: AddBookmarkUseCase
     @Inject lateinit var removeBookmarkUseCase: RemoveBookmarkUseCase
     private lateinit var movie: Movie
@@ -31,13 +31,16 @@ class MovieDetailsViewModel @Inject constructor() : ViewModel() {
     fun initMovie(movieId: Int?) {
         movieId ?: throw RuntimeException("movieId is Null")
         viewModelScope.launch {
-            movie = getMovieUseCase.getMovie(movieId)
+            movie = getMovieDetailsUseCase.getMovie(movieId)
             _currentMovie.value = movie
             _isBookmark.value = bookmarkService.hasBookmark(movie.id)
         }
     }
 
     fun handleBookmarkAction() {
+
+
+
         viewModelScope.launch {
             if (bookmarkService.hasBookmark(movie.id))
                 removeBookmarkUseCase.remove(movie)

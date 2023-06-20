@@ -14,13 +14,13 @@ import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
+class OldBookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private var _binding: FragmentBookmarkBinding? = null
     private val binding: FragmentBookmarkBinding
         get() = _binding ?: throw RuntimeException("FragmentMineBinding is null")
 
-    private val viewModel by viewModels<BookmarkViewModel>()
+    private val viewModel by viewModels<OldBookmarkViewModel>()
 
     override fun setScreenTitle() =
         navigator().setScreenTitle(resources.getString(R.string.title_bookmark))
@@ -67,7 +67,7 @@ class BookmarkFragment : Fragment(), HasCustomTitle, BottomNavItem {
     companion object {
         const val FRAGMENT_NAME = "first_fragment"
 
-        fun newInstance() = BookmarkFragment()
+        fun newInstance() = OldBookmarkFragment()
     }
 
 }

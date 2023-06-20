@@ -1,18 +1,12 @@
 package com.example.moviespetapp.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.moviespetapp.data.mapper.MovieMapper
 import com.example.moviespetapp.data.network.ApiService
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
-import com.example.moviespetapp.domain.entity.Country
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.entity.Genre
 import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.domain.entity.Poster
-import com.example.moviespetapp.domain.entity.Rating
 import com.example.moviespetapp.domain.Repository
-import com.example.moviespetapp.domain.entity.Votes
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -97,29 +91,38 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getBookmarkMovies(): LiveData<List<Movie>> {
-        return MutableLiveData(
-            listOf(
-                Movie(
-                    year = 2222,
-                    name = "Фильм в закладках",
-                    alternativeName = "Alternative Name",
-                    description = "description",
-                    shortDescription = "short description",
-                    poster = Poster("url"),
-                    rating = Rating(kp = 5.0, 9.2),
-                    trailers = null,
-                    genres = null,
-                    votes = Votes(kp = "32150", imdb = "45150"),
-                    country = Country("Россия"),
-                    ageRating = 18,
-                    movieLength = 166,
-                    similarMovies = listOf()
-                )))
+    override suspend fun getBookedMovies(ids: Array<String>): DataLoadingResult {
+        apiService.getBookedMovies(ids).apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val movies = body()?.movies ?: listOf()
+            return DataLoadingResult.Success(movies)
+        }
     }
 
-    override suspend fun getMovie(id: Int): Movie {
-        return MovieMapper.mapDtoToEntity(apiService.getMovie(movieId = id))
+    //override fun getBookedMovies(): LiveData<List<Movie>> {
+    //    return MutableLiveData(
+    //        listOf(
+    //            Movie(
+    //                year = 2222,
+    //                name = "Фильм в закладках",
+    //                alternativeName = "Alternative Name",
+    //                description = "description",
+    //                shortDescription = "short description",
+    //                poster = Poster("url"),
+    //                rating = Rating(kp = 5.0, 9.2),
+    //                trailers = null,
+    //                genres = null,
+    //                votes = Votes(kp = "32150", imdb = "45150"),
+    //                country = Country("Россия"),
+    //                ageRating = 18,
+    //                movieLength = 166,
+    //                similarMovies = listOf()
+    //            )))
+    //}
+
+    override suspend fun getMovieDetails(id: Int): Movie {
+        return MovieMapper.mapDtoToEntity(apiService.getMovieDetails(movieId = id))
     }
 
     override suspend fun addBookmark(movie: Movie) {

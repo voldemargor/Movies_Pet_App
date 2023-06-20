@@ -1,6 +1,5 @@
 package com.example.moviespetapp.domain
 
-import androidx.lifecycle.LiveData
 import com.example.moviespetapp.domain.entity.Genre
 import com.example.moviespetapp.domain.entity.Movie
 
@@ -22,9 +21,9 @@ interface Repository {
 
     suspend fun getMainScreenKidMovies(): DataLoadingResult
 
-    fun getBookmarkMovies(): LiveData<List<Movie>>
+    suspend fun getBookedMovies(ids: Array<String>): DataLoadingResult
 
-    suspend fun getMovie(id: Int): Movie
+    suspend fun getMovieDetails(id: Int): Movie
 
     suspend fun addBookmark(movie: Movie)
 

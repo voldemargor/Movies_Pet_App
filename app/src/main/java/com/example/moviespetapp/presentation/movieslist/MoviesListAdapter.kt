@@ -24,13 +24,11 @@ class MoviesListAdapter(private val listType: ListType) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
 
-        var binding: ViewBinding? = null
-
-        when (listType) {
-            HORIZONTAL -> binding = ItemMovieHorizontalLayoutBinding
+        val binding = when (listType) {
+            HORIZONTAL -> ItemMovieHorizontalLayoutBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
 
-            GRID -> binding = ItemMovieGridLayoutBinding
+            GRID -> ItemMovieGridLayoutBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
         }
 

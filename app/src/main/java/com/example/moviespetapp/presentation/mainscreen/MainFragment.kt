@@ -121,7 +121,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
                     genre.name.replaceFirstChar { it.uppercase() }
                 itemView.id = generateViewId()
                 itemView.setOnClickListener {
-                    navigator().displayMoviesListScreen(genre.name)
+                    navigator().displayMoviesListScreen(genreName = genre.name)
                 }
                 binding.layoutGenresGroup.addView(itemView)
                 flow.addView(itemView)

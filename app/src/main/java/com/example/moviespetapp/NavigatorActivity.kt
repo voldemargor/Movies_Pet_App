@@ -1,6 +1,5 @@
 package com.example.moviespetapp
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,7 +11,8 @@ import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
 import com.example.moviespetapp.presentation.MainActivityViewModel
-import com.example.moviespetapp.presentation.bookmarks.BookmarkFragment
+import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
+import com.example.moviespetapp.presentation.bookmarks.OldBookmarkFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.Navigator
@@ -23,7 +23,7 @@ import com.example.moviespetapp.presentation.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), Navigator {
+class NavigatorActivity : AppCompatActivity(), Navigator {
 
     private val viewModel by viewModels<MainActivityViewModel>()
 
@@ -34,11 +34,11 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
+
         observeViewModel()
         setBottomNavListener()
         setFragmentLifecycleListener()
-        if (savedInstanceState == null)
-            displayFirstScreen()
+        if (savedInstanceState == null) displayFirstScreen()
     }
 
     override fun onDestroy() {
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun displayBookmarksScreen() {
-        BookmarkFragment.newInstance().also {
+        BookmarksFragment.newInstance().also {
             launchFragment(it)
         }
     }
@@ -159,16 +159,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         Log.d("mylog", message)
     }
 
-    //fun isBookmarked(movieId:String) :Boolean {
-    //    return true
-    //}
-
-    //private fun getBookmarks(): Set<String> {
-    //    getSharedPreferences("BOOKMARKS_PREFERENCES", Context.MODE_PRIVATE).apply {
-    //        getString("VALUE_KEY", "")
-    //    }
-    //}
-
     private fun launchFragment(fragment: Fragment) {
 
         if (isRepeatedMenuClick(fragment)) return
@@ -197,8 +187,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     private fun updateUI(fragment: Fragment) {
-        //if (fragment is SupportRequestManagerFragment) return
-        //log("updateUI")
         log("updateUI arg fragment: ${fragment.javaClass.simpleName}")
         updateBackIcon(fragment)
         updateBottomNavSelection(fragment)

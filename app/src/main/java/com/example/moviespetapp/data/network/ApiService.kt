@@ -17,7 +17,7 @@ interface ApiService {
     ): List<GenreDto>
 
     @GET("/v1.3/movie/{id}")
-    suspend fun getMovie(
+    suspend fun getMovieDetails(
         @Path(QUERY_PARAM_MOVIE_ID) movieId: Int,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
     ): MovieDto
@@ -115,6 +115,12 @@ interface ApiService {
         @Query(QUERY_PARAM_VOTES_KP) votes: String = Constants.QUERY_VOTES_GENRE_MOVIES,
         @Query(QUERY_PARAM_RATING_KP) rating: String = Constants.QUERY_RATING_GENRE_MOVIES,
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
+        @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
+    ): Response<ResponseMoviesListDto>
+
+    @GET("/v1.3/movie")
+    suspend fun getBookedMovies(
+        @Query(QUERY_PARAM_MOVIE_ID) idsArray: Array<String>,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
     ): Response<ResponseMoviesListDto>
 

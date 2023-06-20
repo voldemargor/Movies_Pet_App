@@ -1,15 +1,15 @@
-package com.example.moviespetapp.presentation.movieslist
+package com.example.moviespetapp.presentation.bookmarks
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moviespetapp.data.sharedprefs.BookmarkService
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.DataLoadingResult.Failed
 import com.example.moviespetapp.domain.DataLoadingResult.Success
-import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.domain.usecase.GetBookedMoviesUseCase
 import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.LoadingError
 import com.example.moviespetapp.presentation.LoadingSuccess
@@ -19,36 +19,29 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
+class BookmarksViewModel @Inject constructor() : ViewModel() {
 
-    @Inject lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
+    @Inject lateinit var getBookedMoviesUseCase: GetBookedMoviesUseCase
+    @Inject lateinit var bookmarkService: BookmarkService
 
     private val _moviesLoadingState = MutableLiveData<MoviesLoadingState>()
     val moviesLoadingState: LiveData<MoviesLoadingState> get() = _moviesLoadingState
 
-    // Pagination
-    private var moviesPage = 1
-    private var allMovies = mutableListOf<Movie>()
-
-    fun loadMovies(genreName: String) {
+    fun loadMovies() {
         // Если загрузка уже идет, то стартовать новую не нужно
         if (moviesLoadingState.value is Loading) return
+
         _moviesLoadingState.value = Loading
 
-        Log.d("mylog", "MoviesListScreenViewModel: loadMovies()")
-
         viewModelScope.launch {
-            getData(getMoviesByGenreUseCase.getMovies(genreName, moviesPage))
+            getData(getBookedMoviesUseCase.getMovies(bookmarkService.bookedIDs))
         }
     }
 
     private fun getData(loadingResult: DataLoadingResult) {
         when (loadingResult) {
-            is Success<*> -> {
-                moviesPage++
-                allMovies.addAll(loadingResult.data as List<Movie>)
-                _moviesLoadingState.value = LoadingSuccess(allMovies.toList())
-            }
+            is Success<*> -> _moviesLoadingState.value =
+                LoadingSuccess(loadingResult.data as List<Movie>)
 
             is Failed ->
                 _moviesLoadingState.value = LoadingError(loadingResult.exception.message)

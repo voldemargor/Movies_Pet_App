@@ -75,8 +75,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
             buildSimilarMoviesSection(it.similarMovies)
         }
         viewModel.isBookmark.observe(viewLifecycleOwner) {
-            if (it) DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.RED)
-            else DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.WHITE)
+            setBookmarkIconColor(it)
         }
     }
 
@@ -99,7 +98,9 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
             tvYearAndGenres.text = Utils.getStringYearAndGenres(movie)
             tvCountryDurationAgeRating.text = Utils.getStringCountryDurationAgeRating(movie)
 
-            iconBookmark.setOnClickListener { viewModel.handleBookmarkAction() }
+            iconBookmark.setOnClickListener {
+                viewModel.handleBookmarkAction()
+            }
 
             if (movie.shortDescription == null) tvDescription.text = movie.description
             else tvDescription.text = movie.shortDescription + "\n\n" + movie.description
@@ -119,10 +120,6 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
                 tvRatingHeader.setTextColor(Utils.getRatingTextColor(requireContext(), ratingKp))
             }
         }
-    }
-
-    private fun shouldHideRating(): Boolean {
-        return movie.rating == null || movie.votes.kp == "0"
     }
 
     private fun handleDescriptionCutoff() {
@@ -194,6 +191,15 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
         }
 
         rvAdapter.submitList(similarMovies)
+    }
+
+    private fun shouldHideRating(): Boolean {
+        return movie.rating == null || movie.votes.kp == "0"
+    }
+
+    private fun setBookmarkIconColor(it: Boolean) {
+        if (it) DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.RED)
+        else DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.WHITE)
     }
 
     private fun disableTrailerSection() {

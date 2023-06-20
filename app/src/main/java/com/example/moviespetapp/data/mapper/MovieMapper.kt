@@ -91,16 +91,6 @@ object MovieMapper {
     fun mapGenresListDtoToListEntity(listDto: List<GenreDto>): List<Genre> {
         val listEntityFull = listDto.map { mapDtoToEntity(it) }
         val listToRemove = listOf(
-            //Genre("для взрослых", "dlya-vzroslyh"),
-            //Genre("концерт", "koncert"),
-            //Genre("короткометражка", "korotkometrazhka"),
-            //Genre("музыка", "muzyka"),
-            //Genre("новости", "novosti"),
-            //Genre("реальное ТВ", "realnoe-TV"),
-            //Genre("ток-шоу", "tok-shou"),
-            //Genre("церемония", "ceremoniya"),
-            //Genre("игра", "igra"),
-            //Genre("фильм-нуар", "film-nuar"),
             Genre("для взрослых"),
             Genre("концерт"),
             Genre("короткометражка"),
@@ -115,6 +105,10 @@ object MovieMapper {
         return listEntityFull.minus(listToRemove.toSet())
     }
 
+    fun mapBookedListDtoToListEntity(listDto: List<MovieDto>?): List<Movie>? {
+        return listDto?.map { mapDtoToEntity(it) }
+    }
+
     private fun mapTrailersListDtoToListEntity(listDto: List<TrailerDto>?): List<Trailer>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
@@ -122,6 +116,8 @@ object MovieMapper {
     private fun mapSimilarMoviesDtoToListEntity(listDto: List<MovieShortDto>?): List<MovieShort>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
+
+
 
 
     //fun mapEntityToDtoModel(review: Review) = ReviewDto(

@@ -2,6 +2,7 @@ package com.example.moviespetapp.data.sharedprefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.moviespetapp.App
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,36 +16,44 @@ class BookmarkService @Inject constructor(
 
     private var preferences: SharedPreferences =
         context.getSharedPreferences(BOOKMARKS_SHARED_PREFS, Context.MODE_PRIVATE)
-    private var bookmarks = mutableSetOf<String>()
+
+    private var _bookedIDs = mutableSetOf<String>()
+    val bookedIDs: Array<String> get() = _bookedIDs.toTypedArray()
 
     init {
-        bookmarks =
-            preferences.getStringSet(BOOKMARKS_VALUE_KEY, mutableSetOf()) as MutableSet<String>
+        loadIds()
     }
 
     fun hasBookmark(movieId: Int?) =
-        bookmarks.contains(movieId.toString())
+        _bookedIDs.contains(movieId.toString())
 
     fun addToBookmarks(movieId: Int) {
-        bookmarks.add(movieId.toString())
+        _bookedIDs.add(movieId.toString())
         saveSharedPreferences()
     }
 
     fun removeBookmark(movieId: Int) {
-        bookmarks.remove(movieId.toString())
+        _bookedIDs.remove(movieId.toString())
         saveSharedPreferences()
     }
 
+    private fun loadIds() {
+        _bookedIDs =
+            preferences.getStringSet(STRING_SET_KEY, mutableSetOf()) as MutableSet<String>
+    }
+
     private fun saveSharedPreferences() {
+        val save = _bookedIDs.toSet()
         preferences.edit()
-            .putStringSet(BOOKMARKS_VALUE_KEY, bookmarks.toSet())
+            .clear()
+            .putStringSet(STRING_SET_KEY, save)
             .apply()
     }
 
     companion object {
 
         const val BOOKMARKS_SHARED_PREFS = "bookmarks_prefs"
-        const val BOOKMARKS_VALUE_KEY = "bookmarks_value_key"
+        const val STRING_SET_KEY = "bookmarks_value_key"
 
     }
 
