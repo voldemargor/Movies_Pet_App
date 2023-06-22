@@ -1,8 +1,11 @@
 package com.example.moviespetapp
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -212,3 +215,4 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
 }
+

@@ -4,6 +4,7 @@ import com.example.moviespetapp.data.network.model.GenreDto
 import com.example.moviespetapp.data.network.model.MovieDto
 import com.example.moviespetapp.data.network.model.ResponseMoviesListDto
 import com.example.moviespetapp.Constants
+import com.example.moviespetapp.data.network.model.ResponseSearchResultDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -100,6 +101,7 @@ interface ApiService {
         @Query(QUERY_PARAM_GENRES_NAME) genres: String = "ужасы",
         @Query(QUERY_PARAM_PAGE) page: Int = 1,
         @Query(QUERY_PARAM_SORT_FIELD) sortField: String = "year",
+        @Query(QUERY_PARAM_SORT_FIELD) sortField2: String = "votes.kp",
         @Query(QUERY_PARAM_VOTES_KP) votes: String = Constants.QUERY_VOTES_GENRE_MOVIES,
         @Query(QUERY_PARAM_RATING_KP) rating: String = Constants.QUERY_RATING_GENRE_MOVIES,
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
@@ -112,6 +114,7 @@ interface ApiService {
         @Query(QUERY_PARAM_GENRES_NAME) genres2: String = "семейный",
         @Query(QUERY_PARAM_PAGE) page: Int = 1,
         @Query(QUERY_PARAM_SORT_FIELD) sortField: String = "year",
+        @Query(QUERY_PARAM_SORT_FIELD) sortField2: String = "votes.kp",
         @Query(QUERY_PARAM_VOTES_KP) votes: String = Constants.QUERY_VOTES_GENRE_MOVIES,
         @Query(QUERY_PARAM_RATING_KP) rating: String = Constants.QUERY_RATING_GENRE_MOVIES,
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
@@ -126,6 +129,24 @@ interface ApiService {
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
     ): Response<ResponseMoviesListDto>
 
+    @GET("/v1.2/movie/search")
+    suspend fun getMoviesBySearch(
+        @Query(QUERY_PARAM_SEARCH) query: String,
+        @Query(QUERY_PARAM_PAGE) page: Int,
+        @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.QUERY_SEARCH_PAGE_LIMIT,
+        @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
+    ): Response<ResponseSearchResultDto>
+
+    //@GET("/v1.3/movie")
+    //suspend fun getMoviesBySearchLangEng(
+    //    @Query(QUERY_PARAM_SEARCH_ALT_NAME) query: String,
+    //    @Query(QUERY_PARAM_PAGE) page: Int,
+    //    @Query(QUERY_PARAM_SORT_FIELD) sortField: String = "year",
+    //    @Query(QUERY_PARAM_SORT_FIELD) sortField2: String = "votes.kp",
+    //    @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
+    //    @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
+    //): Response<ResponseMoviesListDto>
+
 
     companion object {
 
@@ -138,6 +159,8 @@ interface ApiService {
         private const val QUERY_PARAM_GENRES_NAME = "genres.name"
         private const val QUERY_PARAM_VOTES_KP = "votes.kp"
         private const val QUERY_PARAM_RATING_KP = "rating.kp"
+        private const val QUERY_PARAM_SEARCH = "query"
+        private const val QUERY_PARAM_SEARCH_ALT_NAME = "alternativeName"
     }
 
 }

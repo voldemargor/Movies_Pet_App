@@ -4,10 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentSearchBinding
+import com.example.moviespetapp.presentation.Loading
+import com.example.moviespetapp.presentation.Canceled
+import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.Result
+import com.example.moviespetapp.presentation.Utils.Companion.showKeyboard
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
@@ -15,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
+
+    private lateinit var rvAdapter: SearchResultsAdapter
 
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
@@ -36,10 +46,11 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //setScreenTitle()
-        viewModel.initLD()
+        setupRecyclerView()
         observeViewModel()
         setListeners()
+        binding.etSearch.requestFocus()
+        binding.etSearch.showKeyboard()
     }
 
     override fun onResume() {
@@ -47,16 +58,47 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
         setScreenTitle()
     }
 
+    private fun setupRecyclerView() {
+        rvAdapter = SearchResultsAdapter().apply {
+            stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        }
+        binding.rvMovies.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvMovies.adapter = rvAdapter
+
+        rvAdapter.onMovieClickListener = {
+            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
+        }
+    }
+
     private fun observeViewModel() {
+        viewModel.jobStatus.observe(viewLifecycleOwner) {
+            binding.pbLoading.visibility = View.GONE
+            when (it) {
+                is Loading -> binding.pbLoading.visibility = View.VISIBLE
+
+                is Canceled -> binding.pbLoading.visibility = View.GONE
+
+                is Error -> navigator().toast("Loading Error: ${it.message}")
+
+                is Result -> {
+                    rvAdapter.submitList(it.movies)
+                    //navigator().toast("Показать результатов: ${it.movies.size}")
+                }
+
+
+            }
+        }
     }
 
     private fun setListeners() {
-        //binding.textView.setOnClickListener() {
-        //    requireActivity().supportFragmentManager.beginTransaction()
-        //        .replace(R.id.fragment_container, MovieDetailsFragment.newInstance(2))
-        //        .addToBackStack(MovieDetailsFragment.FRAGMENT_NAME)
-        //        .commit()
-        //}
+        binding.etSearch.doOnTextChanged { text, start, before, count ->
+            if (count >= 2) {
+                val input = text?.toString()
+                if (!input.isNullOrEmpty())
+                    viewModel.loadMovies(input)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -65,8 +107,6 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
     }
 
     companion object {
-        const val FRAGMENT_NAME = "search_fragment"
-
         fun newInstance() = SearchFragment()
     }
 

@@ -7,6 +7,8 @@ interface Repository {
 
     suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult
 
+    suspend fun getMoviesBySearch(request: String, page: Int): DataLoadingResult
+
     suspend fun getMainScreenNewMovies(): DataLoadingResult
 
     suspend fun getMainScreenSoonMovies(): DataLoadingResult

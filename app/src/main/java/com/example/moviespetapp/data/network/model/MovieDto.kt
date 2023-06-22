@@ -47,6 +47,6 @@ data class MovieDto(
     val ageRating: Int?,
 
     @SerializedName("similarMovies")
-    val similarMovies: List<MovieShortDto>?,
+    val similarMovies: List<MovieSimilarDto>?,
 
     )

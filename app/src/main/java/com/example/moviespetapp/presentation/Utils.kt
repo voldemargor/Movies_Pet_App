@@ -1,6 +1,8 @@
 package com.example.moviespetapp.presentation
 
 import android.content.Context
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -24,7 +26,7 @@ class Utils {
         fun getRatingRounded(value: Double?): String {
             val rating = value ?: 0.0
             val rounded = round(rating * 10) / 10
-            if (rating == 0.0) return "—"
+            //if (rating == 0.0) return "—"
             return rounded.toString()
         }
 
@@ -134,6 +136,16 @@ class Utils {
         //        /* value = */ MainFragment.HORIZONTAL_ITEM_WIDTH,
         //        /* metrics = */ resources.displayMetrics).toInt()
         //}
+
+        fun EditText.showKeyboard() {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+        }
+
+        fun EditText.hideKeyboard() {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(this.windowToken, 0)
+        }
 
 
     }

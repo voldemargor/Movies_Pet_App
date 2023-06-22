@@ -2,7 +2,7 @@ package com.example.moviespetapp.data.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieShortDto(
+data class MovieSimilarDto(
 
     @SerializedName("id")
     val id: Int,

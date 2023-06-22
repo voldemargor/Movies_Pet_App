@@ -11,6 +11,7 @@ import com.example.moviespetapp.Constants
 import com.example.moviespetapp.databinding.ItemMovieBaseBinding
 import com.example.moviespetapp.databinding.ItemMovieGridLayoutBinding
 import com.example.moviespetapp.databinding.ItemMovieHorizontalLayoutBinding
+import com.example.moviespetapp.databinding.ItemSearchBinding
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.presentation.Utils
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage

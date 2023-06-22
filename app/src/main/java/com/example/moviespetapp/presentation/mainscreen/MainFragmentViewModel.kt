@@ -1,5 +1,6 @@
 package com.example.moviespetapp.presentation.mainscreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,9 @@ import com.example.moviespetapp.domain.usecase.GetMainScreenPopularMoviesUseCase
 import com.example.moviespetapp.domain.usecase.GetMainScreenSoonMoviesUseCase
 import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,20 +60,23 @@ class MainFragmentViewModel @Inject constructor() : ViewModel() {
     val kidMovies: LiveData<DataLoadingResult> get() = _kidMovies
 
     fun initMovies() {
-        viewModelScope.launch {
-            _newMovies.value = getMainScreenNewMoviesUseCase.getMovies()
-            _soonMovies.value = getMainScreenSoonMoviesUseCase.getMovies()
-            _popularMovies.value = getMainScreenPopularMoviesUseCase.getMovies()
-            _fictionMovies.value = getMainScreenFictionMoviesUseCase.getMovies()
-            _comedyMovies.value = getMainScreenComedyMoviesUseCase.getMovies()
-            _horrorMovies.value = getMainScreenHorrorMoviesUseCase.getMovies()
-            _kidMovies.value = getMainScreenKidMoviesUseCase.getMovies()
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("MainFragmentViewModel", "start loading")
+            _newMovies.postValue(getMainScreenNewMoviesUseCase.getMovies())
+            _soonMovies.postValue(getMainScreenSoonMoviesUseCase.getMovies())
+            _popularMovies.postValue(getMainScreenPopularMoviesUseCase.getMovies())
+            _fictionMovies.postValue(getMainScreenFictionMoviesUseCase.getMovies())
+            _comedyMovies.postValue(getMainScreenComedyMoviesUseCase.getMovies())
+            _horrorMovies.postValue(getMainScreenHorrorMoviesUseCase.getMovies())
+            _kidMovies.postValue(getMainScreenKidMoviesUseCase.getMovies())
+            Log.d("MainFragmentViewModel", "finish loading")
         }
     }
 
     fun initGenres() {
         viewModelScope.launch {
-            _genres.value = getGenresUseCase.getGenres()
+            val genres = withContext(Dispatchers.IO) { getGenresUseCase.getGenres() }
+            _genres.value = genres
         }
     }
 

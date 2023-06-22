@@ -1,6 +1,7 @@
 package com.example.moviespetapp.presentation.search;
 
-import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase;
+import com.example.moviespetapp.App;
+import com.example.moviespetapp.domain.usecase.GetMoviesBySearchUseCase;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.Factory;
 import dagger.internal.QualifierMetadata;
@@ -20,23 +21,29 @@ import javax.inject.Provider;
     "rawtypes"
 })
 public final class SearchViewModel_Factory implements Factory<SearchViewModel> {
-  private final Provider<GetMoviesByGenreUseCase> getMoviesByGenreUseCaseProvider;
+  private final Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider;
+
+  private final Provider<App> contextProvider;
 
   public SearchViewModel_Factory(
-      Provider<GetMoviesByGenreUseCase> getMoviesByGenreUseCaseProvider) {
-    this.getMoviesByGenreUseCaseProvider = getMoviesByGenreUseCaseProvider;
+      Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider,
+      Provider<App> contextProvider) {
+    this.getMoviesBySearchUseCaseProvider = getMoviesBySearchUseCaseProvider;
+    this.contextProvider = contextProvider;
   }
 
   @Override
   public SearchViewModel get() {
     SearchViewModel instance = newInstance();
-    SearchViewModel_MembersInjector.injectGetMoviesByGenreUseCase(instance, getMoviesByGenreUseCaseProvider.get());
+    SearchViewModel_MembersInjector.injectGetMoviesBySearchUseCase(instance, getMoviesBySearchUseCaseProvider.get());
+    SearchViewModel_MembersInjector.injectContext(instance, contextProvider.get());
     return instance;
   }
 
   public static SearchViewModel_Factory create(
-      Provider<GetMoviesByGenreUseCase> getMoviesByGenreUseCaseProvider) {
-    return new SearchViewModel_Factory(getMoviesByGenreUseCaseProvider);
+      Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider,
+      Provider<App> contextProvider) {
+    return new SearchViewModel_Factory(getMoviesBySearchUseCaseProvider, contextProvider);
   }
 
   public static SearchViewModel newInstance() {

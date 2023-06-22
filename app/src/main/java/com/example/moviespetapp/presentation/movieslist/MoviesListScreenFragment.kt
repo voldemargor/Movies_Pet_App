@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
 import com.example.moviespetapp.presentation.Loading
-import com.example.moviespetapp.presentation.LoadingError
-import com.example.moviespetapp.presentation.LoadingSuccess
+import com.example.moviespetapp.presentation.Canceled
+import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
@@ -73,14 +74,16 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     private fun observeViewModel() {
-        viewModel.moviesLoadingState.observe(viewLifecycleOwner) {
+        viewModel.jobStatus.observe(viewLifecycleOwner) {
             binding.pbLoading.visibility = View.GONE
             when (it) {
                 is Loading -> binding.pbLoading.visibility = View.VISIBLE
 
-                is LoadingError -> navigator().toast("Loading Error: ${it.message}")
+                is Canceled -> binding.pbLoading.visibility = View.GONE
 
-                is LoadingSuccess -> {
+                is Error -> navigator().toast("Loading Error: ${it.message}")
+
+                is Result -> {
                     rvAdapter.submitList(it.movies)
                 }
             }

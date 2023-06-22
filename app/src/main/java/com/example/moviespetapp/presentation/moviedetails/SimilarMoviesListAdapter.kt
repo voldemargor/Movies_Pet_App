@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.databinding.ItemMovieSimilarBinding
-import com.example.moviespetapp.domain.entity.MovieShort
+import com.example.moviespetapp.domain.entity.MovieSimilar
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage
 
 class SimilarMoviesListAdapter :
-    ListAdapter<MovieShort, SimilarMoviesListAdapter.ItemViewHolder>(SimilarMovieItemDiffCallback()) {
+    ListAdapter<MovieSimilar, SimilarMoviesListAdapter.ItemViewHolder>(SimilarMovieItemDiffCallback()) {
 
-    var onMovieClickListener: ((MovieShort) -> Unit)? = null
+    var onMovieClickListener: ((MovieSimilar) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemMovieSimilarBinding

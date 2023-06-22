@@ -20,7 +20,7 @@ data class Movie(
     val country: Country,
     val movieLength: Int?,
     val ageRating: Int?,
-    val similarMovies: List<MovieShort>?,
+    val similarMovies: List<MovieSimilar>?,
 
     ) : Parcelable {
 

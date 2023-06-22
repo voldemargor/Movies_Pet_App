@@ -3,7 +3,8 @@ package com.example.moviespetapp.data.mapper
 import com.example.moviespetapp.data.network.model.CountryDto
 import com.example.moviespetapp.data.network.model.GenreDto
 import com.example.moviespetapp.data.network.model.MovieDto
-import com.example.moviespetapp.data.network.model.MovieShortDto
+import com.example.moviespetapp.data.network.model.MovieSearchResultDto
+import com.example.moviespetapp.data.network.model.MovieSimilarDto
 import com.example.moviespetapp.data.network.model.PosterDto
 import com.example.moviespetapp.data.network.model.RatingDto
 import com.example.moviespetapp.data.network.model.TrailerDto
@@ -11,13 +12,13 @@ import com.example.moviespetapp.data.network.model.VotesDto
 import com.example.moviespetapp.domain.entity.Country
 import com.example.moviespetapp.domain.entity.Genre
 import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.domain.entity.MovieShort
+import com.example.moviespetapp.domain.entity.MovieSimilar
 import com.example.moviespetapp.domain.entity.Poster
 import com.example.moviespetapp.domain.entity.Rating
 import com.example.moviespetapp.domain.entity.Trailer
 import com.example.moviespetapp.domain.entity.Votes
 
-object MovieMapper {
+object Mapper {
 
     //fun mapEntityToDtoModel(entity: Movie) = MovieInfoDto(
     //    id = entity.id,
@@ -82,10 +83,37 @@ object MovieMapper {
         return Poster(url = dto.url)
     }
 
-    private fun mapDtoToEntity(dto: MovieShortDto) = MovieShort(
+    private fun mapDtoToEntity(dto: MovieSimilarDto) = MovieSimilar(
         id = dto.id,
         name = dto.name,
         poster = mapDtoToEntity(dto.poster)
+    )
+
+    //private fun mapDtoToEntity(dto: MovieSearchResultDto) = MovieSearchResult(
+    //    id = dto.id,
+    //    year = dto.year,
+    //    name = dto.name,
+    //    alternativeName = dto.alternativeName,
+    //    poster = dto.poster,
+    //    rating = dto.rating,
+    //)
+
+    private fun mapDtoToEntity(dto: MovieSearchResultDto) = Movie(
+        id = dto.id,
+        year = dto.year,
+        name = dto.name,
+        alternativeName = dto.alternativeName,
+        poster = dto.poster?.let { Poster(it) },
+        rating = dto.rating?.let { Rating(it, 0.0) },
+        description = null,
+        shortDescription = null,
+        trailers = null,
+        genres = null,
+        votes = Votes("0", "0"),
+        country = Country(""),
+        movieLength = null,
+        ageRating = null,
+        similarMovies = null
     )
 
     fun mapGenresListDtoToListEntity(listDto: List<GenreDto>): List<Genre> {
@@ -105,6 +133,10 @@ object MovieMapper {
         return listEntityFull.minus(listToRemove.toSet())
     }
 
+    fun mapMovieSearchListDtoToListEntity(listDto: List<MovieSearchResultDto>?): List<Movie>? {
+        return listDto?.map { mapDtoToEntity(it) }
+    }
+
     fun mapBookedListDtoToListEntity(listDto: List<MovieDto>?): List<Movie>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
@@ -113,42 +145,9 @@ object MovieMapper {
         return listDto?.map { mapDtoToEntity(it) }
     }
 
-    private fun mapSimilarMoviesDtoToListEntity(listDto: List<MovieShortDto>?): List<MovieShort>? {
+    private fun mapSimilarMoviesDtoToListEntity(listDto: List<MovieSimilarDto>?): List<MovieSimilar>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
 
-
-
-
-    //fun mapEntityToDtoModel(review: Review) = ReviewDto(
-    //    id = folder.id,
-    //    name = folder.name,
-    //    itemsCompleted = folder.itemsCompleted,
-    //    itemsCount = folder.itemsCount
-    //)
-
-    //fun mapDbModelToEntity(itemDbModel: ItemDbModel) = Item(
-    //    id = itemDbModel.id,
-    //    folderId = itemDbModel.folderId,
-    //    name = itemDbModel.name,
-    //    count = itemDbModel.count,
-    //    enabled = itemDbModel.enabled
-    //)
-
-    //fun mapDbModelToEntity(folderDbModel: FolderDbModel) = Folder(
-    //    id = folderDbModel.id,
-    //    name = folderDbModel.name,
-    //    itemsCompleted = folderDbModel.itemsCompleted,
-    //    itemsCount = folderDbModel.itemsCount
-    //)
-
-    //fun mapListDbModelToListEntity(list: List<ItemDbModel>) = list.map {
-    //    mapDbModelToEntity(it)
-    //}
-
-    //@JvmName("mapListDbModelToListEntityFolders")
-    //fun mapListDbModelToListEntity(list: List<FolderDbModel>) = list.map {
-    //    mapDbModelToEntity(it)
-    //}
 
 }

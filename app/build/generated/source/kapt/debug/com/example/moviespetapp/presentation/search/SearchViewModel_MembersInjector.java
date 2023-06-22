@@ -1,6 +1,7 @@
 package com.example.moviespetapp.presentation.search;
 
-import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase;
+import com.example.moviespetapp.App;
+import com.example.moviespetapp.domain.usecase.GetMoviesBySearchUseCase;
 import dagger.MembersInjector;
 import dagger.internal.DaggerGenerated;
 import dagger.internal.InjectedFieldSignature;
@@ -19,26 +20,37 @@ import javax.inject.Provider;
     "rawtypes"
 })
 public final class SearchViewModel_MembersInjector implements MembersInjector<SearchViewModel> {
-  private final Provider<GetMoviesByGenreUseCase> getMoviesByGenreUseCaseProvider;
+  private final Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider;
+
+  private final Provider<App> contextProvider;
 
   public SearchViewModel_MembersInjector(
-      Provider<GetMoviesByGenreUseCase> getMoviesByGenreUseCaseProvider) {
-    this.getMoviesByGenreUseCaseProvider = getMoviesByGenreUseCaseProvider;
+      Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider,
+      Provider<App> contextProvider) {
+    this.getMoviesBySearchUseCaseProvider = getMoviesBySearchUseCaseProvider;
+    this.contextProvider = contextProvider;
   }
 
   public static MembersInjector<SearchViewModel> create(
-      Provider<GetMoviesByGenreUseCase> getMoviesByGenreUseCaseProvider) {
-    return new SearchViewModel_MembersInjector(getMoviesByGenreUseCaseProvider);
+      Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider,
+      Provider<App> contextProvider) {
+    return new SearchViewModel_MembersInjector(getMoviesBySearchUseCaseProvider, contextProvider);
   }
 
   @Override
   public void injectMembers(SearchViewModel instance) {
-    injectGetMoviesByGenreUseCase(instance, getMoviesByGenreUseCaseProvider.get());
+    injectGetMoviesBySearchUseCase(instance, getMoviesBySearchUseCaseProvider.get());
+    injectContext(instance, contextProvider.get());
   }
 
-  @InjectedFieldSignature("com.example.moviespetapp.presentation.search.SearchViewModel.getMoviesByGenreUseCase")
-  public static void injectGetMoviesByGenreUseCase(SearchViewModel instance,
-      GetMoviesByGenreUseCase getMoviesByGenreUseCase) {
-    instance.getMoviesByGenreUseCase = getMoviesByGenreUseCase;
+  @InjectedFieldSignature("com.example.moviespetapp.presentation.search.SearchViewModel.getMoviesBySearchUseCase")
+  public static void injectGetMoviesBySearchUseCase(SearchViewModel instance,
+      GetMoviesBySearchUseCase getMoviesBySearchUseCase) {
+    instance.getMoviesBySearchUseCase = getMoviesBySearchUseCase;
+  }
+
+  @InjectedFieldSignature("com.example.moviespetapp.presentation.search.SearchViewModel.context")
+  public static void injectContext(SearchViewModel instance, App context) {
+    instance.context = context;
   }
 }

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.databinding.FragmentMovieDetailsBinding
 import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.domain.entity.MovieShort
+import com.example.moviespetapp.domain.entity.MovieSimilar
 import com.example.moviespetapp.domain.entity.Rating
 import com.example.moviespetapp.domain.entity.Votes
 import com.example.moviespetapp.presentation.Utils
@@ -174,7 +174,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     }
 
-    private fun buildSimilarMoviesSection(similarMovies: List<MovieShort>?) {
+    private fun buildSimilarMoviesSection(similarMovies: List<MovieSimilar>?) {
         if (similarMovies.isNullOrEmpty()) {
             disableSimilarMoviesSection()
             return

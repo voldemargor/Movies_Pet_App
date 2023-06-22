@@ -1,6 +1,5 @@
 package com.example.moviespetapp.presentation.bookmarks
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,9 +11,8 @@ import com.example.moviespetapp.domain.DataLoadingResult.Success
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.GetBookedMoviesUseCase
 import com.example.moviespetapp.presentation.Loading
-import com.example.moviespetapp.presentation.LoadingError
-import com.example.moviespetapp.presentation.LoadingSuccess
-import com.example.moviespetapp.presentation.MoviesLoadingState
+import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.JobStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,8 +23,8 @@ class BookmarksViewModel @Inject constructor() : ViewModel() {
     @Inject lateinit var getBookedMoviesUseCase: GetBookedMoviesUseCase
     @Inject lateinit var bookmarkService: BookmarkService
 
-    private val _moviesLoadingState = MutableLiveData<MoviesLoadingState>()
-    val moviesLoadingState: LiveData<MoviesLoadingState> get() = _moviesLoadingState
+    private val _JobStatus = MutableLiveData<JobStatus>()
+    val jobStatus: LiveData<JobStatus> get() = _JobStatus
 
     // Pagination
     private var apiPage = 1
@@ -46,9 +44,9 @@ class BookmarksViewModel @Inject constructor() : ViewModel() {
         if (allMovies.size >= bookmarkService.bookedIDs.size) return
 
         // Если загрузка уже идет, то стартовать новую не нужно
-        if (moviesLoadingState.value is Loading) return
+        if (jobStatus.value is Loading) return
 
-        _moviesLoadingState.value = Loading
+        _JobStatus.value = Loading
 
         viewModelScope.launch {
             getData(getBookedMoviesUseCase.getMovies(bookmarkService.bookedIDs, apiPage))
@@ -60,11 +58,11 @@ class BookmarksViewModel @Inject constructor() : ViewModel() {
             is Success<*> -> {
                 apiPage++
                 allMovies.addAll(loadingResult.data as List<Movie>)
-                _moviesLoadingState.value = LoadingSuccess(allMovies.toList())
+                _JobStatus.value = com.example.moviespetapp.presentation.Result(allMovies.toList())
             }
 
             is Failed ->
-                _moviesLoadingState.value = LoadingError(loadingResult.exception.message)
+                _JobStatus.value = Error(loadingResult.exception.message)
         }
     }
 

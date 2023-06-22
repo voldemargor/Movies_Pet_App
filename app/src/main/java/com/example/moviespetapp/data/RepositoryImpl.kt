@@ -1,7 +1,6 @@
 package com.example.moviespetapp.data
 
-import android.util.Log
-import com.example.moviespetapp.data.mapper.MovieMapper
+import com.example.moviespetapp.data.mapper.Mapper
 import com.example.moviespetapp.data.network.ApiService
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
 import com.example.moviespetapp.domain.DataLoadingResult
@@ -25,7 +24,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -34,7 +33,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -43,7 +42,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncompleteSoonMovies(it) })
         }
     }
 
@@ -52,7 +51,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -61,7 +60,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -70,7 +69,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -79,7 +78,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -88,7 +87,7 @@ class RepositoryImpl @Inject constructor(
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncompleted(it) })
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -98,6 +97,17 @@ class RepositoryImpl @Inject constructor(
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
             val movies = body()?.movies ?: listOf()
             return DataLoadingResult.Success(movies)
+        }
+    }
+
+    override suspend fun getMoviesBySearch(request: String, page: Int): DataLoadingResult {
+        apiService.getMoviesBySearch(request, page).apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+
+            val listDto = body()?.movies
+            val listEntity = Mapper.mapMovieSearchListDtoToListEntity(listDto) ?: listOf()
+            return DataLoadingResult.Success(listEntity.filter { filterSearchResult(it) })
         }
     }
 
@@ -123,7 +133,7 @@ class RepositoryImpl @Inject constructor(
     //}
 
     override suspend fun getMovieDetails(id: Int): Movie {
-        return MovieMapper.mapDtoToEntity(apiService.getMovieDetails(movieId = id))
+        return Mapper.mapDtoToEntity(apiService.getMovieDetails(movieId = id))
     }
 
     override suspend fun addBookmark(movie: Movie) {
@@ -135,9 +145,16 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun getGenres(): List<Genre> {
-        return MovieMapper.mapGenresListDtoToListEntity(apiService.getGenres())
+        return Mapper.mapGenresListDtoToListEntity(apiService.getGenres())
     }
 
-    private fun filterIncompleted(movie: Movie) =
+    private fun filterIncomplete(movie: Movie) =
+        movie.poster != null && movie.name != null && movie.description != null && movie.rating != null
+
+    private fun filterIncompleteSoonMovies(movie: Movie) =
         movie.poster != null && movie.name != null && movie.description != null
+
+    private fun filterSearchResult(movie: Movie) =
+        movie.poster != null && movie.name != null && movie.rating != null
+
 }

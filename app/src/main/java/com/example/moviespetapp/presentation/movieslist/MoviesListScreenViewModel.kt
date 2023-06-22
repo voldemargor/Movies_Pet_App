@@ -1,5 +1,6 @@
 package com.example.moviespetapp.presentation.movieslist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,10 +11,11 @@ import com.example.moviespetapp.domain.DataLoadingResult.Success
 import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.presentation.Loading
-import com.example.moviespetapp.presentation.LoadingError
-import com.example.moviespetapp.presentation.LoadingSuccess
-import com.example.moviespetapp.presentation.MoviesLoadingState
+import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.JobStatus
+import com.example.moviespetapp.presentation.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +24,8 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
 
     @Inject lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
 
-    private val _moviesLoadingState = MutableLiveData<MoviesLoadingState>()
-    val moviesLoadingState: LiveData<MoviesLoadingState> get() = _moviesLoadingState
+    private val _JobStatus = MutableLiveData<JobStatus>()
+    val jobStatus: LiveData<JobStatus> get() = _JobStatus
 
     // Pagination
     private var apiPage = 1
@@ -31,25 +33,26 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
 
     fun loadMovies(genreName: String) {
         // Если загрузка уже идет, то стартовать новую не нужно
-        if (moviesLoadingState.value is Loading) return
+        if (jobStatus.value is Loading) return
 
-        _moviesLoadingState.value = Loading
+        _JobStatus.value = Loading
 
-        viewModelScope.launch {
-            getData(getMoviesByGenreUseCase.getMovies(genreName, apiPage))
+        viewModelScope.launch(Dispatchers.IO) {
+            val loadingResult = getMoviesByGenreUseCase.getMovies(genreName, apiPage)
+            extractData(loadingResult)
         }
     }
 
-    private fun getData(loadingResult: DataLoadingResult) {
+    private fun extractData(loadingResult: DataLoadingResult) {
         when (loadingResult) {
             is Success<*> -> {
                 apiPage++
                 allMovies.addAll(loadingResult.data as List<Movie>)
-                _moviesLoadingState.value = LoadingSuccess(allMovies.toList())
+                _JobStatus.postValue(Result(allMovies.toList()))
             }
 
             is Failed ->
-                _moviesLoadingState.value = LoadingError(loadingResult.exception.message)
+                _JobStatus.postValue(Error(loadingResult.exception.message))
         }
     }
 
