@@ -14,7 +14,9 @@ import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.JobStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,12 +50,14 @@ class BookmarksViewModel @Inject constructor() : ViewModel() {
 
         _JobStatus.value = Loading
 
-        viewModelScope.launch {
-            getData(getBookedMoviesUseCase.getMovies(bookmarkService.bookedIDs, apiPage))
+        viewModelScope.launch(Dispatchers.IO) {
+            val loadingResult =
+                getBookedMoviesUseCase.getMovies(bookmarkService.bookedIDs, apiPage)
+            withContext(Dispatchers.Main) { extractData(loadingResult) }
         }
     }
 
-    private fun getData(loadingResult: DataLoadingResult) {
+    private fun extractData(loadingResult: DataLoadingResult) {
         when (loadingResult) {
             is Success<*> -> {
                 apiPage++

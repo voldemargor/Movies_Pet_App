@@ -45,8 +45,9 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initGenres()
-        viewModel.initMovies()
+        viewModel.loadSectionsData()
+        //viewModel.initGenres()
+        //viewModel.initMovies()
 
         initGenresSection()
         adapters = MainFragmentAdapters()

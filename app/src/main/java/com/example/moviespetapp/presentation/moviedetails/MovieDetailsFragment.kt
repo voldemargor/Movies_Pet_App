@@ -52,7 +52,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         parseParams()
-        viewModel.initMovie(movieId)
+        viewModel.loadMovieData(movieId)
         observeViewModel()
     }
 

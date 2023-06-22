@@ -17,6 +17,7 @@ import com.example.moviespetapp.presentation.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,8 +39,9 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
         _JobStatus.value = Loading
 
         viewModelScope.launch(Dispatchers.IO) {
-            val loadingResult = getMoviesByGenreUseCase.getMovies(genreName, apiPage)
-            extractData(loadingResult)
+            val loadingResult =
+                getMoviesByGenreUseCase.getMovies(genreName, apiPage)
+            withContext(Dispatchers.Main) { extractData(loadingResult) }
         }
     }
 
@@ -48,11 +50,11 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
             is Success<*> -> {
                 apiPage++
                 allMovies.addAll(loadingResult.data as List<Movie>)
-                _JobStatus.postValue(Result(allMovies.toList()))
+                _JobStatus.value = Result(allMovies.toList())
             }
 
             is Failed ->
-                _JobStatus.postValue(Error(loadingResult.exception.message))
+                _JobStatus.value = Error(loadingResult.exception.message)
         }
     }
 

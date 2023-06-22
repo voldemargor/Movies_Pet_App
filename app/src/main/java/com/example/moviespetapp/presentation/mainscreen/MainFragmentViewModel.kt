@@ -18,9 +18,11 @@ import com.example.moviespetapp.domain.usecase.GetMainScreenSoonMoviesUseCase
 import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class MainFragmentViewModel @Inject constructor() : ViewModel() {
@@ -59,26 +61,42 @@ class MainFragmentViewModel @Inject constructor() : ViewModel() {
     private val _kidMovies = MutableLiveData<DataLoadingResult>()
     val kidMovies: LiveData<DataLoadingResult> get() = _kidMovies
 
-    fun initMovies() {
+    fun loadSectionsData() {
+
+        // А ВОТ ТЕПЕРЬ ЭТО РАЗНЫЕ ДЖОБЫ ПАРАЛЛЕЛЬНО !!!!
+
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("MainFragmentViewModel", "start loading")
-            _newMovies.postValue(getMainScreenNewMoviesUseCase.getMovies())
-            _soonMovies.postValue(getMainScreenSoonMoviesUseCase.getMovies())
-            _popularMovies.postValue(getMainScreenPopularMoviesUseCase.getMovies())
-            _fictionMovies.postValue(getMainScreenFictionMoviesUseCase.getMovies())
-            _comedyMovies.postValue(getMainScreenComedyMoviesUseCase.getMovies())
-            _horrorMovies.postValue(getMainScreenHorrorMoviesUseCase.getMovies())
-            _kidMovies.postValue(getMainScreenKidMoviesUseCase.getMovies())
-            Log.d("MainFragmentViewModel", "finish loading")
+            val genres = getGenresUseCase.getGenres()
+            withContext(Dispatchers.Main) { _genres.value = genres }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val newMovies = getMainScreenNewMoviesUseCase.getMovies()
+            withContext(Dispatchers.Main) { _newMovies.value = newMovies }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val soonMovies = getMainScreenSoonMoviesUseCase.getMovies()
+            withContext(Dispatchers.Main) { _soonMovies.value = soonMovies }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val popularMovies = getMainScreenPopularMoviesUseCase.getMovies()
+            withContext(Dispatchers.Main) { _popularMovies.value = popularMovies }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val fictionMovies = getMainScreenFictionMoviesUseCase.getMovies()
+            withContext(Dispatchers.Main) { _fictionMovies.value = fictionMovies }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val comedyMovies = getMainScreenComedyMoviesUseCase.getMovies()
+            withContext(Dispatchers.Main) { _comedyMovies.value = comedyMovies }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val horrorMovies = getMainScreenHorrorMoviesUseCase.getMovies()
+            withContext(Dispatchers.Main) { _horrorMovies.value = horrorMovies }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            val kidMovies = getMainScreenKidMoviesUseCase.getMovies()
+            withContext(Dispatchers.Main) { _kidMovies.value = kidMovies }
         }
     }
-
-    fun initGenres() {
-        viewModelScope.launch {
-            val genres = withContext(Dispatchers.IO) { getGenresUseCase.getGenres() }
-            _genres.value = genres
-        }
-    }
-
 
 }
