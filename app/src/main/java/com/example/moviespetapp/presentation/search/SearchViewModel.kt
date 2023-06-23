@@ -47,6 +47,13 @@ class SearchViewModel @Inject constructor() : ViewModel() {
         _showDefaultState.value = Any()
     }
 
+    fun resetToDefault() {
+        allMovies.clear()
+        jobLoading.cancel()
+        _jobStatus.value = Result(allMovies)
+        _showDefaultState.value = Any()
+    }
+
     fun loadMovies(searchInput: String) {
 
         val request = searchInput.trim()

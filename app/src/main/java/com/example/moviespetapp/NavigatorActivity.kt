@@ -1,12 +1,8 @@
 package com.example.moviespetapp
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +12,6 @@ import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
 import com.example.moviespetapp.presentation.MainActivityViewModel
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
-import com.example.moviespetapp.presentation.bookmarks.OldBookmarkFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.Navigator

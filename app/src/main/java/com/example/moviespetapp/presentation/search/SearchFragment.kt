@@ -96,6 +96,8 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
         }
         viewModel.showDefaultState.observe(viewLifecycleOwner) {
             binding.layoutSearchEmptyState.root.visibility = View.VISIBLE
+            binding.btnClearInput.visibility = View.GONE
+            binding.etSearch.text.clear()
         }
         viewModel.foundNothing.observe(viewLifecycleOwner) {
             binding.layoutSearchFoundNothing.root.visibility = View.VISIBLE
@@ -104,11 +106,16 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private fun setListeners() {
         binding.etSearch.doOnTextChanged { text, start, before, count ->
+            if (count == 0) binding.btnClearInput.visibility = View.GONE
+            if (count >= 1) binding.btnClearInput.visibility = View.VISIBLE
             if (count >= 2) {
                 val input = text?.toString()
                 if (!input.isNullOrEmpty())
                     viewModel.loadMovies(input)
             }
+        }
+        binding.btnClearInput.setOnClickListener {
+            viewModel.resetToDefault()
         }
         binding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             // Убрать клаву чтобы не закрывала результаты
