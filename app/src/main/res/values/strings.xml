@@ -25,5 +25,6 @@
     <string name="headline_for_kids">Детям</string>
     <string name="bookmarks_empty_state">Тут пока ничего нет.\nДобавляйте фильмы в закладки\nи они появятся на этом экране</string>
     <string name="search_hint">Фильмы, сериалы</string>
-    <string name="search_empty_screen">Введите название фильма\nили сериала</string>
+    <string name="search_default_screen">Введите название фильма\nили сериала</string>
+    <string name="search_found_nothing">Ничего не нашлось</string>
 </resources>

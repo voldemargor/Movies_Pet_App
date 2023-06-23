@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView.OnScrollListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,7 +23,6 @@ import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -78,6 +76,7 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
         viewModel.jobStatus.observe(viewLifecycleOwner) {
             binding.pbLoading.visibility = View.GONE
             binding.layoutSearchEmptyState.root.visibility = View.GONE
+            binding.layoutSearchFoundNothing.root.visibility = View.GONE
             when (it) {
                 is Loading -> binding.pbLoading.visibility = View.VISIBLE
 
@@ -95,8 +94,11 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
                 }
             }
         }
-        viewModel.showEmptyState.observe(viewLifecycleOwner) {
+        viewModel.showDefaultState.observe(viewLifecycleOwner) {
             binding.layoutSearchEmptyState.root.visibility = View.VISIBLE
+        }
+        viewModel.foundNothing.observe(viewLifecycleOwner) {
+            binding.layoutSearchFoundNothing.root.visibility = View.VISIBLE
         }
     }
 

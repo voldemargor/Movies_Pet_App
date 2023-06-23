@@ -8,15 +8,6 @@
     android:background="@color/design_default_color_primary"
     tools:context=".presentation.movieslist.MoviesListScreenFragment">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/textView"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="Movies List Screen Fragment"-->
-    <!--        android:textColor="@color/white"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMovies"
         android:layout_width="match_parent"
@@ -49,22 +40,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/emptyStateLayout"
+    <include
+        android:id="@+id/layoutBookmarksEmptyState"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        layout="@layout/layout_bookmarks_empty_state"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/bookmarks_empty_state"
-            android:textColor="@color/white" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

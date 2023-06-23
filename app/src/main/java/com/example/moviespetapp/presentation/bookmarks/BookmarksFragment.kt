@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
-import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
@@ -44,7 +44,6 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //parseParams()
         viewModel.loadMovies()
         setupRecyclerView()
         observeViewModel()
@@ -62,15 +61,11 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
         }
         binding.rvMovies.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.rvMovies.adapter = rvAdapter
-
-        rvAdapter.onMovieClickListener = {
-            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
-        }
     }
 
     private fun observeViewModel() {
         viewModel.jobStatus.observe(viewLifecycleOwner) {
-            binding.emptyStateLayout.visibility = View.GONE
+            binding.layoutBookmarksEmptyState.root.visibility = View.GONE
             binding.pbLoading.visibility = View.GONE
             when (it) {
                 is Loading -> binding.pbLoading.visibility = View.VISIBLE
@@ -85,11 +80,14 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
             }
         }
         viewModel.showEmptyState.observe(viewLifecycleOwner) {
-            binding.emptyStateLayout.visibility = View.VISIBLE
+            binding.layoutBookmarksEmptyState.root.visibility = View.VISIBLE
         }
     }
 
     private fun setListeners() {
+        rvAdapter.onMovieClickListener = {
+            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
+        }
         rvAdapter.onReachEndListener = { viewModel.loadMovies() }
     }
 
@@ -99,15 +97,9 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
     }
 
     companion object {
-        //const val ARG_GENRE_NAME = "genreName"
 
         fun newInstance() = BookmarksFragment()
 
-        //fun newInstance(genreName: String) = BookmarksFragment().apply {
-        //    arguments = Bundle().apply {
-        //        putString(ARG_GENRE_NAME, genreName)
-        //    }
-        //}
     }
 
 }

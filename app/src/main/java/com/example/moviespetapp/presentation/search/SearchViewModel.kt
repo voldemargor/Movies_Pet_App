@@ -32,8 +32,11 @@ class SearchViewModel @Inject constructor() : ViewModel() {
     private val _jobStatus = MutableLiveData<JobStatus>()
     val jobStatus: LiveData<JobStatus> get() = _jobStatus
 
-    private val _showEmptyState = MutableLiveData<Any>()
-    val showEmptyState: LiveData<Any> get() = _showEmptyState
+    private val _showDefaultState = MutableLiveData<Any>()
+    val showDefaultState: LiveData<Any> get() = _showDefaultState
+
+    private val _foundNothing = MutableLiveData<Any>()
+    val foundNothing: LiveData<Any> get() = _foundNothing
 
     private var allMovies = mutableListOf<Movie>()
 
@@ -41,7 +44,7 @@ class SearchViewModel @Inject constructor() : ViewModel() {
     private var jobLoading: Job = viewModelScope.launch {}
 
     init {
-        _showEmptyState.value = Any()
+        _showDefaultState.value = Any()
     }
 
     fun loadMovies(searchInput: String) {
@@ -68,6 +71,7 @@ class SearchViewModel @Inject constructor() : ViewModel() {
             is DataLoadingResult.Success<*> -> {
                 allMovies.addAll(loadingResult.data as List<Movie>)
                 _jobStatus.value = Result(allMovies.toList())
+                if (allMovies.isEmpty()) _foundNothing.value = Any()
             }
 
             is DataLoadingResult.Failed ->
