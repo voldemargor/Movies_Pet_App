@@ -57,7 +57,7 @@ interface ApiService {
         @Query(QUERY_PARAM_SORT_FIELD) sortField2: String = "votes.await",
         //@Query(QUERY_PARAM_SORT_FIELD) sortField3: String = "rating.await",
         //@Query("sortType") sortType2: String = "1",
-        @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
+        @Query(QUERY_PARAM_LIMIT) limit: Int = 30,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
     ): Response<ResponseMoviesListDto>
 

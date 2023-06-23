@@ -4,9 +4,9 @@ import com.example.moviespetapp.data.mapper.Mapper
 import com.example.moviespetapp.data.network.ApiService
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
 import com.example.moviespetapp.domain.DataLoadingResult
+import com.example.moviespetapp.domain.Repository
 import com.example.moviespetapp.domain.entity.Genre
 import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.domain.Repository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,9 +15,8 @@ class RepositoryImpl @Inject constructor(
 
     private val apiService: ApiService,
     private val bookmarkService: BookmarkService,
-    //private val app: App
 
-) : Repository {
+    ) : Repository {
 
     override suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult {
         apiService.getMoviesByGenre(genres = genreName, page).apply {
@@ -111,27 +110,6 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    //override fun getBookedMovies(): LiveData<List<Movie>> {
-    //    return MutableLiveData(
-    //        listOf(
-    //            Movie(
-    //                year = 2222,
-    //                name = "Фильм в закладках",
-    //                alternativeName = "Alternative Name",
-    //                description = "description",
-    //                shortDescription = "short description",
-    //                poster = Poster("url"),
-    //                rating = Rating(kp = 5.0, 9.2),
-    //                trailers = null,
-    //                genres = null,
-    //                votes = Votes(kp = "32150", imdb = "45150"),
-    //                country = Country("Россия"),
-    //                ageRating = 18,
-    //                movieLength = 166,
-    //                similarMovies = listOf()
-    //            )))
-    //}
-
     override suspend fun getMovieDetails(id: Int): Movie {
         return Mapper.mapDtoToEntity(apiService.getMovieDetails(movieId = id))
     }
@@ -148,13 +126,17 @@ class RepositoryImpl @Inject constructor(
         return Mapper.mapGenresListDtoToListEntity(apiService.getGenres())
     }
 
-    private fun filterIncomplete(movie: Movie) =
-        movie.poster != null && movie.name != null && movie.description != null && movie.rating != null
+    private fun filterIncomplete(movie: Movie) = with(movie) {
+        poster != null && name != null && description != null && rating != null
+    }
 
-    private fun filterIncompleteSoonMovies(movie: Movie) =
-        movie.poster != null && movie.name != null && movie.description != null
+    private fun filterIncompleteSoonMovies(movie: Movie) = with(movie) {
+        poster != null && name != null && description != null
+    }
 
-    private fun filterSearchResult(movie: Movie) =
-        movie.poster != null && movie.name != null && movie.rating != null
-
+    private fun filterSearchResult(movie: Movie) = with(movie) {
+        !name.isNullOrBlank() && poster != null && !description.isNullOrBlank() && description.isNotEmpty()
+        //poster != null && name != null && rating != null
+        //        && !description.isNullOrBlank() && description.isNotEmpty()
+    }
 }

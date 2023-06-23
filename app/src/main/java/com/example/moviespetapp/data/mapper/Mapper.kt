@@ -46,7 +46,7 @@ object Mapper {
         trailers = mapTrailersListDtoToListEntity(dto.videos?.trailers),
         genres = mapGenresListDtoToListEntity(dto.genres ?: listOf()),
         votes = mapDtoToEntity(dto.votes),
-        country = mapDtoToEntity(dto.countries[0]),
+        country = mapDtoToEntity(dto.countries),
         movieLength = dto.movieLength,
         ageRating = dto.ageRating,
         similarMovies = mapSimilarMoviesDtoToListEntity(dto.similarMovies)
@@ -57,9 +57,11 @@ object Mapper {
         //slug = dto.slug
     )
 
-    private fun mapDtoToEntity(dto: CountryDto) = Country(
-        name = dto.name,
-    )
+    private fun mapDtoToEntity(dto: List<CountryDto>?): Country {
+        if (dto.isNullOrEmpty()) return Country("")
+        return Country(name = dto[0].name)
+    }
+
 
     private fun mapDtoToEntity(dto: TrailerDto) = Trailer(
         url = dto.url,
@@ -105,7 +107,7 @@ object Mapper {
         alternativeName = dto.alternativeName,
         poster = dto.poster?.let { Poster(it) },
         rating = dto.rating?.let { Rating(it, 0.0) },
-        description = null,
+        description = dto.description,
         shortDescription = null,
         trailers = null,
         genres = null,

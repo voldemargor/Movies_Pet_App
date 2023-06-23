@@ -38,7 +38,7 @@ data class MovieDto(
     val votes: VotesDto,
 
     @SerializedName("countries")
-    val countries: List<CountryDto>,
+    val countries: List<CountryDto>?,
 
     @SerializedName("movieLength")
     val movieLength: Int?,

@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.Constants
@@ -18,7 +17,6 @@ class SearchResultsAdapter() :
     ListAdapter<Movie, SearchResultsAdapter.ItemViewHolder>(MovieItemDiffCallback()) {
 
     var onMovieClickListener: ((Movie) -> Unit)? = null
-    var onReachEndListener: (() -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val binding = ItemSearchBinding
@@ -28,11 +26,29 @@ class SearchResultsAdapter() :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val movie = getItem(position)
-
+        handleTitles(movie, holder.binding)
+        handleRating(movie, holder.binding)
         with(holder.binding) {
-            tvTitle.text = movie.name
-            altName.text = movie.alternativeName ?: ""
+            root.setOnClickListener { onMovieClickListener?.invoke(movie) }
+            movie.poster?.let { ivPoster.loadImage(it.url) }
+        }
+    }
 
+    private fun handleTitles(movie: Movie, binding: ItemSearchBinding) {
+        with(binding) {
+            if (movie.name == "") {
+                tvTitle.text = movie.alternativeName
+                altName.text = movie.year.toString()
+            } else {
+                tvTitle.text = movie.name
+                if (movie.alternativeName.isNullOrBlank()) altName.text = movie.year.toString()
+                else altName.text = movie.alternativeName + ", ${movie.year}"
+            }
+        }
+    }
+
+    private fun handleRating(movie: Movie, binding: ItemSearchBinding) {
+        with(binding) {
             if (movie.rating == null)
                 tvRating.visibility = View.GONE
             else {
@@ -40,17 +56,6 @@ class SearchResultsAdapter() :
                 tvRating.text = rating
                 tvRating.setTextColor(Utils.getRatingTextColor(root.context, rating))
             }
-            root.setOnClickListener { onMovieClickListener?.invoke(movie) }
-            movie.poster?.let { ivPoster.loadImage(it.url) }
-        }
-
-        checkIfReachEnd(position)
-    }
-
-    private fun checkIfReachEnd(position: Int) {
-        if (position == itemCount - Constants.ITEMS_BEFORE_CALL_REACH_END) {
-            Log.d("mylog", "MoviesListAdapter: invoke onReachEndListener")
-            onReachEndListener?.invoke()
         }
     }
 

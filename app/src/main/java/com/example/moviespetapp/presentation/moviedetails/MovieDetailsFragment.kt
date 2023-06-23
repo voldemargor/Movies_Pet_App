@@ -89,7 +89,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
             handleRating()
 
-            if (movie.votes.kp == "0") tvVotesHeader.visibility = View.GONE
+            if (movie.votes.kp.toInt() < 999) tvVotesHeader.visibility = View.GONE
             else tvVotesHeader.text = Utils.getVotesInKilos(movie.votes)
 
             if (movie.alternativeName.isNullOrEmpty()) tvEngTitle.visibility = View.GONE
@@ -194,7 +194,9 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     private fun shouldHideRating(): Boolean {
-        return movie.rating == null || movie.votes.kp == "0"
+        val rating = movie.rating ?: return true
+        if (Utils.getRatingRounded(rating.kp) == "0.0") return true
+        return movie.votes.kp == "0"
     }
 
     private fun setBookmarkIconColor(it: Boolean) {

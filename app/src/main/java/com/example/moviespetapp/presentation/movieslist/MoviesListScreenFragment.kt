@@ -64,13 +64,6 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
         }
         binding.rvMovies.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.rvMovies.adapter = rvAdapter
-
-        //binding.rvMovies.addItemDecoration(
-        //    MoviesListItemDecoration(3, 50, false))
-
-        rvAdapter.onMovieClickListener = {
-            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
-        }
     }
 
     private fun observeViewModel() {
@@ -91,6 +84,9 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     private fun setListeners() {
+        rvAdapter.onMovieClickListener = {
+            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
+        }
         rvAdapter.onReachEndListener = { viewModel.loadMovies(genreName) }
     }
 

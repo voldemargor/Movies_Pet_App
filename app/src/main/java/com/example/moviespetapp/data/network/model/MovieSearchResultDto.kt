@@ -13,6 +13,9 @@ data class MovieSearchResultDto(
     @SerializedName("name")
     val name: String,
 
+    @SerializedName("description")
+    val description: String,
+
     @SerializedName("alternativeName")
     val alternativeName: String?,
 

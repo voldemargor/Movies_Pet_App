@@ -140,6 +140,7 @@ class Utils {
         fun EditText.showKeyboard() {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+
         }
 
         fun EditText.hideKeyboard() {

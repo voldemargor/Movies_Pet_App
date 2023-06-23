@@ -36,6 +36,7 @@ class MovieDetailsViewModel @Inject constructor() : ViewModel() {
             val movie = withContext(Dispatchers.IO) {
                 getMovieDetailsUseCase.getMovie(movieId)
             }
+            this@MovieDetailsViewModel.movie = movie
             _currentMovie.value = movie
             _isBookmark.value = bookmarkService.hasBookmark(movie.id)
         }

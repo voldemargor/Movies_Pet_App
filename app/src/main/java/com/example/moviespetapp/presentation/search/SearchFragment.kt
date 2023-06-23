@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView.OnScrollListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,11 +16,17 @@ import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.Result
+import com.example.moviespetapp.presentation.Utils.Companion.hideKeyboard
 import com.example.moviespetapp.presentation.Utils.Companion.showKeyboard
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
@@ -65,15 +72,12 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
         binding.rvMovies.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvMovies.adapter = rvAdapter
-
-        rvAdapter.onMovieClickListener = {
-            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
-        }
     }
 
     private fun observeViewModel() {
         viewModel.jobStatus.observe(viewLifecycleOwner) {
             binding.pbLoading.visibility = View.GONE
+            binding.layoutSearchEmptyState.root.visibility = View.GONE
             when (it) {
                 is Loading -> binding.pbLoading.visibility = View.VISIBLE
 
@@ -82,12 +86,17 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
                 is Error -> navigator().toast("Loading Error: ${it.message}")
 
                 is Result -> {
+                    binding.layoutSearchEmptyState.root.visibility = View.GONE
                     rvAdapter.submitList(it.movies)
-                    //navigator().toast("Показать результатов: ${it.movies.size}")
+                    CoroutineScope(Dispatchers.Main).launch {
+                        delay(100)
+                        binding.rvMovies.layoutManager?.scrollToPosition(0)
+                    }
                 }
-
-
             }
+        }
+        viewModel.showEmptyState.observe(viewLifecycleOwner) {
+            binding.layoutSearchEmptyState.root.visibility = View.VISIBLE
         }
     }
 
@@ -98,6 +107,16 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
                 if (!input.isNullOrEmpty())
                     viewModel.loadMovies(input)
             }
+        }
+        binding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            // Убрать клаву чтобы не закрывала результаты
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                binding.etSearch.hideKeyboard()
+            }
+        })
+        rvAdapter.onMovieClickListener = {
+            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
         }
     }
 
