@@ -4,19 +4,15 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityMainBinding
-import com.example.moviespetapp.presentation.MainActivityViewModel
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
@@ -30,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NavigatorActivity : AppCompatActivity(), Navigator {
 
-    private val viewModel by viewModels<MainActivityViewModel>()
+    private val viewModel by viewModels<NavigatorActivityViewModel>()
 
     private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
     private lateinit var binding: ActivityMainBinding
@@ -139,6 +135,14 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         supportActionBar?.title = title
     }
 
+    override fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun log(message: String) {
+        Log.d("mylog", message)
+    }
+
     private fun displaySplash() {
         supportActionBar?.hide()
         binding.splashLayout.root.visibility = View.VISIBLE
@@ -152,19 +156,11 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             })
     }
 
-    fun hideSplash() {
+    private fun hideSplash() {
         supportActionBar?.show()
         binding.splashLayout.root.visibility = View.GONE
         binding.bottomNav.visibility = View.VISIBLE
         binding.splashLayout.ivSplashScrIcon.clearAnimation()
-    }
-
-    override fun toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun log(message: String) {
-        Log.d("mylog", message)
     }
 
     private fun launchFragment(fragment: Fragment) {

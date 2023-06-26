@@ -15,6 +15,7 @@
     <color name="rating_text_neutral">#DCDCDC</color>
 
     <color name="background">#0A0A0A</color>
+    <color name="loading_prototype_fill">#323232</color>
     <color name="text_search_empty_hint">#B4B4B4</color>
 
     <color name="trailer_play_circle">#D63C3C3C</color>

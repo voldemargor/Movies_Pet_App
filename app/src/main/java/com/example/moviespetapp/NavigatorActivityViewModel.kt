@@ -1,4 +1,4 @@
-package com.example.moviespetapp.presentation
+package com.example.moviespetapp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor() : ViewModel() {
+class NavigatorActivityViewModel @Inject constructor() : ViewModel() {
 
     private val _displaySplash = MutableLiveData<Boolean>()
     val displaySplash: LiveData<Boolean> get() = _displaySplash

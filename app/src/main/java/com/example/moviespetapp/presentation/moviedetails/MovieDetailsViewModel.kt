@@ -11,6 +11,7 @@ import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.RemoveBookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -30,8 +31,12 @@ class MovieDetailsViewModel @Inject constructor() : ViewModel() {
     private val _isBookmark = MutableLiveData<Boolean>()
     val isBookmark: LiveData<Boolean> get() = _isBookmark
 
+    private val _displayLoader = MutableLiveData<Boolean>()
+    val displayLoader:LiveData<Boolean> get() = _displayLoader
+
     fun loadMovieData(movieId: Int?) {
         movieId ?: throw RuntimeException("movieId is Null")
+        _displayLoader.value = true
         viewModelScope.launch {
             val movie = withContext(Dispatchers.IO) {
                 getMovieDetailsUseCase.getMovie(movieId)
@@ -39,6 +44,7 @@ class MovieDetailsViewModel @Inject constructor() : ViewModel() {
             this@MovieDetailsViewModel.movie = movie
             _currentMovie.value = movie
             _isBookmark.value = bookmarkService.hasBookmark(movie.id)
+            _displayLoader.value = false
         }
     }
 

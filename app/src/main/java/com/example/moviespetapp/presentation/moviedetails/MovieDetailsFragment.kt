@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
@@ -76,6 +78,10 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
         }
         viewModel.isBookmark.observe(viewLifecycleOwner) {
             setBookmarkIconColor(it)
+        }
+        viewModel.displayLoader.observe(viewLifecycleOwner) {
+            if (it) displayLoading()
+            else hideLoading()
         }
     }
 
@@ -214,6 +220,22 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     private fun disableSimilarMoviesSection() {
         binding.sectionSimilar.visibility = View.GONE
+    }
+
+    private fun displayLoading() {
+        binding.layoutLoadingMovieDetails.root.visibility = View.VISIBLE
+        binding.layoutLoadingMovieDetails.layoutToAnimate.startAnimation(
+            AlphaAnimation(0.6f, 1f).apply {
+                duration = 600
+                repeatMode = Animation.REVERSE
+                //interpolator = LinearInterpolator()
+                repeatCount = Animation.INFINITE
+            })
+    }
+
+    private fun hideLoading() {
+        binding.layoutLoadingMovieDetails.layoutToAnimate.clearAnimation()
+        binding.layoutLoadingMovieDetails.root.visibility = View.GONE
     }
 
     override fun onDestroyView() {
