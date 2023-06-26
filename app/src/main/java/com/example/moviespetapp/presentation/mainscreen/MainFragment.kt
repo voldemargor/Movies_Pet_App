@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.generateViewId
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviespetapp.Constants
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMainBinding
 import com.example.moviespetapp.domain.DataLoadingResult
@@ -31,6 +34,8 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
     private val viewModel by viewModels<MainFragmentViewModel>()
     private lateinit var adapters: MainFragmentAdapters
 
+    private var isLaunchFirstTime = true
+
     override fun setScreenTitle() =
         navigator().setScreenTitle(resources.getString(R.string.title_main))
 
@@ -45,11 +50,11 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadSectionsData()
-        //viewModel.initGenres()
-        //viewModel.initMovies()
 
-        initGenresSection()
+        if (savedInstanceState != null) isLaunchFirstTime = false
+
+        viewModel.loadSectionsData()
+        buildGenresSection()
         adapters = MainFragmentAdapters()
         initHorizontalListSection(adapters.New, binding.rvNew)
         initHorizontalListSection(adapters.Soon, binding.rvSoon)
@@ -60,16 +65,25 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
         initHorizontalListSection(adapters.ForKids, binding.rvForKids)
 
         observeViewModel()
-        setListeners()
+        //setListeners()
     }
-
 
     override fun onResume() {
         super.onResume()
         setScreenTitle()
+        isLaunchFirstTime = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeViewModel() {
+        viewModel.displayLoader.observe(viewLifecycleOwner) {
+            if (it) binding.pbLoading.visibility = View.VISIBLE
+            else binding.pbLoading.visibility = View.GONE
+        }
         viewModel.newMovies.observe(viewLifecycleOwner) {
             if (it is DataLoadingResult.Success<*>)
                 adapters.New.submitList(it.data as List<Movie>)
@@ -100,13 +114,10 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
         }
     }
 
-    private fun setListeners() {
-        //binding.textView.setOnClickListener() {
-        //    navigator().displayMovieDetailsScreen(666, "Форсаж")
-        //}
-    }
+    //private fun setListeners() {
+    //}
 
-    private fun initGenresSection() {
+    private fun buildGenresSection() {
         viewModel.genres.observe(viewLifecycleOwner) {
             binding.layoutGenresGroup.removeAllViews()
             val flow = createFlowWidget()
@@ -139,20 +150,6 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
         }
     }
 
-    //private fun initFictionSection() {
-    //    rvAdapterFiction = MoviesListAdapter(MoviesListAdapter.ListType.HORIZONTAL).apply {
-    //        stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-    //    }
-    //    binding.rvNew.layoutManager =
-    //        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-    //    binding.rvNew.adapter = rvAdapterFiction
-    //
-    //    rvAdapterFiction.onMovieClickListener = {
-    //        navigator().displayMovieDetailsScreen(it.id, it.name.toString())
-    //    }
-    //
-    //}
-
     private fun createFlowWidget(): Flow {
         val flow = Flow(requireActivity()).apply {
             id = generateViewId()
@@ -169,14 +166,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
         return flow
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     companion object {
-        const val FRAGMENT_NAME = "main_fragment"
-
         fun newInstance() = MainFragment()
     }
 

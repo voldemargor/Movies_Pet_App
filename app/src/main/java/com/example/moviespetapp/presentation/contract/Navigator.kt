@@ -21,8 +21,6 @@ interface Navigator {
 
     fun displaySearchScreen()
 
-    fun displaySearchResultsScreen()
-
     fun goBack()
 
     fun setScreenTitle(title: String)

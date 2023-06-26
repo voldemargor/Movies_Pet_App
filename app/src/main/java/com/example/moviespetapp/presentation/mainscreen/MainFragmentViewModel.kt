@@ -1,6 +1,5 @@
 package com.example.moviespetapp.presentation.mainscreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,10 +18,10 @@ import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class MainFragmentViewModel @Inject constructor() : ViewModel() {
@@ -36,6 +35,9 @@ class MainFragmentViewModel @Inject constructor() : ViewModel() {
     @Inject lateinit var getMainScreenComedyMoviesUseCase: GetMainScreenComedyMoviesUseCase
     @Inject lateinit var getMainScreenHorrorMoviesUseCase: GetMainScreenHorrorMoviesUseCase
     @Inject lateinit var getMainScreenKidMoviesUseCase: GetMainScreenKidMoviesUseCase
+
+    private val _displayLoader = MutableLiveData<Boolean>()
+    val displayLoader: LiveData<Boolean> get() = _displayLoader
 
     private val _genres = MutableLiveData<List<Genre>>()
     val genres: LiveData<List<Genre>> get() = _genres
@@ -65,37 +67,46 @@ class MainFragmentViewModel @Inject constructor() : ViewModel() {
 
         // А ВОТ ТЕПЕРЬ ЭТО РАЗНЫЕ ДЖОБЫ ПАРАЛЛЕЛЬНО !!!!
 
-        viewModelScope.launch(Dispatchers.IO) {
+        val jobs = mutableListOf<Job>()
+
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val genres = getGenresUseCase.getGenres()
             withContext(Dispatchers.Main) { _genres.value = genres }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+        })
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val newMovies = getMainScreenNewMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _newMovies.value = newMovies }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+        })
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val soonMovies = getMainScreenSoonMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _soonMovies.value = soonMovies }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+        })
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val popularMovies = getMainScreenPopularMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _popularMovies.value = popularMovies }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+        })
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val fictionMovies = getMainScreenFictionMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _fictionMovies.value = fictionMovies }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+        })
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val comedyMovies = getMainScreenComedyMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _comedyMovies.value = comedyMovies }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+        })
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val horrorMovies = getMainScreenHorrorMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _horrorMovies.value = horrorMovies }
-        }
-        viewModelScope.launch(Dispatchers.IO) {
+        })
+        jobs.add(viewModelScope.launch(Dispatchers.IO) {
             val kidMovies = getMainScreenKidMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _kidMovies.value = kidMovies }
+        })
+
+        val parentJob = viewModelScope.launch {
+            _displayLoader.value = true
+            for (job in jobs) job.join()
+            _displayLoader.value = false
+            delay(1200)
         }
     }
 

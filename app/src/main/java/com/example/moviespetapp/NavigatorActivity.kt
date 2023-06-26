@@ -1,9 +1,15 @@
 package com.example.moviespetapp
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -37,7 +43,9 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         observeViewModel()
         setBottomNavListener()
         setFragmentLifecycleListener()
-        if (savedInstanceState == null) displayFirstScreen()
+        setBarColors()
+        if (savedInstanceState == null)
+            displayFirstScreen()
     }
 
     override fun onDestroy() {
@@ -53,25 +61,10 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
 
     override fun onBackPressed() = onBackPressedDispatcher.onBackPressed()
 
-    //private fun handleBackPressed() {
-    //    onBackPressedDispatcher.onBackPressed()
-    //    //val fragment = supportFragmentManager.findFragmentById(binding.fragmentContainer.id)
-    //    //updateUi(fragment ?: throw RuntimeException("fragment is NULL"))
-    //    //log("updateUi 1")
-    //    //fragment.onResume()
-    //    //currentFragment = fragment
-    //    log("Живых фрагментов в контейнере: ${supportFragmentManager.fragments.count()}")
-    //}
-
     private fun observeViewModel() {
         viewModel.displaySplash.observe(this) {
-            binding.splashLayout.visibility = View.GONE
-            supportActionBar?.show()
-            if (it) {
-                binding.splashLayout.visibility = View.VISIBLE
-                supportActionBar?.hide()
-                window.statusBarColor = getColor(R.color.black)
-            }
+            if (it) displaySplash()
+            else hideSplash()
         }
     }
 
@@ -136,11 +129,6 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         SearchFragment.newInstance().also {
             launchFragment(it)
         }
-        //binding.bottomNav.visibility = View.GONE
-    }
-
-    override fun displaySearchResultsScreen() {
-        TODO("Not yet implemented")
     }
 
     override fun goBack() {
@@ -149,6 +137,26 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
 
     override fun setScreenTitle(title: String) {
         supportActionBar?.title = title
+    }
+
+    private fun displaySplash() {
+        supportActionBar?.hide()
+        binding.splashLayout.root.visibility = View.VISIBLE
+        binding.bottomNav.visibility = View.GONE
+        binding.splashLayout.ivSplashScrIcon.startAnimation(
+            AlphaAnimation(0.2f, 1f).apply {
+                duration = 600
+                repeatMode = Animation.REVERSE
+                //interpolator = LinearInterpolator()
+                repeatCount = Animation.INFINITE
+            })
+    }
+
+    fun hideSplash() {
+        supportActionBar?.show()
+        binding.splashLayout.root.visibility = View.GONE
+        binding.bottomNav.visibility = View.VISIBLE
+        binding.splashLayout.ivSplashScrIcon.clearAnimation()
     }
 
     override fun toast(message: String) {
@@ -209,6 +217,15 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             menu.findItem(fragment.getBottomNavItemId()).isChecked = true
         } else
             menu.setGroupCheckable(0, false, true)
+    }
+
+    private fun setBarColors() {
+        supportActionBar?.setBackgroundDrawable(
+            ColorDrawable(
+                resources.getColor(
+                    R.color.background,
+                    null)))
+        window.statusBarColor = getColor(R.color.background)
     }
 
 }

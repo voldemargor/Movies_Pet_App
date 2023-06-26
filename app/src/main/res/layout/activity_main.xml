@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".NavigatorActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -27,16 +28,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-    <FrameLayout
-        android:id="@+id/splashLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.8"
-        android:background="@color/design_default_color_primary"
-        android:elevation="100dp">
-
-        <include layout="@layout/layout_splash_screen" />
-    </FrameLayout>
-
+        <include
+            android:id="@+id/splashLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/layout_splash_screen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
