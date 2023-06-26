@@ -76,10 +76,11 @@ class Utils {
         fun ImageView.loadImage(url: String) {
             Glide.with(this)
                 .load(url)
-                //.placeholder(R.drawable.drawable)
                 .error(R.drawable.ic_home)
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .optionalFitCenter()
+                .centerCrop()
+                //.placeholder(R.drawable.poster_placeholder)
+                .thumbnail(Glide.with(this).load(R.drawable.poster_placeholder).centerCrop())
                 .into(this)
         }
 
