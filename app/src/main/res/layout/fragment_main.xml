@@ -16,24 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Space
-                android:id="@+id/divider1"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
                 android:id="@+id/tvHeadlineGenres"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_genres"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/divider1" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutGenresGroup"
@@ -50,15 +39,10 @@
 
             <TextView
                 android:id="@+id/tvHeadlineNew"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_new"
-                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/layoutGenresGroup" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -78,15 +62,10 @@
 
             <TextView
                 android:id="@+id/tvHeadlineSoon"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_soon"
-                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rvNew" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -106,15 +85,10 @@
 
             <TextView
                 android:id="@+id/tvHeadlinePopular"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_popular"
-                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rvSoon" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -134,15 +108,10 @@
 
             <TextView
                 android:id="@+id/tvHeadlineFiction"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_fiction"
-                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rvPopular" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -162,15 +131,10 @@
 
             <TextView
                 android:id="@+id/tvHeadlineComedy"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_comedy"
-                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rvFiction" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -190,15 +154,10 @@
 
             <TextView
                 android:id="@+id/tvHeadlineHorror"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_horror"
-                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rvComedy" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -218,15 +177,10 @@
 
             <TextView
                 android:id="@+id/tvHeadlineForKids"
-                style="@style/TextAppearance.AppCompat.Headline"
+                style="@style/Text.Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="26dp"
-                android:paddingBottom="16dp"
                 android:text="@string/headline_for_kids"
-                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/rvHorror" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -253,14 +207,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
-<!--    <include-->
-<!--        android:id="@+id/layout_splash_screen"-->
-<!--        layout="@layout/layout_splash_screen"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        android:visibility="visible"/>-->
 
     <ProgressBar
         android:id="@+id/pbLoading"

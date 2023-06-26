@@ -6,6 +6,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.moviespetapp.R
@@ -79,6 +80,7 @@ class Utils {
                 .error(R.drawable.ic_home)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 //.placeholder(R.drawable.poster_placeholder)
                 .thumbnail(Glide.with(this).load(R.drawable.poster_placeholder).centerCrop())
                 .into(this)

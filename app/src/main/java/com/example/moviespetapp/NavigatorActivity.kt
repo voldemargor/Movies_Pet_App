@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
-import com.example.moviespetapp.databinding.ActivityMainBinding
+import com.example.moviespetapp.databinding.ActivityNavigatorBinding
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
@@ -29,12 +29,12 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private val viewModel by viewModels<NavigatorActivityViewModel>()
 
     private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityNavigatorBinding
     private var currentFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
+        binding = ActivityNavigatorBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         observeViewModel()
         setBottomNavListener()
