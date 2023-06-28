@@ -1,6 +1,7 @@
 package com.example.moviespetapp.presentation
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -77,7 +78,6 @@ class Utils {
         fun ImageView.loadImage(url: String) {
             Glide.with(this)
                 .load(url)
-                .error(R.drawable.ic_home)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -91,6 +91,7 @@ class Utils {
                 .load(url)
                 .apply(RequestOptions.bitmapTransform(BlurTransformation(40, 3)))
                 .transition(DrawableTransitionOptions.withCrossFade())
+                .placeholder(ColorDrawable(ContextCompat.getColor(this.context, R.color.loading_prototype_fill)))
                 .into(this)
         }
 
@@ -143,7 +144,6 @@ class Utils {
         fun EditText.showKeyboard() {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
-
         }
 
         fun EditText.hideKeyboard() {

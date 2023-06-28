@@ -37,7 +37,8 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
     override fun getBottomNavItemId(): Int = R.id.navItemBookmark
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentMoviesListScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -98,8 +99,9 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     companion object {
 
-        fun newInstance() = BookmarksFragment()
+        const val FRAGMENT_TAG = "BookmarksFragment"
 
+        fun newInstance() = BookmarksFragment()
     }
 
 }

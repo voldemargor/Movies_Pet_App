@@ -5,27 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.generateViewId
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviespetapp.Constants
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMainBinding
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.GetFromBackstack
 import com.example.moviespetapp.presentation.contract.navigator
 import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
+class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack {
 
     private var _binding: FragmentMainBinding? = null
     private val binding: FragmentMainBinding
@@ -36,10 +34,14 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private var isLaunchFirstTime = true
 
+    //override fun getFragmentTag() = "MainFragment"
+
     override fun setScreenTitle() =
         navigator().setScreenTitle(resources.getString(R.string.title_main))
 
     override fun getBottomNavItemId(): Int = R.id.navItemFirstScreen
+
+    override fun getFragmentTag() = FRAGMENT_TAG
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -158,8 +160,9 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
             )
             setWrapMode(Flow.WRAP_CHAIN)
             setHorizontalStyle(Flow.CHAIN_PACKED)
-            setHorizontalGap(6)
-            setVerticalGap(6)
+            setHorizontalAlign(Flow.HORIZONTAL_ALIGN_START)
+            setHorizontalGap(10)
+            setVerticalGap(10)
             setHorizontalBias(0f)
             setOrientation(Flow.HORIZONTAL)
         }
@@ -167,7 +170,11 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem {
     }
 
     companion object {
+
+        val FRAGMENT_TAG = MainFragment::class.simpleName.toString()
+
         fun newInstance() = MainFragment()
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.moviespetapp.presentation.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,18 +26,20 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor() : ViewModel() {
 
-    @Inject lateinit var getMoviesBySearchUseCase: GetMoviesBySearchUseCase
+    @Inject
+    lateinit var getMoviesBySearchUseCase: GetMoviesBySearchUseCase
 
-    @Inject lateinit var context: App
+    @Inject
+    lateinit var context: App
 
     private val _jobStatus = MutableLiveData<JobStatus>()
     val jobStatus: LiveData<JobStatus> get() = _jobStatus
 
-    private val _showDefaultState = MutableLiveData<Any>()
-    val showDefaultState: LiveData<Any> get() = _showDefaultState
+    private val _showDefaultState = MutableLiveData<Boolean>()
+    val showDefaultState: LiveData<Boolean> get() = _showDefaultState
 
-    private val _foundNothing = MutableLiveData<Any>()
-    val foundNothing: LiveData<Any> get() = _foundNothing
+    private val _foundNothing = MutableLiveData<Boolean>()
+    val foundNothing: LiveData<Boolean> get() = _foundNothing
 
     private var allMovies = mutableListOf<Movie>()
 
@@ -44,14 +47,18 @@ class SearchViewModel @Inject constructor() : ViewModel() {
     private var jobLoading: Job = viewModelScope.launch {}
 
     init {
-        _showDefaultState.value = Any()
+        if (allMovies.isEmpty()) {
+            Log.d("mylog", "SearchViewModel: init block, allMovies.isEmpty ")
+            _showDefaultState.value = true
+        }
     }
 
     fun resetToDefault() {
         allMovies.clear()
         jobLoading.cancel()
         _jobStatus.value = Result(allMovies)
-        _showDefaultState.value = Any()
+        _showDefaultState.value = true
+        _foundNothing.value = false
     }
 
     fun loadMovies(searchInput: String) {
@@ -78,12 +85,17 @@ class SearchViewModel @Inject constructor() : ViewModel() {
             is DataLoadingResult.Success<*> -> {
                 allMovies.addAll(loadingResult.data as List<Movie>)
                 _jobStatus.value = Result(allMovies.toList())
-                if (allMovies.isEmpty()) _foundNothing.value = Any()
+                if (allMovies.isEmpty()) _foundNothing.value = true
             }
 
             is DataLoadingResult.Failed ->
                 _jobStatus.value = Error(loadingResult.exception.message)
         }
+    }
+
+    fun resetStatusesLiveData() {
+        _showDefaultState.value = false
+        _foundNothing.value = false
     }
 
 }

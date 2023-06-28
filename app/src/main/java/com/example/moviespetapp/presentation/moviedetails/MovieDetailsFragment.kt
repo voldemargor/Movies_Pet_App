@@ -244,7 +244,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     companion object {
-        const val FRAGMENT_NAME = "movie_details_fragment"
+        const val FRAGMENT_TAG = "MovieDetailsFragment"
         const val ARG_MOVIE_ID = "param_movie_id"
         const val ARG_MOVIE_NAME = "param_movie_name"
 

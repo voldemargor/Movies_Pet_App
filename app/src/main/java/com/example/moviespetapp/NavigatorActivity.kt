@@ -17,6 +17,7 @@ import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.Navigator
+import com.example.moviespetapp.presentation.contract.GetFromBackstack
 import com.example.moviespetapp.presentation.mainscreen.MainFragment
 import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
 import com.example.moviespetapp.presentation.movieslist.MoviesListScreenFragment
@@ -40,8 +41,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         setBottomNavListener()
         setFragmentLifecycleListener()
         setBarColors()
-        if (savedInstanceState == null)
-            displayFirstScreen()
+        displayMainScreen()
     }
 
     override fun onDestroy() {
@@ -55,7 +55,11 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         return true
     }
 
-    override fun onBackPressed() = onBackPressedDispatcher.onBackPressed()
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1)
+            onBackPressedDispatcher.onBackPressed()
+        else finish()
+    }
 
     private fun observeViewModel() {
         viewModel.displaySplash.observe(this) {
@@ -64,43 +68,15 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun setBottomNavListener() {
-        binding.bottomNav.setOnItemSelectedListener() {
-            when (it.itemId) {
-                R.id.navItemFirstScreen -> displayMainScreen()
-                R.id.navItemBookmark -> displayBookmarksScreen()
-                R.id.navItemSearch -> displaySearchScreen()
-            }
-            true
-        }
-    }
-
-    private fun setFragmentLifecycleListener() {
-        fragmentLifecycleListener = object : FragmentManager.FragmentLifecycleCallbacks() {
-            override fun onFragmentStarted(fm: FragmentManager, fragment: Fragment) {
-                super.onFragmentStarted(fm, fragment)
-                if (fragment is SupportRequestManagerFragment) return
-                updateUI(fragment)
-                currentFragment = fragment
-            }
-        }
-        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleListener, false)
-    }
-
-    private fun displayFirstScreen() {
-        val fragment = MainFragment.newInstance()
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                androidx.appcompat.R.anim.abc_fade_in,
-                androidx.appcompat.R.anim.abc_fade_out)
-            .replace(R.id.fragmentContainer, fragment)
-            .commit()
-    }
-
     override fun displayMainScreen() {
-        MainFragment.newInstance().also {
-            launchFragment(it)
-        }
+        val fragment = supportFragmentManager.findFragmentByTag(MainFragment.FRAGMENT_TAG)
+        log("MainFragment = $fragment")
+
+        if (fragment == null)
+            MainFragment.newInstance().also { launchFragment(it) }
+        else
+            launchFragment(fragment)
+        //supportFragmentManager.popBackStack(SearchFragment.FRAGMENT_TAG, 0)
     }
 
     override fun displayMoviesListScreen(genreName: String) {
@@ -122,9 +98,14 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     override fun displaySearchScreen() {
-        SearchFragment.newInstance().also {
-            launchFragment(it)
-        }
+        val fragment = supportFragmentManager.findFragmentByTag(SearchFragment.FRAGMENT_TAG)
+        log("SearchFragment = $fragment")
+
+        if (fragment == null)
+            SearchFragment.newInstance().also { launchFragment(it) }
+        else
+            launchFragment(fragment)
+        //supportFragmentManager.popBackStack(SearchFragment.FRAGMENT_TAG, 0)
     }
 
     override fun goBack() {
@@ -133,14 +114,6 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
 
     override fun setScreenTitle(title: String) {
         supportActionBar?.title = title
-    }
-
-    override fun toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun log(message: String) {
-        Log.d("mylog", message)
     }
 
     private fun displaySplash() {
@@ -163,35 +136,8 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         binding.splashLayout.ivSplashScrIcon.clearAnimation()
     }
 
-    private fun launchFragment(fragment: Fragment) {
-
-        if (isRepeatedMenuClick(fragment)) return
-        // TODO При повторном клике нужно скроллить наверх
-
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                androidx.appcompat.R.anim.abc_fade_in,
-                androidx.appcompat.R.anim.abc_fade_out)
-            .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
-            .commit()
-
-        log("Живых фрагментов в контейнере: ${supportFragmentManager.fragments.count()}")
-    }
-
-    private fun isRepeatedMenuClick(fragment: Fragment): Boolean {
-
-        if (currentFragment is BottomNavItem && fragment !is BottomNavItem) return false
-        if (currentFragment !is BottomNavItem && fragment is BottomNavItem) return false
-
-        if (fragment is BottomNavItem)
-            if (fragment.getBottomNavItemId() == binding.bottomNav.selectedItemId)
-                return true
-        return false
-    }
-
     private fun updateUI(fragment: Fragment) {
-        log("updateUI arg fragment: ${fragment.javaClass.simpleName}")
+        log("updateUI: ${fragment.javaClass.simpleName}")
         updateBackIcon(fragment)
         updateBottomNavSelection(fragment)
     }
@@ -220,8 +166,67 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             ColorDrawable(
                 resources.getColor(
                     R.color.background,
-                    null)))
+                    null
+                )
+            )
+        )
         window.statusBarColor = getColor(R.color.background)
+    }
+
+    private fun setBottomNavListener() {
+        binding.bottomNav.setOnItemSelectedListener() {
+            when (it.itemId) {
+                R.id.navItemFirstScreen -> displayMainScreen()
+                R.id.navItemBookmark -> displayBookmarksScreen()
+                R.id.navItemSearch -> displaySearchScreen()
+            }
+            true
+        }
+    }
+
+    private fun setFragmentLifecycleListener() {
+        fragmentLifecycleListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentStarted(fm: FragmentManager, fragment: Fragment) {
+                super.onFragmentStarted(fm, fragment)
+                if (fragment is SupportRequestManagerFragment) return
+                updateUI(fragment)
+                currentFragment = fragment
+            }
+        }
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleListener, false)
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        if (isDoubleBottomNavClick(fragment)) return
+        // TODO При повторном клике нужно скроллить наверх
+
+        var tag: String? = null
+        if (fragment is GetFromBackstack) tag = fragment.getFragmentTag()
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                androidx.appcompat.R.anim.abc_fade_in,
+                androidx.appcompat.R.anim.abc_fade_out
+            )
+            .replace(R.id.fragmentContainer, fragment, tag)
+            .setReorderingAllowed(true)
+            .addToBackStack(tag)
+            .commit()
+    }
+
+    private fun isDoubleBottomNavClick(fragment: Fragment): Boolean {
+        if (currentFragment is BottomNavItem && fragment !is BottomNavItem) return false
+        if (currentFragment !is BottomNavItem && fragment is BottomNavItem) return false
+        if (fragment is BottomNavItem && fragment == currentFragment) return true
+        return false
+    }
+
+    override fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun log(message: String) {
+        Log.d("mylog", message)
     }
 
 }

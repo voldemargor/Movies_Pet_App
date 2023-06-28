@@ -1,9 +1,12 @@
 package com.example.moviespetapp.presentation.search
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,6 +22,7 @@ import com.example.moviespetapp.presentation.Utils.Companion.hideKeyboard
 import com.example.moviespetapp.presentation.Utils.Companion.showKeyboard
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.GetFromBackstack
 import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
+class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack {
 
     private lateinit var rvAdapter: SearchResultsAdapter
 
@@ -42,9 +46,12 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun getBottomNavItemId(): Int = R.id.navItemSearch
 
+    override fun getFragmentTag() = FRAGMENT_TAG
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -95,12 +102,14 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
             }
         }
         viewModel.showDefaultState.observe(viewLifecycleOwner) {
-            binding.layoutSearchEmptyState.root.visibility = View.VISIBLE
-            binding.btnClearInput.visibility = View.GONE
-            binding.etSearch.text.clear()
+            if (it) {
+                binding.layoutSearchEmptyState.root.visibility = View.VISIBLE
+                binding.btnClearInput.visibility = View.GONE
+                binding.etSearch.text.clear()
+            }
         }
         viewModel.foundNothing.observe(viewLifecycleOwner) {
-            binding.layoutSearchFoundNothing.root.visibility = View.VISIBLE
+            if (it) binding.layoutSearchFoundNothing.root.visibility = View.VISIBLE
         }
     }
 
@@ -127,14 +136,24 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem {
         rvAdapter.onMovieClickListener = {
             navigator().displayMovieDetailsScreen(it.id, it.name.toString())
         }
+        binding.etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
+                binding.etSearch.setSelection(binding.etSearch.length())
+                return true
+            }
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        viewModel.resetStatusesLiveData()
     }
 
     companion object {
+
+        val FRAGMENT_TAG = SearchFragment::class.simpleName.toString()
+
         fun newInstance() = SearchFragment()
     }
 
