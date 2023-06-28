@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="330dp"
             android:alpha="0.6"
-            android:background="@color/rating_bg_neutral"
+            android:background="@color/bg_rating_neutral"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            style="@style/Text.MovieNameHeadline.MovieDetails."
+            style="@style/Headline.MovieDetails.MovieName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/guideLineRight"
@@ -72,24 +72,28 @@
             android:id="@+id/layoutRatingVotesEngTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/divider1"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            android:orientation="horizontal">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider1">
 
             <TextView
                 android:id="@+id/tvRatingHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:padding="2dp"
                 android:textAlignment="center"
-                android:textColor="@color/rating_bg_positive"
+                android:textColor="@color/bg_rating_positive"
                 tools:text="8.1" />
 
             <TextView
                 android:id="@+id/tvVotesHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:padding="2dp"
                 android:textAlignment="center"
                 android:textColor="@color/white"
@@ -99,6 +103,8 @@
                 android:id="@+id/tvEngTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
                 android:maxLines="1"
                 android:padding="2dp"
                 android:textAlignment="center"
@@ -162,15 +168,14 @@
                 android:id="@+id/iconBookmarkDrawable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_bookmark"
-                app:tint="@color/white" />
+                android:src="@drawable/ic_bookmark" />
 
             <TextView
                 android:id="@+id/iconBookmarkTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/icon_bookmark"
-                android:textColor="@color/white" />
+                android:textColor="@color/bottom_nav_unchecked" />
 
         </LinearLayout>
 
@@ -204,7 +209,7 @@
 
         <TextView
             android:id="@+id/tvHeadlineTrailer"
-            style="@style/Text.Headline.MovieDetails"
+            style="@style/Headline.MovieDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/headline_trailer"
@@ -253,11 +258,11 @@
             android:id="@+id/sectionRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="tvHeadlineRating, layoutRatingKp, layoutRatingImdb" />
+            app:constraint_referenced_ids="tvHeadlineRating, layoutRating" />
 
         <TextView
             android:id="@+id/tvHeadlineRating"
-            style="@style/Text.Headline.MovieDetails"
+            style="@style/Headline.MovieDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/headline_rating"
@@ -266,78 +271,89 @@
             app:layout_constraintTop_toBottomOf="@id/layoutTrailer" />
 
         <LinearLayout
-            android:id="@+id/layoutRatingKp"
+            android:id="@+id/layoutRating"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
-            android:background="@color/rating_bg_neutral"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/layoutRatingImdb"
-            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
-            app:layout_constraintTop_toBottomOf="@id/tvHeadlineRating">
-
-            <TextView
-                android:id="@+id/tvRatingKp"
-                style="@style/TextAppearance.AppCompat.Headline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                tools:text="8.1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/raiting_kp"
-                android:textAlignment="center"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/tvRatingKpVotesCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                tools:text="902 637 оценок" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutRatingImdb"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:background="@color/rating_bg_neutral"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="@id/guideLineRight"
-            app:layout_constraintStart_toEndOf="@+id/layoutRatingKp"
-            app:layout_constraintTop_toBottomOf="@id/tvHeadlineRating">
+            app:layout_constraintStart_toStartOf="@id/guideLineLeft"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeadlineRating">
 
-            <TextView
-                android:id="@+id/tvRatingImdb"
-                style="@style/TextAppearance.AppCompat.Headline"
+            <LinearLayout
+                android:id="@+id/layoutRatingKp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                tools:text="8.1" />
+                android:layout_marginRight="4dp"
+                android:layout_weight="2"
+                android:background="@color/bg_rating_section"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
 
-            <TextView
+                <TextView
+                    android:id="@+id/tvRatingKp"
+                    style="@style/Text.RatingSection.Rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    tools:text="8.1" />
+
+                <TextView
+                    style="@style/Text.RatingSection.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/raiting_kp" />
+
+                <TextView
+                    android:id="@+id/tvRatingKpVotesCount"
+                    style="@style/Text.RatingSection.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    tools:text="902 637 оценок" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutRatingImdb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/rating_imdb"
-                android:textAlignment="center"
-                android:textColor="@color/white" />
+                android:layout_marginLeft="4dp"
+                android:layout_weight="1"
+                android:background="@color/bg_rating_section"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="20dp">
 
-            <TextView
-                android:id="@+id/tvRatingImdbVotesCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                tools:text="902 637 оценок" />
+                <TextView
+                    android:id="@+id/tvRatingImdb"
+                    style="@style/Text.RatingSection.Rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    tools:text="8.1" />
+
+                <TextView
+                    style="@style/Text.RatingSection.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rating_imdb" />
+
+                <TextView
+                    android:id="@+id/tvRatingImdbVotesCount"
+                    style="@style/Text.RatingSection.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    tools:text="902 637 оценок" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -349,21 +365,21 @@
 
         <TextView
             android:id="@+id/tvHeadlineSimilarMovies"
-            style="@style/Text.Headline.MovieDetails"
+            style="@style/Headline.MovieDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/headline_similar_movies"
             app:layout_constraintEnd_toEndOf="@id/guideLineRight"
             app:layout_constraintStart_toStartOf="@id/guideLineLeft"
-            app:layout_constraintTop_toBottomOf="@id/layoutRatingKp" />
+            app:layout_constraintTop_toBottomOf="@id/layoutRating" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSimilarMovies"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
             android:paddingStart="14dp"
             android:paddingEnd="20dp"
-            android:clipToPadding="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHeadlineSimilarMovies"
@@ -376,11 +392,11 @@
         <include
             android:id="@+id/layoutLoadingMovieDetails"
             layout="@layout/layout_loading_movie_details"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

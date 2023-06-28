@@ -19,7 +19,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlineGenres"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_genres"
@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlineNew"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_new"
@@ -63,7 +63,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlineSoon"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_soon"
@@ -86,7 +86,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlinePopular"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_popular"
@@ -109,7 +109,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlineFiction"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_fiction"
@@ -132,7 +132,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlineComedy"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_comedy"
@@ -155,7 +155,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlineHorror"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_horror"
@@ -178,7 +178,7 @@
 
             <TextView
                 android:id="@+id/tvHeadlineForKids"
-                style="@style/Text.Headline.MainFragment"
+                style="@style/Headline.MainFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/headline_for_kids"

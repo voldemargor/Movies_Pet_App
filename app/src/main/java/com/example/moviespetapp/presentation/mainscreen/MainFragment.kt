@@ -34,8 +34,6 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
 
     private var isLaunchFirstTime = true
 
-    //override fun getFragmentTag() = "MainFragment"
-
     override fun setScreenTitle() =
         navigator().setScreenTitle(resources.getString(R.string.title_main))
 
@@ -67,7 +65,6 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
         initHorizontalListSection(adapters.ForKids, binding.rvForKids)
 
         observeViewModel()
-        //setListeners()
     }
 
     override fun onResume() {
@@ -115,9 +112,6 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
                 adapters.ForKids.submitList(it.data as List<Movie>)
         }
     }
-
-    //private fun setListeners() {
-    //}
 
     private fun buildGenresSection() {
         viewModel.genres.observe(viewLifecycleOwner) {

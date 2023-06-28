@@ -98,9 +98,6 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
     }
 
     companion object {
-
-        const val FRAGMENT_TAG = "BookmarksFragment"
-
         fun newInstance() = BookmarksFragment()
     }
 

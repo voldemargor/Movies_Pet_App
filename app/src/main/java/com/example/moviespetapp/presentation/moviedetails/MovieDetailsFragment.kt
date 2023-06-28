@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMovieDetailsBinding
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.entity.MovieSimilar
@@ -46,7 +47,8 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -123,7 +125,12 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
             else {
                 val ratingKp = Utils.getRatingRounded(rating?.kp)
                 tvRatingHeader.text = ratingKp
-                tvRatingHeader.setTextColor(Utils.getRatingTextColor(requireContext(), ratingKp))
+                tvRatingHeader.setTextColor(
+                    Utils.getRatingHeaderSectionTextColor(
+                        requireContext(),
+                        ratingKp
+                    )
+                )
             }
         }
     }
@@ -172,7 +179,10 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
             val ratingKp = Utils.getRatingRounded(rating.kp)
             tvRatingKp.text = ratingKp
             tvRatingKp.setTextColor(Utils.getRatingTextColor(requireContext(), ratingKp))
-            tvRatingImdb.text = Utils.getRatingRounded(rating.imdb)
+            var ratingImdb = Utils.getRatingRounded(rating.imdb)
+            if (ratingImdb == "0.0") ratingImdb = "-"
+            tvRatingImdb.text = ratingImdb
+            tvRatingImdb.setTextColor(resources.getColor(R.color.text_rating_neutral, null))
 
             tvRatingKpVotesCount.text = Utils.getVotesFormatted(votes.kp.toInt()) + " оценок"
             tvRatingImdbVotesCount.text = Utils.getVotesFormatted(votes.imdb.toInt()) + " оценок"
@@ -207,7 +217,10 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     private fun setBookmarkIconColor(it: Boolean) {
         if (it) DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.RED)
-        else DrawableCompat.setTint(binding.iconBookmarkDrawable.drawable, Color.WHITE)
+        else DrawableCompat.setTint(
+            binding.iconBookmarkDrawable.drawable,
+            resources.getColor(R.color.bottom_nav_unchecked, null)
+        )
     }
 
     private fun disableTrailerSection() {
@@ -244,7 +257,6 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
     }
 
     companion object {
-        const val FRAGMENT_TAG = "MovieDetailsFragment"
         const val ARG_MOVIE_ID = "param_movie_id"
         const val ARG_MOVIE_NAME = "param_movie_name"
 

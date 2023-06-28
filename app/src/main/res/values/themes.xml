@@ -15,22 +15,33 @@
         <item name="android:navigationBarColor">@color/black</item>
     </style>
 
-    <style name="BaseHeadline" parent="TextAppearance.AppCompat.Headline">
+    <style name="Headline.Base" parent="TextAppearance.AppCompat.Headline">
         <item name="android:fontFamily">@font/inter_extrabold</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Text.Headline.MovieDetails" parent="BaseHeadline">
+    <style name="Headline.MovieDetails" parent="Headline.Base">
         <item name="android:paddingTop">26dp</item>
         <item name="android:paddingBottom">16dp</item>
     </style>
 
-    <style name="Text.Headline.MainFragment" parent="Text.Headline.MovieDetails">
+    <style name="Headline.MainFragment" parent="Headline.MovieDetails">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginEnd">16dp</item>
     </style>
 
-    <style name="Text.MovieNameHeadline.MovieDetails." parent="Text.Headline.MovieDetails">
+    <style name="Headline.MovieDetails.MovieName" parent="Headline.MovieDetails">
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="Text.RatingSection.Small" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@color/text_rating_section_small</item>
+    </style>
+
+    <style name="Text.RatingSection.Rating" parent="Headline.Base">
+        <item name="android:textSize">44sp</item>
         <item name="android:textAlignment">center</item>
     </style>
 

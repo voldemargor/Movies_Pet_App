@@ -28,20 +28,25 @@ class Utils {
         fun getRatingRounded(value: Double?): String {
             val rating = value ?: 0.0
             val rounded = round(rating * 10) / 10
-            //if (rating == 0.0) return "—"
             return rounded.toString()
         }
 
         fun getRatingBgColor(rating: String): Int {
             if (rating.toFloat() >= 7)
-                return R.color.rating_bg_positive
-            return R.color.rating_bg_neutral
+                return R.color.bg_rating_positive
+            return R.color.bg_rating_neutral
         }
 
         fun getRatingTextColor(context: Context, rating: String): Int {
             if (rating.toFloat() >= 7)
-                return ContextCompat.getColor(context, R.color.rating_bg_positive)
-            return ContextCompat.getColor(context, R.color.rating_text_neutral)
+                return ContextCompat.getColor(context, R.color.text_rating_positive)
+            return ContextCompat.getColor(context, R.color.text_rating_neutral)
+        }
+
+        fun getRatingHeaderSectionTextColor(context: Context, rating: String): Int {
+            if (rating.toFloat() >= 7)
+                return ContextCompat.getColor(context, R.color.text_rating_positive)
+            return ContextCompat.getColor(context, R.color.white)
         }
 
         fun getVotesInKilos(votes: Votes): String {

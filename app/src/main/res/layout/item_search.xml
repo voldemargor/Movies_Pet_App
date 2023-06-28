@@ -60,7 +60,7 @@
         android:paddingTop="0dp"
         android:paddingEnd="8dp"
         android:paddingBottom="2dp"
-        android:textColor="@color/rating_bg_positive"
+        android:textColor="@color/bg_rating_positive"
         android:textSize="11sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

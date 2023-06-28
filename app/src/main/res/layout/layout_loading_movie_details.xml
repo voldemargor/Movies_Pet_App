@@ -38,7 +38,7 @@
         android:layout_width="210dp"
         android:layout_height="300dp"
         android:layout_margin="0dp"
-        android:background="@color/rating_bg_neutral"
+        android:background="@color/bg_rating_neutral"
         app:layout_constraintBottom_toBottomOf="@+id/ivPosterBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
