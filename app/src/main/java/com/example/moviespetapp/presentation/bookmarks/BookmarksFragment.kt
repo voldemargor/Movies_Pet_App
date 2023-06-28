@@ -39,11 +39,13 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        //navigator().log("BookmarksFragment: onCreateView()")
         _binding = FragmentMoviesListScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //navigator().log("BookmarksFragment: onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadMovies()
         setupRecyclerView()
@@ -53,6 +55,7 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onResume() {
         super.onResume()
+        //navigator().log("BookmarksFragment: onResume()")
         setScreenTitle()
     }
 
@@ -94,11 +97,41 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //navigator().log("BookmarksFragment: onDestroyView()")
         _binding = null
+        viewModel.reset()
     }
 
     companion object {
         fun newInstance() = BookmarksFragment()
     }
 
+    //override fun onAttach(context: Context) {
+    //    super.onAttach(context)
+    //    navigator().log("BookmarksFragment: onAttach()")
+    //}
+    //override fun onCreate(savedInstanceState: Bundle?) {
+    //    super.onCreate(savedInstanceState)
+    //    navigator().log("BookmarksFragment: onCreate()")
+    //}
+    //override fun onStart() {
+    //    super.onStart()
+    //    navigator().log("BookmarksFragment: onStart()")
+    //}
+    //override fun onPause() {
+    //    super.onPause()
+    //    navigator().log("BookmarksFragment: onPause()")
+    //}
+    //override fun onStop() {
+    //    super.onStop()
+    //    navigator().log("BookmarksFragment: onStop()")
+    //}
+    //override fun onDestroy() {
+    //    super.onDestroy()
+    //    navigator().log("BookmarksFragment: onDestroy()")
+    //}
+    //override fun onDetach() {
+    //    super.onDetach()
+    //    navigator().log("BookmarksFragment: onDetach()")
+    //}
 }

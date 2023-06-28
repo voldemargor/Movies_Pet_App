@@ -1,6 +1,5 @@
 package com.example.moviespetapp.presentation.movieslist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,7 +28,7 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
     val jobStatus: LiveData<JobStatus> get() = _JobStatus
 
     // Pagination
-    private var apiPage = 1
+    private var queryPage = 1
     private var allMovies = mutableListOf<Movie>()
 
     fun loadMovies(genreName: String) {
@@ -40,7 +39,7 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             val loadingResult =
-                getMoviesByGenreUseCase.getMovies(genreName, apiPage)
+                getMoviesByGenreUseCase.getMovies(genreName, queryPage)
             withContext(Dispatchers.Main) { extractData(loadingResult) }
         }
     }
@@ -48,7 +47,7 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
     private fun extractData(loadingResult: DataLoadingResult) {
         when (loadingResult) {
             is Success<*> -> {
-                apiPage++
+                queryPage++
                 allMovies.addAll(loadingResult.data as List<Movie>)
                 _JobStatus.value = Result(allMovies.toList())
             }

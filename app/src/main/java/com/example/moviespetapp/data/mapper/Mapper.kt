@@ -131,6 +131,11 @@ object Mapper {
             Genre("церемония"),
             Genre("игра"),
             Genre("фильм-нуар"),
+            Genre("криминал"),
+            Genre("драма"),
+            Genre("биография"),
+            Genre("мюзикл"),
+            Genre("документальный"),
         )
         return listEntityFull.minus(listToRemove.toSet())
     }

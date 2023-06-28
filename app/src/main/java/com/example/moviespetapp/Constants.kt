@@ -15,7 +15,24 @@ class Constants {
         const val QUERY_RATING_GENRE_MOVIES = "5-10"
         const val ITEMS_BEFORE_CALL_REACH_END = 6
         const val ITEMS_COUNT_FOR_MAIN_SCREEN = 20
-        const val SPLASH_SCREEN_OFF_DURATION = 400L
+
+        val QUERY_SELECT_FIELDS = arrayOf(
+            "id",
+            "name",
+            "alternativeName",
+            "description",
+            "shortDescription",
+            "year",
+            "poster",
+            "rating",
+            "videos",
+            "genres",
+            "votes",
+            "countries",
+            "movieLength",
+            "ageRating",
+            "similarMovies",
+        )
 
     }
 

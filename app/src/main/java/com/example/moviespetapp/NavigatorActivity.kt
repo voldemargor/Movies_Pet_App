@@ -208,8 +208,8 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
                 androidx.appcompat.R.anim.abc_fade_in,
                 androidx.appcompat.R.anim.abc_fade_out
             )
-            .replace(R.id.fragmentContainer, fragment, tag)
             .setReorderingAllowed(true)
+            .replace(R.id.fragmentContainer, fragment, tag)
             .addToBackStack(tag)
             .commit()
     }

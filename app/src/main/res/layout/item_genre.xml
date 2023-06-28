@@ -11,7 +11,7 @@
     android:paddingEnd="10dp"
     android:paddingBottom="7dp"
     android:textColor="@color/text_genre_item"
-    android:textSize="13sp"
+    android:textSize="15sp"
     tools:text="Комедия">
 
 </TextView>
