@@ -86,6 +86,9 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
         viewModel.showEmptyState.observe(viewLifecycleOwner) {
             binding.layoutBookmarksEmptyState.root.visibility = View.VISIBLE
         }
+        viewModel.hasException.observe(viewLifecycleOwner) {
+            navigator().showExceptionDialog(it)
+        }
     }
 
     private fun setListeners() {
@@ -97,7 +100,6 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        //navigator().log("BookmarksFragment: onDestroyView()")
         _binding = null
         viewModel.reset()
     }
@@ -106,32 +108,4 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
         fun newInstance() = BookmarksFragment()
     }
 
-    //override fun onAttach(context: Context) {
-    //    super.onAttach(context)
-    //    navigator().log("BookmarksFragment: onAttach()")
-    //}
-    //override fun onCreate(savedInstanceState: Bundle?) {
-    //    super.onCreate(savedInstanceState)
-    //    navigator().log("BookmarksFragment: onCreate()")
-    //}
-    //override fun onStart() {
-    //    super.onStart()
-    //    navigator().log("BookmarksFragment: onStart()")
-    //}
-    //override fun onPause() {
-    //    super.onPause()
-    //    navigator().log("BookmarksFragment: onPause()")
-    //}
-    //override fun onStop() {
-    //    super.onStop()
-    //    navigator().log("BookmarksFragment: onStop()")
-    //}
-    //override fun onDestroy() {
-    //    super.onDestroy()
-    //    navigator().log("BookmarksFragment: onDestroy()")
-    //}
-    //override fun onDetach() {
-    //    super.onDetach()
-    //    navigator().log("BookmarksFragment: onDetach()")
-    //}
 }

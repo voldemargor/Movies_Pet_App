@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.TextView.OnEditorActionListener
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -110,6 +109,9 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
         }
         viewModel.foundNothing.observe(viewLifecycleOwner) {
             if (it) binding.layoutSearchFoundNothing.root.visibility = View.VISIBLE
+        }
+        viewModel.hasException.observe(viewLifecycleOwner) {
+            navigator().showExceptionDialog(it)
         }
     }
 

@@ -1,8 +1,7 @@
 package com.example.moviespetapp.di
 
 import android.content.Context
-import android.content.SharedPreferences
-import com.example.moviespetapp.App
+import com.example.moviespetapp.ThisApp
 import com.example.moviespetapp.data.network.ApiService
 import com.example.moviespetapp.Constants
 import dagger.Module
@@ -43,8 +42,8 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun provideApplication(@ApplicationContext app: Context): App {
-        return app as App
+    fun provideApplication(@ApplicationContext app: Context): ThisApp {
+        return app as ThisApp
     }
 
 }

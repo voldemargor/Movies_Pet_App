@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityNavigatorBinding
+import com.example.moviespetapp.databinding.DialogExceptionBinding
+import com.example.moviespetapp.presentation.ExceptionDialog
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
@@ -174,7 +178,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     private fun setBottomNavListener() {
-        binding.bottomNav.setOnItemSelectedListener() {
+        binding.bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.navItemFirstScreen -> displayMainScreen()
                 R.id.navItemBookmark -> displayBookmarksScreen()
@@ -225,8 +229,16 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
+    override fun showExceptionDialog(message: String) {
+        ExceptionDialog.newInstance(message).show(supportFragmentManager, ExceptionDialog.TAG)
+    }
+
     override fun log(message: String) {
         Log.d("mylog", message)
+    }
+
+    override fun finish() {
+        finish()
     }
 
 }

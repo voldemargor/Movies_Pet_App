@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="orange">#FC5503</color>
+    <color name="button_orange">#EA4D00</color>
     <color name="bottom_nav_unchecked">#979797</color>
 
     <color name="bg_rating_positive">#39C53F</color>

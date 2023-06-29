@@ -11,6 +11,7 @@ import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.ExceptionViewModel
 import com.example.moviespetapp.presentation.JobStatus
 import com.example.moviespetapp.presentation.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
+class MoviesListScreenViewModel @Inject constructor() : ExceptionViewModel() {
 
     @Inject lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
 
@@ -37,7 +38,7 @@ class MoviesListScreenViewModel @Inject constructor() : ViewModel() {
 
         _JobStatus.value = Loading
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val loadingResult =
                 getMoviesByGenreUseCase.getMovies(genreName, queryPage)
             withContext(Dispatchers.Main) { extractData(loadingResult) }

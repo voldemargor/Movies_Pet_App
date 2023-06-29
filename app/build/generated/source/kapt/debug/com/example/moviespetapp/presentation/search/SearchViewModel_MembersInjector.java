@@ -1,6 +1,6 @@
 package com.example.moviespetapp.presentation.search;
 
-import com.example.moviespetapp.App;
+import com.example.moviespetapp.ThisApp;
 import com.example.moviespetapp.domain.usecase.GetMoviesBySearchUseCase;
 import dagger.MembersInjector;
 import dagger.internal.DaggerGenerated;
@@ -22,18 +22,18 @@ import javax.inject.Provider;
 public final class SearchViewModel_MembersInjector implements MembersInjector<SearchViewModel> {
   private final Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider;
 
-  private final Provider<App> contextProvider;
+  private final Provider<ThisApp> contextProvider;
 
   public SearchViewModel_MembersInjector(
       Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider,
-      Provider<App> contextProvider) {
+      Provider<ThisApp> contextProvider) {
     this.getMoviesBySearchUseCaseProvider = getMoviesBySearchUseCaseProvider;
     this.contextProvider = contextProvider;
   }
 
   public static MembersInjector<SearchViewModel> create(
       Provider<GetMoviesBySearchUseCase> getMoviesBySearchUseCaseProvider,
-      Provider<App> contextProvider) {
+      Provider<ThisApp> contextProvider) {
     return new SearchViewModel_MembersInjector(getMoviesBySearchUseCaseProvider, contextProvider);
   }
 
@@ -50,7 +50,7 @@ public final class SearchViewModel_MembersInjector implements MembersInjector<Se
   }
 
   @InjectedFieldSignature("com.example.moviespetapp.presentation.search.SearchViewModel.context")
-  public static void injectContext(SearchViewModel instance, App context) {
+  public static void injectContext(SearchViewModel instance, ThisApp context) {
     instance.context = context;
   }
 }

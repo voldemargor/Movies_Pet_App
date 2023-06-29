@@ -26,8 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack {
 
     private var _binding: FragmentMainBinding? = null
-    private val binding: FragmentMainBinding
-        get() = _binding ?: throw RuntimeException("FragmentMainBinding is null")
+    private val binding get() = _binding ?: throw RuntimeException("FragmentMainBinding is null")
 
     private val viewModel by viewModels<MainFragmentViewModel>()
     private lateinit var adapters: MainFragmentAdapters
@@ -43,7 +42,8 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -82,6 +82,9 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
         viewModel.displayLoader.observe(viewLifecycleOwner) {
             if (it) binding.pbLoading.visibility = View.VISIBLE
             else binding.pbLoading.visibility = View.GONE
+        }
+        viewModel.hasException.observe(viewLifecycleOwner) {
+            navigator().showExceptionDialog(it)
         }
         viewModel.newMovies.observe(viewLifecycleOwner) {
             if (it is DataLoadingResult.Success<*>)
@@ -124,7 +127,8 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
                     layoutInflater.inflate(
                         R.layout.item_genre,
                         binding.layoutGenresGroup,
-                        false)
+                        false
+                    )
                 itemView.findViewById<TextView?>(R.id.tvGenreItem).text =
                     genre.name.replaceFirstChar { it.uppercase() }
                 itemView.id = generateViewId()

@@ -2,7 +2,6 @@ package com.example.moviespetapp.presentation.mainscreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.entity.Genre
@@ -15,29 +14,50 @@ import com.example.moviespetapp.domain.usecase.GetMainScreenNewMoviesUseCase
 import com.example.moviespetapp.domain.usecase.GetMainScreenPopularMoviesUseCase
 import com.example.moviespetapp.domain.usecase.GetMainScreenSoonMoviesUseCase
 import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
+import com.example.moviespetapp.presentation.ExceptionViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MainFragmentViewModel @Inject constructor() : ViewModel() {
+class MainFragmentViewModel @Inject constructor() : ExceptionViewModel() {
 
-    @Inject lateinit var getGenresUseCase: GetGenresUseCase
-    @Inject lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
-    @Inject lateinit var getMainScreenNewMoviesUseCase: GetMainScreenNewMoviesUseCase
-    @Inject lateinit var getMainScreenSoonMoviesUseCase: GetMainScreenSoonMoviesUseCase
-    @Inject lateinit var getMainScreenPopularMoviesUseCase: GetMainScreenPopularMoviesUseCase
-    @Inject lateinit var getMainScreenFictionMoviesUseCase: GetMainScreenFictionMoviesUseCase
-    @Inject lateinit var getMainScreenComedyMoviesUseCase: GetMainScreenComedyMoviesUseCase
-    @Inject lateinit var getMainScreenHorrorMoviesUseCase: GetMainScreenHorrorMoviesUseCase
-    @Inject lateinit var getMainScreenKidMoviesUseCase: GetMainScreenKidMoviesUseCase
+    @Inject
+    lateinit var getGenresUseCase: GetGenresUseCase
+
+    @Inject
+    lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
+
+    @Inject
+    lateinit var getMainScreenNewMoviesUseCase: GetMainScreenNewMoviesUseCase
+
+    @Inject
+    lateinit var getMainScreenSoonMoviesUseCase: GetMainScreenSoonMoviesUseCase
+
+    @Inject
+    lateinit var getMainScreenPopularMoviesUseCase: GetMainScreenPopularMoviesUseCase
+
+    @Inject
+    lateinit var getMainScreenFictionMoviesUseCase: GetMainScreenFictionMoviesUseCase
+
+    @Inject
+    lateinit var getMainScreenComedyMoviesUseCase: GetMainScreenComedyMoviesUseCase
+
+    @Inject
+    lateinit var getMainScreenHorrorMoviesUseCase: GetMainScreenHorrorMoviesUseCase
+
+    @Inject
+    lateinit var getMainScreenKidMoviesUseCase: GetMainScreenKidMoviesUseCase
 
     private val _displayLoader = MutableLiveData<Boolean>()
     val displayLoader: LiveData<Boolean> get() = _displayLoader
+
+    //private val _hasException = MutableLiveData<String>()
+    //val hasException: LiveData<String> get() = _hasException
 
     private val _genres = MutableLiveData<List<Genre>>()
     val genres: LiveData<List<Genre>> get() = _genres
@@ -63,41 +83,45 @@ class MainFragmentViewModel @Inject constructor() : ViewModel() {
     private val _kidMovies = MutableLiveData<DataLoadingResult>()
     val kidMovies: LiveData<DataLoadingResult> get() = _kidMovies
 
+    //private val exceptionHandler = CoroutineExceptionHandler() { _, throwable ->
+    //    viewModelScope.launch(Dispatchers.Main) { _hasException.value = throwable.message }
+    //}
+
     fun loadSectionsData() {
 
         // А ВОТ ТЕПЕРЬ ЭТО РАЗНЫЕ ДЖОБЫ ПАРАЛЛЕЛЬНО !!!!
 
         val jobs = mutableListOf<Job>()
 
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val genres = getGenresUseCase.getGenres()
             withContext(Dispatchers.Main) { _genres.value = genres }
         })
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val newMovies = getMainScreenNewMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _newMovies.value = newMovies }
         })
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val soonMovies = getMainScreenSoonMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _soonMovies.value = soonMovies }
         })
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val popularMovies = getMainScreenPopularMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _popularMovies.value = popularMovies }
         })
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val fictionMovies = getMainScreenFictionMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _fictionMovies.value = fictionMovies }
         })
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val comedyMovies = getMainScreenComedyMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _comedyMovies.value = comedyMovies }
         })
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val horrorMovies = getMainScreenHorrorMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _horrorMovies.value = horrorMovies }
         })
-        jobs.add(viewModelScope.launch(Dispatchers.IO) {
+        jobs.add(viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val kidMovies = getMainScreenKidMoviesUseCase.getMovies()
             withContext(Dispatchers.Main) { _kidMovies.value = kidMovies }
         })
@@ -106,7 +130,6 @@ class MainFragmentViewModel @Inject constructor() : ViewModel() {
             _displayLoader.value = true
             for (job in jobs) job.join()
             _displayLoader.value = false
-            delay(1200)
         }
     }
 

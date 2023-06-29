@@ -13,6 +13,7 @@ import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.GetBookedMoviesUseCase
 import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.ExceptionViewModel
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.JobStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class BookmarksViewModel @Inject constructor() : ViewModel() {
+class BookmarksViewModel @Inject constructor() : ExceptionViewModel() {
 
     @Inject
     lateinit var getBookedMoviesUseCase: GetBookedMoviesUseCase
@@ -58,7 +59,7 @@ class BookmarksViewModel @Inject constructor() : ViewModel() {
 
         Log.d("mylog", "BookmarksViewModel: loadMovies() 2")
 
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
             val loadingResult =
                 getBookedMoviesUseCase.getMovies(bookmarkService.bookedIDs, queryPage)
             withContext(Dispatchers.Main) { extractData(loadingResult) }

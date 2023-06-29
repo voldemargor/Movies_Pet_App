@@ -1,13 +1,10 @@
 package com.example.moviespetapp.presentation.contract
 
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 
 fun Fragment.navigator(): Navigator {
     return requireActivity() as Navigator
 }
-
-
 
 interface Navigator {
 
@@ -25,7 +22,12 @@ interface Navigator {
 
     fun setScreenTitle(title: String)
 
+    fun showExceptionDialog(message: String)
+
     fun toast(message: String)
 
     fun log(message: String)
+
+    fun finish()
+
 }

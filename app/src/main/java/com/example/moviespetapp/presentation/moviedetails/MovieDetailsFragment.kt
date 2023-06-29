@@ -85,6 +85,9 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
             if (it) displayLoading()
             else hideLoading()
         }
+        viewModel.hasException.observe(viewLifecycleOwner) {
+            navigator().showExceptionDialog(it)
+        }
     }
 
     private fun buildHeaderSection() {

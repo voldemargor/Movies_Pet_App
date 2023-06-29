@@ -9,6 +9,7 @@ import com.example.moviespetapp.domain.usecase.AddBookmarkUseCase
 import com.example.moviespetapp.domain.usecase.GetMovieDetailsUseCase
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.RemoveBookmarkUseCase
+import com.example.moviespetapp.presentation.ExceptionViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -17,12 +18,16 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieDetailsViewModel @Inject constructor() : ViewModel() {
+class MovieDetailsViewModel @Inject constructor() : ExceptionViewModel() {
 
-    @Inject lateinit var bookmarkService: BookmarkService
-    @Inject lateinit var getMovieDetailsUseCase: GetMovieDetailsUseCase
-    @Inject lateinit var addBookmarkUseCase: AddBookmarkUseCase
-    @Inject lateinit var removeBookmarkUseCase: RemoveBookmarkUseCase
+    @Inject
+    lateinit var bookmarkService: BookmarkService
+    @Inject
+    lateinit var getMovieDetailsUseCase: GetMovieDetailsUseCase
+    @Inject
+    lateinit var addBookmarkUseCase: AddBookmarkUseCase
+    @Inject
+    lateinit var removeBookmarkUseCase: RemoveBookmarkUseCase
     private lateinit var movie: Movie
 
     private val _currentMovie = MutableLiveData<Movie>()
@@ -32,19 +37,19 @@ class MovieDetailsViewModel @Inject constructor() : ViewModel() {
     val isBookmark: LiveData<Boolean> get() = _isBookmark
 
     private val _displayLoader = MutableLiveData<Boolean>()
-    val displayLoader:LiveData<Boolean> get() = _displayLoader
+    val displayLoader: LiveData<Boolean> get() = _displayLoader
 
     fun loadMovieData(movieId: Int?) {
         movieId ?: throw RuntimeException("movieId is Null")
         _displayLoader.value = true
-        viewModelScope.launch {
-            val movie = withContext(Dispatchers.IO) {
-                getMovieDetailsUseCase.getMovie(movieId)
+        viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
+            val movie = getMovieDetailsUseCase.getMovie(movieId)
+            withContext(Dispatchers.Main) {
+                this@MovieDetailsViewModel.movie = movie
+                _currentMovie.value = movie
+                _isBookmark.value = bookmarkService.hasBookmark(movie.id)
+                _displayLoader.value = false
             }
-            this@MovieDetailsViewModel.movie = movie
-            _currentMovie.value = movie
-            _isBookmark.value = bookmarkService.hasBookmark(movie.id)
-            _displayLoader.value = false
         }
     }
 

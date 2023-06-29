@@ -2,14 +2,14 @@ package com.example.moviespetapp.data.sharedprefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.moviespetapp.App
+import com.example.moviespetapp.ThisApp
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class BookmarkService @Inject constructor(
 
-    private val context: App
+    private val context: ThisApp
 
 ) {
 
