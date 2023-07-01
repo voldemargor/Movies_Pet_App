@@ -13,16 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentSearchBinding
-import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
-import com.example.moviespetapp.presentation.MovieDetails
+import com.example.moviespetapp.presentation.Loading
+import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.Utils.Companion.hideKeyboard
 import com.example.moviespetapp.presentation.Utils.Companion.showKeyboard
 import com.example.moviespetapp.presentation.contract.BottomNavItem
-import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.GetFromBackstack
+import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +47,11 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
     override fun getBottomNavItemId(): Int = R.id.navItemSearch
 
     override fun getFragmentTag() = FRAGMENT_TAG
+
+    override fun handleRepeatedBottomMenuClick() {
+        binding.rvMovies.smoothScrollToPosition(0)
+        binding.etSearch.showKeyboard()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -130,7 +135,7 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
             viewModel.resetToDefault()
         }
         binding.rvMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            // Убрать клаву чтобы не закрывала результаты
+            // Убрать клаву чтобы не закрывать результаты
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 binding.etSearch.hideKeyboard()
@@ -154,9 +159,7 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
     }
 
     companion object {
-
         val FRAGMENT_TAG = SearchFragment::class.simpleName.toString()
-
         fun newInstance() = SearchFragment()
     }
 

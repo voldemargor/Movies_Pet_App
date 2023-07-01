@@ -13,9 +13,8 @@ import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.Loading
-import com.example.moviespetapp.presentation.MovieDetails
+import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.Result
-import com.example.moviespetapp.presentation.Screen
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
@@ -38,16 +37,16 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun getBottomNavItemId(): Int = R.id.navItemBookmark
 
+    override fun handleRepeatedBottomMenuClick() = binding.rvMovies.smoothScrollToPosition(0)
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        //navigator().log("BookmarksFragment: onCreateView()")
         _binding = FragmentMoviesListScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //navigator().log("BookmarksFragment: onViewCreated()")
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadMovies()
         setupRecyclerView()
@@ -57,7 +56,6 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun onResume() {
         super.onResume()
-        //navigator().log("BookmarksFragment: onResume()")
         setScreenTitle()
     }
 

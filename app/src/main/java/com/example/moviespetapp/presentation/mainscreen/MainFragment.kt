@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.generateViewId
 import android.view.ViewGroup
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.fragment.app.Fragment
@@ -15,8 +16,8 @@ import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMainBinding
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.presentation.MovieDetails
-import com.example.moviespetapp.presentation.MoviesList
+import com.example.moviespetapp.presentation.contract.MovieDetails
+import com.example.moviespetapp.presentation.contract.MoviesList
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.GetFromBackstack
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
@@ -41,6 +42,10 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
     override fun getBottomNavItemId(): Int = R.id.navItemFirstScreen
 
     override fun getFragmentTag() = FRAGMENT_TAG
+
+    override fun handleRepeatedBottomMenuClick() {
+        binding.svMainScreen.fullScroll(ScrollView.FOCUS_UP)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -168,6 +173,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
         }
         return flow
     }
+
 
     companion object {
 

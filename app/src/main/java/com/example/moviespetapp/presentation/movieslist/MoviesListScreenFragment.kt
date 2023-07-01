@@ -12,7 +12,7 @@ import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.Loading
-import com.example.moviespetapp.presentation.MovieDetails
+import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle

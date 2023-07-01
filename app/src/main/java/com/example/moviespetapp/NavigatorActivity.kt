@@ -19,12 +19,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityNavigatorBinding
-import com.example.moviespetapp.presentation.Bookmarks
-import com.example.moviespetapp.presentation.Main
-import com.example.moviespetapp.presentation.MovieDetails
-import com.example.moviespetapp.presentation.MoviesList
-import com.example.moviespetapp.presentation.Screen
-import com.example.moviespetapp.presentation.Search
+import com.example.moviespetapp.presentation.contract.Bookmarks
+import com.example.moviespetapp.presentation.contract.Main
+import com.example.moviespetapp.presentation.contract.MovieDetails
+import com.example.moviespetapp.presentation.contract.MoviesList
+import com.example.moviespetapp.presentation.contract.Screen
+import com.example.moviespetapp.presentation.contract.Search
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.GetFromBackstack
@@ -207,7 +207,11 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     private fun screenTransaction(newFragment: Fragment) {
-        if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) return
+        if (currentFragment != null && isDoubleBottomNavClick(newFragment)) {
+            if (currentFragment is BottomNavItem)
+                (currentFragment as BottomNavItem).handleRepeatedBottomMenuClick()
+            return
+        }
         // TODO При повторном клике нужно скроллить наверх
 
         if (!hasInternetConnection()) {
@@ -243,7 +247,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private fun isDoubleBottomNavClick(fragment: Fragment): Boolean {
         if (currentFragment is BottomNavItem && fragment !is BottomNavItem) return false
         if (currentFragment !is BottomNavItem && fragment is BottomNavItem) return false
-        if (fragment is BottomNavItem && fragment == currentFragment) return true
+        if (fragment is BottomNavItem && fragment::class == currentFragment!!::class) return true
         return false
     }
 

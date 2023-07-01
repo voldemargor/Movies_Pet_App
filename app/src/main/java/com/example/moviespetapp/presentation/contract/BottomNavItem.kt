@@ -7,4 +7,6 @@ interface BottomNavItem {
     @IdRes
     fun getBottomNavItemId() : Int
 
+    fun handleRepeatedBottomMenuClick()
+
 }

@@ -22,7 +22,7 @@ import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.entity.MovieSimilar
 import com.example.moviespetapp.domain.entity.Rating
 import com.example.moviespetapp.domain.entity.Votes
-import com.example.moviespetapp.presentation.MovieDetails
+import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.Utils
 import com.example.moviespetapp.presentation.Utils.Companion.loadBlurredImage
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage
