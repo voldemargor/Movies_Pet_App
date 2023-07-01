@@ -20,14 +20,11 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor() : ExceptionViewModel() {
 
-    @Inject
-    lateinit var bookmarkService: BookmarkService
-    @Inject
-    lateinit var getMovieDetailsUseCase: GetMovieDetailsUseCase
-    @Inject
-    lateinit var addBookmarkUseCase: AddBookmarkUseCase
-    @Inject
-    lateinit var removeBookmarkUseCase: RemoveBookmarkUseCase
+    @Inject lateinit var bookmarkService: BookmarkService
+    @Inject lateinit var getMovieDetailsUseCase: GetMovieDetailsUseCase
+    @Inject lateinit var addBookmarkUseCase: AddBookmarkUseCase
+    @Inject lateinit var removeBookmarkUseCase: RemoveBookmarkUseCase
+
     private lateinit var movie: Movie
 
     private val _currentMovie = MutableLiveData<Movie>()

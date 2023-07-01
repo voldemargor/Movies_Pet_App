@@ -2,6 +2,8 @@ package com.example.moviespetapp.di
 
 import com.example.moviespetapp.data.RepositoryImpl
 import com.example.moviespetapp.data.TempRepositoryImpl
+import com.example.moviespetapp.data.network.ConnectivityObserver
+import com.example.moviespetapp.data.network.NetworkConnectivityObserver
 import com.example.moviespetapp.domain.Repository
 import dagger.Binds
 import dagger.Module
@@ -15,5 +17,7 @@ abstract class RepositoryModule {
     @Binds
     //abstract fun bindRepository(repository: TempRepositoryImpl): Repository
     abstract fun bindRepository(repository: RepositoryImpl): Repository
+
+
 
 }

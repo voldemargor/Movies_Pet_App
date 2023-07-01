@@ -21,27 +21,17 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
-
-    @Provides
-    fun baseUrl() = Constants.BASE_URL
-
-    @Provides
-    fun logging() = HttpLoggingInterceptor()
-        .setLevel(HttpLoggingInterceptor.Level.BODY)
-
-    @Provides
-    fun okHttpClient() = OkHttpClient.Builder()
-        .addInterceptor(logging())
-        .build()
+object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(baseUrl: String): ApiService = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(okHttpClient())
-        .build()
-        .create(ApiService::class.java)
+    fun provideApplication(@ApplicationContext app: Context): ThisApp {
+        return app as ThisApp
+    }
+
+    @Provides
+    @Singleton
+    fun provideConnectivityObserver(@ApplicationContext context: Context) =
+        NetworkConnectivityObserver(context)
 
 }

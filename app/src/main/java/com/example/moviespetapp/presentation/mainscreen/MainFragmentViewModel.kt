@@ -26,32 +26,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainFragmentViewModel @Inject constructor() : ExceptionViewModel() {
 
-    @Inject
-    lateinit var getGenresUseCase: GetGenresUseCase
-
-    @Inject
-    lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
-
-    @Inject
-    lateinit var getMainScreenNewMoviesUseCase: GetMainScreenNewMoviesUseCase
-
-    @Inject
-    lateinit var getMainScreenSoonMoviesUseCase: GetMainScreenSoonMoviesUseCase
-
-    @Inject
-    lateinit var getMainScreenPopularMoviesUseCase: GetMainScreenPopularMoviesUseCase
-
-    @Inject
-    lateinit var getMainScreenFictionMoviesUseCase: GetMainScreenFictionMoviesUseCase
-
-    @Inject
-    lateinit var getMainScreenComedyMoviesUseCase: GetMainScreenComedyMoviesUseCase
-
-    @Inject
-    lateinit var getMainScreenHorrorMoviesUseCase: GetMainScreenHorrorMoviesUseCase
-
-    @Inject
-    lateinit var getMainScreenKidMoviesUseCase: GetMainScreenKidMoviesUseCase
+    @Inject lateinit var getGenresUseCase: GetGenresUseCase
+    @Inject lateinit var getMoviesByGenreUseCase: GetMoviesByGenreUseCase
+    @Inject lateinit var getMainScreenNewMoviesUseCase: GetMainScreenNewMoviesUseCase
+    @Inject lateinit var getMainScreenSoonMoviesUseCase: GetMainScreenSoonMoviesUseCase
+    @Inject lateinit var getMainScreenPopularMoviesUseCase: GetMainScreenPopularMoviesUseCase
+    @Inject lateinit var getMainScreenFictionMoviesUseCase: GetMainScreenFictionMoviesUseCase
+    @Inject lateinit var getMainScreenComedyMoviesUseCase: GetMainScreenComedyMoviesUseCase
+    @Inject lateinit var getMainScreenHorrorMoviesUseCase: GetMainScreenHorrorMoviesUseCase
+    @Inject lateinit var getMainScreenKidMoviesUseCase: GetMainScreenKidMoviesUseCase
 
     private val _displayLoader = MutableLiveData<Boolean>()
     val displayLoader: LiveData<Boolean> get() = _displayLoader

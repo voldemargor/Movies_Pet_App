@@ -27,11 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor() : ExceptionViewModel() {
 
-    @Inject
-    lateinit var getMoviesBySearchUseCase: GetMoviesBySearchUseCase
-
-    @Inject
-    lateinit var context: ThisApp
+    @Inject lateinit var getMoviesBySearchUseCase: GetMoviesBySearchUseCase
+    //@Inject lateinit var context: ThisApp
 
     private val _jobStatus = MutableLiveData<JobStatus>()
     val jobStatus: LiveData<JobStatus> get() = _jobStatus

@@ -1,22 +1,26 @@
 package com.example.moviespetapp
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
+import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
+import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityNavigatorBinding
-import com.example.moviespetapp.databinding.DialogExceptionBinding
-import com.example.moviespetapp.presentation.ExceptionDialog
+import com.example.moviespetapp.presentation.dialog.ExceptionDialog
+import com.example.moviespetapp.presentation.dialog.NoInternetDialog
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasBackIcon
@@ -36,6 +40,8 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
     private lateinit var binding: ActivityNavigatorBinding
     private var currentFragment: Fragment? = null
+
+    private lateinit var latestScreenCall: () -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +78,18 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         }
     }
 
+    private fun displayScreen(screen: Int) {}
+    private fun displayScreen(screen: Int, genreName: String) {}
+    private fun displayScreen(screen: Int, movieId: Int, movieName: String) {}
+
     override fun displayMainScreen() {
+        latestScreenCall = { displayMainScreen() }
+
+        if (!hasInternetConnection()) {
+            showNoInternetDialog()
+            return
+        }
+
         val fragment = supportFragmentManager.findFragmentByTag(MainFragment.FRAGMENT_TAG)
         log("MainFragment = $fragment")
 
@@ -96,12 +113,26 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     override fun displayBookmarksScreen() {
+        latestScreenCall = { displayBookmarksScreen() }
+
+        if (!hasInternetConnection()) {
+            showNoInternetDialog()
+            return
+        }
+
         BookmarksFragment.newInstance().also {
             launchFragment(it)
         }
     }
 
     override fun displaySearchScreen() {
+        latestScreenCall = { displaySearchScreen() }
+
+        if (!hasInternetConnection()) {
+            showNoInternetDialog()
+            return
+        }
+
         val fragment = supportFragmentManager.findFragmentByTag(SearchFragment.FRAGMENT_TAG)
         log("SearchFragment = $fragment")
 
@@ -118,6 +149,27 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
 
     override fun setScreenTitle(title: String) {
         supportActionBar?.title = title
+    }
+
+    override fun showExceptionDialog(message: String) {
+        ExceptionDialog.newInstance(message).show(supportFragmentManager, ExceptionDialog.TAG)
+    }
+
+    override fun tryReconnect() {
+        if (hasInternetConnection()) latestScreenCall.invoke()
+        else showNoInternetDialog()
+    }
+
+    override fun log(message: String) {
+        Log.d("mylog", message)
+    }
+
+    override fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun finish() {
+        finish()
     }
 
     private fun displaySplash() {
@@ -193,6 +245,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             override fun onFragmentStarted(fm: FragmentManager, fragment: Fragment) {
                 super.onFragmentStarted(fm, fragment)
                 if (fragment is SupportRequestManagerFragment) return
+                if (fragment is DialogFragment) return
                 updateUI(fragment)
                 currentFragment = fragment
             }
@@ -225,21 +278,24 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         return false
     }
 
-    override fun toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+
+    private fun showNoInternetDialog() {
+        NoInternetDialog.newInstance().show(supportFragmentManager, ExceptionDialog.TAG)
     }
 
-    override fun showExceptionDialog(message: String) {
-        ExceptionDialog.newInstance(message).show(supportFragmentManager, ExceptionDialog.TAG)
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return when {
+            capabilities.hasTransport(TRANSPORT_WIFI) -> true
+            capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
+            capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
     }
 
-    override fun log(message: String) {
-        Log.d("mylog", message)
-    }
-
-    override fun finish() {
-        finish()
-    }
 
 }
 

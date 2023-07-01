@@ -28,4 +28,14 @@
     <string name="search_default_screen">Введите название фильма\nили сериала</string>
     <string name="search_found_nothing">Ничего не нашлось</string>
     <string name="content_description_clear">Clear</string>
+
+    <string name="dialog_exception_title">Ошибка загрузки данных</string>
+    <string name="dialog_exception_text">Попробуйте запустить приложение еще раз</string>
+    <string name="dialog_exception_button">Закрыть</string>
+    <string name="dialog_send_report">Сообщить об ошибке</string>
+
+    <string name="dialog_no_internet_title">Отсутствует соединение с сервером</string>
+    <string name="dialog_no_internet_text">Проверьте ваше соединение и попробуйте еще раз</string>
+    <string name="dialog_no_internet_button">Обновить</string>
+
 </resources>

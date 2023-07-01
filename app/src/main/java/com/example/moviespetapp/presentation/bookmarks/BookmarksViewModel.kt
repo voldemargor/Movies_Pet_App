@@ -25,10 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BookmarksViewModel @Inject constructor() : ExceptionViewModel() {
 
-    @Inject
-    lateinit var getBookedMoviesUseCase: GetBookedMoviesUseCase
-    @Inject
-    lateinit var bookmarkService: BookmarkService
+    @Inject lateinit var getBookedMoviesUseCase: GetBookedMoviesUseCase
+    @Inject lateinit var bookmarkService: BookmarkService
 
     private val _JobStatus = MutableLiveData<JobStatus>()
     val jobStatus: LiveData<JobStatus> get() = _JobStatus

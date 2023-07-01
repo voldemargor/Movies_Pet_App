@@ -14,7 +14,7 @@ open class ExceptionViewModel : ViewModel() {
     val hasException: LiveData<String> get() = _hasException
 
     protected val exceptionHandler = CoroutineExceptionHandler() { _, throwable ->
-        viewModelScope.launch(Dispatchers.Main) { _hasException.value = throwable.message }
+        viewModelScope.launch(Dispatchers.Main) { _hasException.value = throwable.toString() }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.moviespetapp.presentation.contract
 
 import androidx.fragment.app.Fragment
+import com.example.moviespetapp.data.network.ConnectivityObserver
 
 fun Fragment.navigator(): Navigator {
     return requireActivity() as Navigator
@@ -24,10 +25,12 @@ interface Navigator {
 
     fun showExceptionDialog(message: String)
 
+    fun finish()
+
+    fun tryReconnect()
+
     fun toast(message: String)
 
     fun log(message: String)
-
-    fun finish()
 
 }

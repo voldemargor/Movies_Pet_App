@@ -12,12 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="140dp"
         android:adjustViewBounds="true"
-        android:alpha="0.5"
+        android:alpha="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/search_empty_state_icon" />
+        app:srcCompat="@drawable/search_empty_state_icon"
+        app:tint="@color/button_orange" />
 
     <TextView
         android:id="@+id/textView"
@@ -26,7 +27,7 @@
         android:layout_marginTop="20dp"
         android:text="@string/search_default_screen"
         android:textAlignment="center"
-        android:textColor="@color/text_search_empty_hint"
+        android:textColor="@color/text_search_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
