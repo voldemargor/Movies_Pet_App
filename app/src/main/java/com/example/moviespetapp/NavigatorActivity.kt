@@ -45,9 +45,9 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
 
     private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
     private lateinit var binding: ActivityNavigatorBinding
-    private var currentFragment: Fragment? = null
 
-    private lateinit var latestScreenCall: () -> Unit
+    private var currentFragment: Fragment? = null
+    private lateinit var latestCallFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +109,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     override fun tryReconnect() {
-        if (hasInternetConnection()) latestScreenCall.invoke()
+        if (hasInternetConnection()) screenTransaction(latestCallFragment)
         else showNoInternetDialog()
     }
 
@@ -207,8 +207,14 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     private fun screenTransaction(newFragment: Fragment) {
-        if (isDoubleBottomNavClick(newFragment)) return
+        if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) return
         // TODO При повторном клике нужно скроллить наверх
+
+        if (!hasInternetConnection()) {
+            latestCallFragment = newFragment
+            showNoInternetDialog()
+            return
+        }
 
         var backstackInstance: Fragment? = null
 
