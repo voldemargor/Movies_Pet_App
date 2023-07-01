@@ -16,6 +16,7 @@ import com.example.moviespetapp.databinding.FragmentSearchBinding
 import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.MovieDetails
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.Utils.Companion.hideKeyboard
 import com.example.moviespetapp.presentation.Utils.Companion.showKeyboard
@@ -136,7 +137,7 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
             }
         })
         rvAdapter.onMovieClickListener = {
-            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
+            navigator().displayScreen(MovieDetails(it.id, it.name!!))
         }
         binding.etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
             override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {

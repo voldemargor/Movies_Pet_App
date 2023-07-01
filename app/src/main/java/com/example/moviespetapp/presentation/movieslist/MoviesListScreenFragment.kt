@@ -9,9 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
-import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
+import com.example.moviespetapp.presentation.Loading
+import com.example.moviespetapp.presentation.MovieDetails
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
@@ -34,7 +35,8 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
         navigator().setScreenTitle(genreName.replaceFirstChar { it.uppercase() })
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentMoviesListScreenBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -88,7 +90,7 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
 
     private fun setListeners() {
         rvAdapter.onMovieClickListener = {
-            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
+            navigator().displayScreen(MovieDetails(it.id, it.name!!))
         }
         rvAdapter.onReachEndListener = { viewModel.loadMovies(genreName) }
     }

@@ -15,9 +15,11 @@ import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMainBinding
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.presentation.MovieDetails
+import com.example.moviespetapp.presentation.MoviesList
 import com.example.moviespetapp.presentation.contract.BottomNavItem
-import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.GetFromBackstack
+import com.example.moviespetapp.presentation.contract.HasCustomTitle
 import com.example.moviespetapp.presentation.contract.navigator
 import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -133,7 +135,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
                     genre.name.replaceFirstChar { it.uppercase() }
                 itemView.id = generateViewId()
                 itemView.setOnClickListener {
-                    navigator().displayMoviesListScreen(genreName = genre.name)
+                    navigator().displayScreen(MoviesList(genreName = genre.name))
                 }
                 binding.layoutGenresGroup.addView(itemView)
                 flow.addView(itemView)
@@ -146,7 +148,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rv.adapter = adapter
         adapter.onMovieClickListener = {
-            navigator().displayMovieDetailsScreen(it.id, it.name.toString())
+            navigator().displayScreen(MovieDetails(it.id, it.name!!))
         }
     }
 

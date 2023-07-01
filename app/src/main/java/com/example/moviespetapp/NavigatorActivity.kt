@@ -19,13 +19,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityNavigatorBinding
-import com.example.moviespetapp.presentation.dialog.ExceptionDialog
-import com.example.moviespetapp.presentation.dialog.NoInternetDialog
+import com.example.moviespetapp.presentation.Bookmarks
+import com.example.moviespetapp.presentation.Main
+import com.example.moviespetapp.presentation.MovieDetails
+import com.example.moviespetapp.presentation.MoviesList
+import com.example.moviespetapp.presentation.Screen
+import com.example.moviespetapp.presentation.Search
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.BottomNavItem
+import com.example.moviespetapp.presentation.contract.GetFromBackstack
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.Navigator
-import com.example.moviespetapp.presentation.contract.GetFromBackstack
+import com.example.moviespetapp.presentation.dialog.ExceptionDialog
+import com.example.moviespetapp.presentation.dialog.NoInternetDialog
 import com.example.moviespetapp.presentation.mainscreen.MainFragment
 import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
 import com.example.moviespetapp.presentation.movieslist.MoviesListScreenFragment
@@ -51,7 +57,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         setBottomNavListener()
         setFragmentLifecycleListener()
         setBarColors()
-        displayMainScreen()
+        displayScreen(Main())
     }
 
     override fun onDestroy() {
@@ -78,69 +84,16 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun displayScreen(screen: Int) {}
-    private fun displayScreen(screen: Int, genreName: String) {}
-    private fun displayScreen(screen: Int, movieId: Int, movieName: String) {}
+    override fun displayScreen(scr: Screen) {
+        when (scr) {
+            is Main -> screenTransaction(MainFragment.newInstance())
+            is Bookmarks -> screenTransaction(BookmarksFragment.newInstance())
+            is Search -> screenTransaction(SearchFragment.newInstance())
+            is MoviesList -> screenTransaction(MoviesListScreenFragment.newInstance(scr.genreName))
 
-    override fun displayMainScreen() {
-        latestScreenCall = { displayMainScreen() }
-
-        if (!hasInternetConnection()) {
-            showNoInternetDialog()
-            return
+            is MovieDetails ->
+                screenTransaction(MovieDetailsFragment.newInstance(scr.movieId, scr.movieName))
         }
-
-        val fragment = supportFragmentManager.findFragmentByTag(MainFragment.FRAGMENT_TAG)
-        log("MainFragment = $fragment")
-
-        if (fragment == null)
-            MainFragment.newInstance().also { launchFragment(it) }
-        else
-            launchFragment(fragment)
-        //supportFragmentManager.popBackStack(SearchFragment.FRAGMENT_TAG, 0)
-    }
-
-    override fun displayMoviesListScreen(genreName: String) {
-        MoviesListScreenFragment.newInstance(genreName).also {
-            launchFragment(it)
-        }
-    }
-
-    override fun displayMovieDetailsScreen(movieId: Int, movieName: String) {
-        MovieDetailsFragment.newInstance(movieId, movieName).also {
-            launchFragment(it)
-        }
-    }
-
-    override fun displayBookmarksScreen() {
-        latestScreenCall = { displayBookmarksScreen() }
-
-        if (!hasInternetConnection()) {
-            showNoInternetDialog()
-            return
-        }
-
-        BookmarksFragment.newInstance().also {
-            launchFragment(it)
-        }
-    }
-
-    override fun displaySearchScreen() {
-        latestScreenCall = { displaySearchScreen() }
-
-        if (!hasInternetConnection()) {
-            showNoInternetDialog()
-            return
-        }
-
-        val fragment = supportFragmentManager.findFragmentByTag(SearchFragment.FRAGMENT_TAG)
-        log("SearchFragment = $fragment")
-
-        if (fragment == null)
-            SearchFragment.newInstance().also { launchFragment(it) }
-        else
-            launchFragment(fragment)
-        //supportFragmentManager.popBackStack(SearchFragment.FRAGMENT_TAG, 0)
     }
 
     override fun goBack() {
@@ -232,9 +185,9 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private fun setBottomNavListener() {
         binding.bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.navItemFirstScreen -> displayMainScreen()
-                R.id.navItemBookmark -> displayBookmarksScreen()
-                R.id.navItemSearch -> displaySearchScreen()
+                R.id.navItemFirstScreen -> displayScreen(Main())
+                R.id.navItemBookmark -> displayScreen(Bookmarks())
+                R.id.navItemSearch -> displayScreen(Search())
             }
             true
         }
@@ -253,10 +206,20 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleListener, false)
     }
 
-    private fun launchFragment(fragment: Fragment) {
-        if (isDoubleBottomNavClick(fragment)) return
+    private fun screenTransaction(newFragment: Fragment) {
+        if (isDoubleBottomNavClick(newFragment)) return
         // TODO При повторном клике нужно скроллить наверх
 
+        var backstackInstance: Fragment? = null
+
+        if (newFragment is GetFromBackstack) backstackInstance =
+            supportFragmentManager.findFragmentByTag(newFragment.getFragmentTag())
+
+        if (backstackInstance == null) launchFragment(newFragment)
+        else launchFragment(backstackInstance)
+    }
+
+    private fun launchFragment(fragment: Fragment) {
         var tag: String? = null
         if (fragment is GetFromBackstack) tag = fragment.getFragmentTag()
 
@@ -278,7 +241,6 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         return false
     }
 
-
     private fun showNoInternetDialog() {
         NoInternetDialog.newInstance().show(supportFragmentManager, ExceptionDialog.TAG)
     }
@@ -295,7 +257,6 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             else -> false
         }
     }
-
 
 }
 
