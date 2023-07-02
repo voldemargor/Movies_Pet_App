@@ -3,7 +3,6 @@ package com.example.moviespetapp.presentation.bookmarks
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
 import com.example.moviespetapp.domain.DataLoadingResult
@@ -28,8 +27,8 @@ class BookmarksViewModel @Inject constructor() : ExceptionViewModel() {
     @Inject lateinit var getBookedMoviesUseCase: GetBookedMoviesUseCase
     @Inject lateinit var bookmarkService: BookmarkService
 
-    private val _JobStatus = MutableLiveData<JobStatus>()
-    val jobStatus: LiveData<JobStatus> get() = _JobStatus
+    private val _jobStatus = MutableLiveData<JobStatus>()
+    val jobStatus: LiveData<JobStatus> get() = _jobStatus
 
     // Pagination
     private var queryPage = 1
@@ -53,7 +52,7 @@ class BookmarksViewModel @Inject constructor() : ExceptionViewModel() {
         // Если загрузка уже идет, то стартовать новую не нужно
         if (jobStatus.value is Loading) return
 
-        _JobStatus.value = Loading
+        _jobStatus.value = Loading
 
         Log.d("mylog", "BookmarksViewModel: loadMovies() 2")
 
@@ -71,11 +70,11 @@ class BookmarksViewModel @Inject constructor() : ExceptionViewModel() {
                 Log.d("mylog", "BookmarksViewModel: queryPage: $queryPage")
                 queryPage++
                 allMovies.addAll(loadingResult.data as List<Movie>)
-                _JobStatus.value = Result(allMovies.toList())
+                _jobStatus.value = Result(allMovies.toList())
             }
 
             is Failed ->
-                _JobStatus.value = Error(loadingResult.exception.message)
+                _jobStatus.value = Error(loadingResult.exception.message)
         }
     }
 

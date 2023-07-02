@@ -18,20 +18,16 @@ class RepositoryImpl @Inject constructor(
 
     ) : Repository {
 
-    override suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult {
-        apiService.getMoviesByGenre(genres = genreName, page).apply {
-            if (!isSuccessful)
-                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
-        }
+    override suspend fun getMainScreenGenres(): List<Genre> {
+        return Mapper.mapMainScreenListGenreDtoToListEntity(apiService.getGenres())
     }
 
     override suspend fun getMainScreenNewMovies(): DataLoadingResult {
         apiService.getMainScreenNewMovies().apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
             return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
@@ -40,7 +36,8 @@ class RepositoryImpl @Inject constructor(
         apiService.getMainScreenSoonMovies().apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
             return DataLoadingResult.Success(movies.filter { filterIncompleteSoonMovies(it) })
         }
     }
@@ -49,7 +46,8 @@ class RepositoryImpl @Inject constructor(
         apiService.getMainScreenPopularMovies().apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
             return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
@@ -58,7 +56,8 @@ class RepositoryImpl @Inject constructor(
         apiService.getMainScreenFictionMovies().apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
             return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
@@ -67,7 +66,8 @@ class RepositoryImpl @Inject constructor(
         apiService.getMainScreenComedyMovies().apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
             return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
@@ -76,7 +76,8 @@ class RepositoryImpl @Inject constructor(
         apiService.getMainScreenHorrorMovies().apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
             return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
@@ -85,17 +86,19 @@ class RepositoryImpl @Inject constructor(
         apiService.getMainScreenKidMovies().apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
             return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
-    override suspend fun getBookedMovies(ids: Array<String>, page: Int): DataLoadingResult {
-        apiService.getBookedMovies(ids, page).apply {
+    override suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult {
+        apiService.getMoviesByGenre(genres = genreName, page).apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-            val movies = body()?.movies ?: listOf()
-            return DataLoadingResult.Success(movies)
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
+            return DataLoadingResult.Success(movies.filter { filterIncomplete(it) })
         }
     }
 
@@ -103,10 +106,19 @@ class RepositoryImpl @Inject constructor(
         apiService.getMoviesBySearch(request, page).apply {
             if (!isSuccessful)
                 return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
-
             val listDto = body()?.movies
-            val listEntity = Mapper.mapMovieSearchListDtoToListEntity(listDto) ?: listOf()
+            val listEntity = Mapper.mapListMovieSearchDtoToListEntity(listDto) ?: listOf()
             return DataLoadingResult.Success(listEntity.filter { filterSearchResult(it) })
+        }
+    }
+
+    override suspend fun getBookedMovies(ids: Array<String>, page: Int): DataLoadingResult {
+        apiService.getBookedMovies(ids, page).apply {
+            if (!isSuccessful)
+                return DataLoadingResult.Failed(ApiLoadingException("Code ${code()}: ${message()}"))
+            val moviesDto = body()?.movies
+            val movies = Mapper.mapListMovieDtoToListEntity(moviesDto) ?: listOf()
+            return DataLoadingResult.Success(movies)
         }
     }
 
@@ -122,9 +134,6 @@ class RepositoryImpl @Inject constructor(
         bookmarkService.removeBookmark(movie.id)
     }
 
-    override suspend fun getGenres(): List<Genre> {
-        return Mapper.mapGenresListDtoToListEntity(apiService.getGenres())
-    }
 
     private fun filterIncomplete(movie: Movie) = with(movie) {
         poster != null && name != null && description != null && rating != null

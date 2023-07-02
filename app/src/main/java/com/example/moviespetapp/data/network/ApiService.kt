@@ -2,9 +2,9 @@ package com.example.moviespetapp.data.network
 
 import com.example.moviespetapp.data.network.model.GenreDto
 import com.example.moviespetapp.data.network.model.MovieDto
-import com.example.moviespetapp.data.network.model.ResponseMoviesListDto
+import com.example.moviespetapp.data.network.model.ResponseListMovieDto
 import com.example.moviespetapp.Constants
-import com.example.moviespetapp.data.network.model.ResponseSearchResultDto
+import com.example.moviespetapp.data.network.model.ResponseListMovieSearchResultDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -35,7 +35,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.QUERY_PAGE_LIMIT,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getMainScreenNewMovies(
@@ -46,7 +46,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getMainScreenSoonMovies(
@@ -62,7 +62,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = 30,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getMainScreenPopularMovies(
@@ -74,7 +74,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getMainScreenFictionMovies(
@@ -87,7 +87,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getMainScreenComedyMovies(
@@ -100,7 +100,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getMainScreenHorrorMovies(
@@ -113,7 +113,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getMainScreenKidMovies(
@@ -127,7 +127,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.ITEMS_COUNT_FOR_MAIN_SCREEN,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.3/movie")
     suspend fun getBookedMovies(
@@ -136,7 +136,7 @@ interface ApiService {
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.QUERY_PAGE_LIMIT,
         @Query(QUERY_PARAM_SELECT_FIELDS) selectFields: Array<String> = Constants.QUERY_SELECT_FIELDS,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseMoviesListDto>
+    ): Response<ResponseListMovieDto>
 
     @GET("/v1.2/movie/search")
     suspend fun getMoviesBySearch(
@@ -144,7 +144,7 @@ interface ApiService {
         @Query(QUERY_PARAM_PAGE) page: Int,
         @Query(QUERY_PARAM_LIMIT) limit: Int = Constants.QUERY_SEARCH_PAGE_LIMIT,
         @Query(QUERY_PARAM_API_TOKEN) apiToken: String = Constants.API_TOKEN,
-    ): Response<ResponseSearchResultDto>
+    ): Response<ResponseListMovieSearchResultDto>
 
     companion object {
         private const val QUERY_PARAM_API_TOKEN = "token"

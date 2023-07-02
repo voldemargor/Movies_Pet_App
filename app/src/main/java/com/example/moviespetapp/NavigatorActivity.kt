@@ -19,21 +19,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.moviespetapp.databinding.ActivityNavigatorBinding
-import com.example.moviespetapp.presentation.contract.Bookmarks
-import com.example.moviespetapp.presentation.contract.Main
-import com.example.moviespetapp.presentation.contract.MovieDetails
-import com.example.moviespetapp.presentation.contract.MoviesList
-import com.example.moviespetapp.presentation.contract.Screen
-import com.example.moviespetapp.presentation.contract.Search
 import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
-import com.example.moviespetapp.presentation.contract.BottomNavItem
-import com.example.moviespetapp.presentation.contract.GetFromBackstack
-import com.example.moviespetapp.presentation.contract.HasBackIcon
-import com.example.moviespetapp.presentation.contract.Navigator
-import com.example.moviespetapp.presentation.dialog.ExceptionDialog
-import com.example.moviespetapp.presentation.dialog.NoInternetDialog
+import com.example.moviespetapp.presentation.contract.*
+import com.example.moviespetapp.presentation.dialog.*
 import com.example.moviespetapp.presentation.mainscreen.MainFragment
-import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
+ import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
 import com.example.moviespetapp.presentation.movieslist.MoviesListScreenFragment
 import com.example.moviespetapp.presentation.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -207,11 +197,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     private fun screenTransaction(newFragment: Fragment) {
-        if (currentFragment != null && isDoubleBottomNavClick(newFragment)) {
-            if (currentFragment is BottomNavItem)
-                (currentFragment as BottomNavItem).handleRepeatedBottomMenuClick()
-            return
-        }
+        if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) return
         // TODO При повторном клике нужно скроллить наверх
 
         if (!hasInternetConnection()) {
@@ -247,7 +233,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private fun isDoubleBottomNavClick(fragment: Fragment): Boolean {
         if (currentFragment is BottomNavItem && fragment !is BottomNavItem) return false
         if (currentFragment !is BottomNavItem && fragment is BottomNavItem) return false
-        if (fragment is BottomNavItem && fragment::class == currentFragment!!::class) return true
+        if (fragment is BottomNavItem && fragment == currentFragment) return true
         return false
     }
 

@@ -1,38 +1,9 @@
 package com.example.moviespetapp.data.mapper
 
-import com.example.moviespetapp.data.network.model.CountryDto
-import com.example.moviespetapp.data.network.model.GenreDto
-import com.example.moviespetapp.data.network.model.MovieDto
-import com.example.moviespetapp.data.network.model.MovieSearchResultDto
-import com.example.moviespetapp.data.network.model.MovieSimilarDto
-import com.example.moviespetapp.data.network.model.PosterDto
-import com.example.moviespetapp.data.network.model.RatingDto
-import com.example.moviespetapp.data.network.model.TrailerDto
-import com.example.moviespetapp.data.network.model.VotesDto
-import com.example.moviespetapp.domain.entity.Country
-import com.example.moviespetapp.domain.entity.Genre
-import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.domain.entity.MovieSimilar
-import com.example.moviespetapp.domain.entity.Poster
-import com.example.moviespetapp.domain.entity.Rating
-import com.example.moviespetapp.domain.entity.Trailer
-import com.example.moviespetapp.domain.entity.Votes
+import com.example.moviespetapp.data.network.model.*
+import com.example.moviespetapp.domain.entity.*
 
 object Mapper {
-
-    //fun mapEntityToDtoModel(entity: Movie) = MovieInfoDto(
-    //    id = entity.id,
-    //    name = entity.name,
-    //    description = entity.description,
-    //    year = entity.year,
-    //    poster = entity.poster,
-    //    rating = entity.rating
-    //)
-
-    //fun mapEntityToDtoModel(entity: Genre) = GenreDto(
-    //    name = entity.name,
-    //    //slug = entity.slug
-    //)
 
     fun mapDtoToEntity(dto: MovieDto) = Movie(
         id = dto.id,
@@ -43,8 +14,8 @@ object Mapper {
         year = dto.year,
         poster = mapDtoToEntity(dto.poster),
         rating = mapDtoToEntity(dto.rating),
-        trailers = mapTrailersListDtoToListEntity(dto.videos?.trailers),
-        genres = mapGenresListDtoToListEntity(dto.genres ?: listOf()),
+        trailers = mapListTrailerDtoToListEntity(dto.videos?.trailers),
+        genres = mapListGenreDtoToListEntity(dto.genres),
         votes = mapDtoToEntity(dto.votes),
         country = mapDtoToEntity(dto.countries),
         movieLength = dto.movieLength,
@@ -61,7 +32,6 @@ object Mapper {
         if (dto.isNullOrEmpty()) return Country("")
         return Country(name = dto[0].name)
     }
-
 
     private fun mapDtoToEntity(dto: TrailerDto) = Trailer(
         url = dto.url,
@@ -91,15 +61,6 @@ object Mapper {
         poster = mapDtoToEntity(dto.poster)
     )
 
-    //private fun mapDtoToEntity(dto: MovieSearchResultDto) = MovieSearchResult(
-    //    id = dto.id,
-    //    year = dto.year,
-    //    name = dto.name,
-    //    alternativeName = dto.alternativeName,
-    //    poster = dto.poster,
-    //    rating = dto.rating,
-    //)
-
     private fun mapDtoToEntity(dto: MovieSearchResultDto) = Movie(
         id = dto.id,
         year = dto.year,
@@ -118,7 +79,12 @@ object Mapper {
         similarMovies = null
     )
 
-    fun mapGenresListDtoToListEntity(listDto: List<GenreDto>): List<Genre> {
+    fun mapListGenreDtoToListEntity(listDto: List<GenreDto>?): List<Genre>? {
+        listDto ?: return null
+        return listDto.map { mapDtoToEntity(it) }
+    }
+
+    fun mapMainScreenListGenreDtoToListEntity(listDto: List<GenreDto>): List<Genre> {
         val listEntityFull = listDto.map { mapDtoToEntity(it) }
         val listToRemove = listOf(
             Genre("для взрослых"),
@@ -140,21 +106,20 @@ object Mapper {
         return listEntityFull.minus(listToRemove.toSet())
     }
 
-    fun mapMovieSearchListDtoToListEntity(listDto: List<MovieSearchResultDto>?): List<Movie>? {
+    fun mapListMovieDtoToListEntity(listDto: List<MovieDto>?): List<Movie>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
 
-    fun mapBookedListDtoToListEntity(listDto: List<MovieDto>?): List<Movie>? {
+    fun mapListMovieSearchDtoToListEntity(listDto: List<MovieSearchResultDto>?): List<Movie>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
 
-    private fun mapTrailersListDtoToListEntity(listDto: List<TrailerDto>?): List<Trailer>? {
+    private fun mapListTrailerDtoToListEntity(listDto: List<TrailerDto>?): List<Trailer>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
 
     private fun mapSimilarMoviesDtoToListEntity(listDto: List<MovieSimilarDto>?): List<MovieSimilar>? {
         return listDto?.map { mapDtoToEntity(it) }
     }
-
 
 }

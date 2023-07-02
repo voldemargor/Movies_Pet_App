@@ -29,7 +29,7 @@ data class MovieDto(
     val rating: RatingDto,
 
     @SerializedName("videos")
-    val videos: TrailersListDto? = null,
+    val videos: ResponseListTrailerDto? = null,
 
     @SerializedName("genres")
     val genres: List<GenreDto>? = null,
