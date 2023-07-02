@@ -16,7 +16,7 @@ interface Navigator {
 
     fun showExceptionDialog(message: String)
 
-    fun finish()
+    fun closeApp()
 
     fun tryReconnect()
 

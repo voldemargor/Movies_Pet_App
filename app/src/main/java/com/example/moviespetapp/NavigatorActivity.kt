@@ -12,6 +12,7 @@ import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
@@ -23,7 +24,7 @@ import com.example.moviespetapp.presentation.bookmarks.BookmarksFragment
 import com.example.moviespetapp.presentation.contract.*
 import com.example.moviespetapp.presentation.dialog.*
 import com.example.moviespetapp.presentation.mainscreen.MainFragment
- import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
+import com.example.moviespetapp.presentation.moviedetails.MovieDetailsFragment
 import com.example.moviespetapp.presentation.movieslist.MoviesListScreenFragment
 import com.example.moviespetapp.presentation.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,8 +40,18 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private var currentFragment: Fragment? = null
     private lateinit var latestCallFragment: Fragment
 
+    private val onBackPressedCallback: OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount > 1)
+                    supportFragmentManager.popBackStack()
+                else finish()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
         binding = ActivityNavigatorBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         observeViewModel()
@@ -59,12 +70,6 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         // Клик по кнопке назад в action bar
         onBackPressedDispatcher.onBackPressed()
         return true
-    }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 1)
-            onBackPressedDispatcher.onBackPressed()
-        else finish()
     }
 
     private fun observeViewModel() {
@@ -87,7 +92,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     override fun goBack() {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
     }
 
     override fun setScreenTitle(title: String) {
@@ -111,7 +116,7 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun finish() {
+    override fun closeApp() {
         finish()
     }
 
@@ -197,8 +202,10 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     private fun screenTransaction(newFragment: Fragment) {
-        if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) return
-        // TODO При повторном клике нужно скроллить наверх
+        if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) {
+            (currentFragment as BottomNavItem).handleDoubleBottomMenuClick()
+            return
+        }
 
         if (!hasInternetConnection()) {
             latestCallFragment = newFragment
@@ -228,12 +235,16 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             .replace(R.id.fragmentContainer, fragment, tag)
             .addToBackStack(tag)
             .commit()
+
+        for (fr in supportFragmentManager.fragments) {
+            log("Fragments in container: ${fr::class.simpleName.toString()}")
+        }
+
     }
 
-    private fun isDoubleBottomNavClick(fragment: Fragment): Boolean {
-        if (currentFragment is BottomNavItem && fragment !is BottomNavItem) return false
-        if (currentFragment !is BottomNavItem && fragment is BottomNavItem) return false
-        if (fragment is BottomNavItem && fragment == currentFragment) return true
+    private fun isDoubleBottomNavClick(newFragment: Fragment): Boolean {
+        if (currentFragment !is BottomNavItem) return false
+        if (newFragment::class == currentFragment!!::class) return true
         return false
     }
 

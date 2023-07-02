@@ -51,7 +51,7 @@ class ExceptionDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tvErrorMessage.text = "Error: $message"
-        binding.btnCloseApp.setOnClickListener { navigator().finish() }
+        binding.btnCloseApp.setOnClickListener { navigator().closeApp() }
         binding.btnSendReport.setOnClickListener { navigator().toast("Место для обращения в поддержку") }
     }
 

@@ -88,6 +88,7 @@ class Utils {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 //.placeholder(R.drawable.poster_placeholder)
                 .thumbnail(Glide.with(this).load(R.drawable.poster_placeholder).centerCrop())
+                .error(R.drawable.poster_placeholder)
                 .into(this)
         }
 
@@ -96,7 +97,14 @@ class Utils {
                 .load(url)
                 .apply(RequestOptions.bitmapTransform(BlurTransformation(40, 3)))
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(ColorDrawable(ContextCompat.getColor(this.context, R.color.loading_prototype_fill)))
+                .placeholder(
+                    ColorDrawable(
+                        ContextCompat.getColor(
+                            this.context,
+                            R.color.loading_prototype_fill
+                        )
+                    )
+                )
                 .into(this)
         }
 

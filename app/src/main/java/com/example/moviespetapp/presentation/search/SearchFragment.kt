@@ -48,7 +48,7 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
 
     override fun getFragmentTag() = FRAGMENT_TAG
 
-    override fun handleRepeatedBottomMenuClick() {
+    override fun handleDoubleBottomMenuClick() {
         binding.rvMovies.smoothScrollToPosition(0)
         binding.etSearch.showKeyboard()
     }

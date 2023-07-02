@@ -43,7 +43,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
 
     override fun getFragmentTag() = FRAGMENT_TAG
 
-    override fun handleRepeatedBottomMenuClick() {
+    override fun handleDoubleBottomMenuClick() {
         binding.svMainScreen.fullScroll(ScrollView.FOCUS_UP)
     }
 

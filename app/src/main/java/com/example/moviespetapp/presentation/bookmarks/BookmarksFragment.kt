@@ -37,7 +37,7 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     override fun getBottomNavItemId(): Int = R.id.navItemBookmark
 
-    override fun handleRepeatedBottomMenuClick() = binding.rvMovies.smoothScrollToPosition(0)
+    override fun handleDoubleBottomMenuClick() = binding.rvMovies.smoothScrollToPosition(0)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
