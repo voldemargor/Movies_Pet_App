@@ -9,6 +9,4 @@ data class Rating(
     val kp: Double,
     val imdb: Double,
 
-) : Parcelable {
-
-}
+) : Parcelable

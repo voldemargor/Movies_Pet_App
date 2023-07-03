@@ -1,6 +1,5 @@
 package com.example.moviespetapp.data.network.model
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class RatingDto(
@@ -11,6 +10,4 @@ data class RatingDto(
     @SerializedName("imdb")
     val imdb: Double,
 
-    ) {
-
-}
+    )

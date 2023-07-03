@@ -13,5 +13,4 @@ class SimilarMovieItemDiffCallback : DiffUtil.ItemCallback<MovieSimilar>() {
         return oldItem.id == newItem.id
     }
 
-
 }

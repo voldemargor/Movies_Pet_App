@@ -8,6 +8,4 @@ data class Poster(
 
     val url: String
 
-    ) : Parcelable {
-
-}
+    ) : Parcelable

@@ -16,13 +16,13 @@ import com.example.moviespetapp.databinding.FragmentSearchBinding
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.Loading
-import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.Utils.Companion.hideKeyboard
 import com.example.moviespetapp.presentation.Utils.Companion.showKeyboard
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.GetFromBackstack
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

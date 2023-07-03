@@ -13,7 +13,7 @@ open class ExceptionViewModel : ViewModel() {
     private val _hasException = MutableLiveData<String>()
     val hasException: LiveData<String> get() = _hasException
 
-    protected val exceptionHandler = CoroutineExceptionHandler() { _, throwable ->
+    protected val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         viewModelScope.launch(Dispatchers.Main) { _hasException.value = throwable.toString() }
     }
 

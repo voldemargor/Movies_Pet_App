@@ -22,15 +22,14 @@ import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.entity.MovieSimilar
 import com.example.moviespetapp.domain.entity.Rating
 import com.example.moviespetapp.domain.entity.Votes
-import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.Utils
 import com.example.moviespetapp.presentation.Utils.Companion.loadBlurredImage
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage
 import com.example.moviespetapp.presentation.contract.HasBackIcon
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.contract.navigator
 import dagger.hilt.android.AndroidEntryPoint
-
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
@@ -143,14 +142,14 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
         with(binding) {
             if (shouldHideRating()) {
                 val animation =
-                    ObjectAnimator.ofInt(tvDescription, "maxLines", tvDescription.getLineCount())
+                    ObjectAnimator.ofInt(tvDescription, "maxLines", tvDescription.lineCount)
                 animation.setDuration(0).start()
             } else {
                 if (tvDescription.lineCount > 6) {
                     ivDescriptionCutoffGradient.visibility = View.VISIBLE
                     tvDescription.setOnClickListener {
                         it as TextView
-                        val animation = ObjectAnimator.ofInt(it, "maxLines", it.getLineCount())
+                        val animation = ObjectAnimator.ofInt(it, "maxLines", it.lineCount)
                         animation.setDuration(200).start()
                         ivDescriptionCutoffGradient.visibility = View.GONE
                     }

@@ -9,6 +9,4 @@ data class Genre(
     val name: String,
     //val slug: String
 
-) : Parcelable {
-
-}
+) : Parcelable

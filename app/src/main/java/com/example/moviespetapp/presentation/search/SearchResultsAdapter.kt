@@ -1,19 +1,17 @@
 package com.example.moviespetapp.presentation.search
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviespetapp.Constants
 import com.example.moviespetapp.databinding.ItemSearchBinding
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.presentation.Utils
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage
 import com.example.moviespetapp.presentation.movieslist.MovieItemDiffCallback
 
-class SearchResultsAdapter() :
+class SearchResultsAdapter :
     ListAdapter<Movie, SearchResultsAdapter.ItemViewHolder>(MovieItemDiffCallback()) {
 
     var onMovieClickListener: ((Movie) -> Unit)? = null
@@ -60,8 +58,7 @@ class SearchResultsAdapter() :
     }
 
     inner class ItemViewHolder(val binding: ItemSearchBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 
 }
 

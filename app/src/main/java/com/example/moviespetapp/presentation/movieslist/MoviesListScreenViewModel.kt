@@ -2,17 +2,16 @@ package com.example.moviespetapp.presentation.movieslist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.DataLoadingResult.Failed
 import com.example.moviespetapp.domain.DataLoadingResult.Success
-import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.presentation.Loading
+import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.ExceptionViewModel
 import com.example.moviespetapp.presentation.JobStatus
+import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

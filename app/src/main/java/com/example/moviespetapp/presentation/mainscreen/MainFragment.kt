@@ -16,11 +16,11 @@ import com.example.moviespetapp.R
 import com.example.moviespetapp.databinding.FragmentMainBinding
 import com.example.moviespetapp.domain.DataLoadingResult
 import com.example.moviespetapp.domain.entity.Movie
-import com.example.moviespetapp.presentation.contract.MovieDetails
-import com.example.moviespetapp.presentation.contract.MoviesList
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.GetFromBackstack
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.MovieDetails
+import com.example.moviespetapp.presentation.contract.MoviesList
 import com.example.moviespetapp.presentation.contract.navigator
 import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -174,13 +174,9 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
         return flow
     }
 
-
     companion object {
-
         val FRAGMENT_TAG = MainFragment::class.simpleName.toString()
-
         fun newInstance() = MainFragment()
-
     }
 
 }

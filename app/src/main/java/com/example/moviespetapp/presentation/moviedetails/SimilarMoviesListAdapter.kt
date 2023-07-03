@@ -29,7 +29,6 @@ class SimilarMoviesListAdapter :
     }
 
     inner class ItemViewHolder(val binding: ItemMovieSimilarBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 
 }

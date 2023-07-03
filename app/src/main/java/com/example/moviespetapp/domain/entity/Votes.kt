@@ -9,6 +9,4 @@ data class Votes(
     val kp: String,
     val imdb: String
 
-) : Parcelable {
-
-}
+) : Parcelable

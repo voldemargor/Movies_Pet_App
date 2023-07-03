@@ -16,7 +16,6 @@ import com.example.moviespetapp.domain.usecase.GetMainScreenSoonMoviesUseCase
 import com.example.moviespetapp.domain.usecase.GetMoviesByGenreUseCase
 import com.example.moviespetapp.presentation.ExceptionViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

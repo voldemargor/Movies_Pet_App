@@ -4,7 +4,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TempRepositoryImpl @Inject constructor()  {
+class TestRepositoryImpl @Inject constructor()  {
 //class TempRepositoryImpl @Inject constructor() : Repository {
 //
 //    private val faker: Faker = Faker.instance()
@@ -59,7 +59,6 @@ class TempRepositoryImpl @Inject constructor()  {
 //    }
 //
 //    override suspend fun getGenres(): List<Genre> {
-//        TODO("Not yet implemented")
 //    }
 //
 //    private fun updateFavMoviesLD() {

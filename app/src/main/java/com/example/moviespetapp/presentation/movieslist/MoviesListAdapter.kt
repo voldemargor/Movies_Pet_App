@@ -11,11 +11,11 @@ import com.example.moviespetapp.Constants
 import com.example.moviespetapp.databinding.ItemMovieBaseBinding
 import com.example.moviespetapp.databinding.ItemMovieGridLayoutBinding
 import com.example.moviespetapp.databinding.ItemMovieHorizontalLayoutBinding
-import com.example.moviespetapp.databinding.ItemSearchBinding
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.presentation.Utils
 import com.example.moviespetapp.presentation.Utils.Companion.loadImage
-import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter.ListType.*
+import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter.ListType.GRID
+import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter.ListType.HORIZONTAL
 
 class MoviesListAdapter(private val listType: ListType) :
     ListAdapter<Movie, MoviesListAdapter.ItemViewHolder>(MovieItemDiffCallback()) {
@@ -73,8 +73,7 @@ class MoviesListAdapter(private val listType: ListType) :
     }
 
     inner class ItemViewHolder(val binding: ViewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     enum class ListType {
         HORIZONTAL,

@@ -10,11 +10,11 @@ import com.example.moviespetapp.domain.DataLoadingResult.Failed
 import com.example.moviespetapp.domain.DataLoadingResult.Success
 import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.GetBookedMoviesUseCase
-import com.example.moviespetapp.presentation.Loading
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.ExceptionViewModel
-import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.JobStatus
+import com.example.moviespetapp.presentation.Loading
+import com.example.moviespetapp.presentation.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -147,13 +147,6 @@ class Utils {
             return "$hh ч $mm мин"
         }
 
-        //fun convertPixelsToDp(pixels: Float, resources: Resources): Int {
-        //    return TypedValue.applyDimension(
-        //        /* unit = */ TypedValue.COMPLEX_UNIT_DIP,
-        //        /* value = */ MainFragment.HORIZONTAL_ITEM_WIDTH,
-        //        /* metrics = */ resources.displayMetrics).toInt()
-        //}
-
         fun EditText.showKeyboard() {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
@@ -164,6 +157,12 @@ class Utils {
             imm.hideSoftInputFromWindow(this.windowToken, 0)
         }
 
+        //fun convertPixelsToDp(pixels: Float, resources: Resources): Int {
+        //    return TypedValue.applyDimension(
+        //        /* unit = */ TypedValue.COMPLEX_UNIT_DIP,
+        //        /* value = */ MainFragment.HORIZONTAL_ITEM_WIDTH,
+        //        /* metrics = */ resources.displayMetrics).toInt()
+        //}
 
     }
 

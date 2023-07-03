@@ -134,7 +134,6 @@ class RepositoryImpl @Inject constructor(
         bookmarkService.removeBookmark(movie.id)
     }
 
-
     private fun filterIncomplete(movie: Movie) = with(movie) {
         poster != null && name != null && description != null && rating != null
     }

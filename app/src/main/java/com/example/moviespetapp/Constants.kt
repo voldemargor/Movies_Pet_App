@@ -1,14 +1,11 @@
 package com.example.moviespetapp
 
-import com.example.moviespetapp.BuildConfig
-
 class Constants {
 
     companion object {
 
         const val BASE_URL = "https://api.kinopoisk.dev/"
         const val API_TOKEN = "3CA6B3S-QWRM43Y-KQT23M8-BC2XM9A"
-        //const val API_TOKEN = "3CA6B3S-QWRM43Y-KQT23M8-BC2XM9" // test
         const val QUERY_PAGE_LIMIT = 21
 
         const val QUERY_SEARCH_PAGE_LIMIT = 80

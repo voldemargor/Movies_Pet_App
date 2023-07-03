@@ -13,10 +13,10 @@ import com.example.moviespetapp.databinding.FragmentMoviesListScreenBinding
 import com.example.moviespetapp.presentation.Canceled
 import com.example.moviespetapp.presentation.Error
 import com.example.moviespetapp.presentation.Loading
-import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.Result
 import com.example.moviespetapp.presentation.contract.BottomNavItem
 import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.MovieDetails
 import com.example.moviespetapp.presentation.contract.navigator
 import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,7 +93,6 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
 
     private fun setListeners() {
         rvAdapter.onMovieClickListener = {
-            //navigator().displayMovieDetailsScreen(it.id, it.name.toString())
             navigator().displayScreen(MovieDetails(it.id, it.name!!))
         }
         rvAdapter.onReachEndListener = { viewModel.loadMovies() }

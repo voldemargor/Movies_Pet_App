@@ -2,17 +2,15 @@ package com.example.moviespetapp.presentation.moviedetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.moviespetapp.data.sharedprefs.BookmarkService
+import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.AddBookmarkUseCase
 import com.example.moviespetapp.domain.usecase.GetMovieDetailsUseCase
-import com.example.moviespetapp.domain.entity.Movie
 import com.example.moviespetapp.domain.usecase.RemoveBookmarkUseCase
 import com.example.moviespetapp.presentation.ExceptionViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

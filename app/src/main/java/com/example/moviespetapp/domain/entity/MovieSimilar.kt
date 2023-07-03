@@ -10,6 +10,4 @@ data class MovieSimilar(
     val name: String,
     val poster: Poster?,
 
-    ) : Parcelable {
-
-}
+    ) : Parcelable

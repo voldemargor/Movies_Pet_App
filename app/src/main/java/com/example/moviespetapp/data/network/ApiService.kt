@@ -1,9 +1,9 @@
 package com.example.moviespetapp.data.network
 
+import com.example.moviespetapp.Constants
 import com.example.moviespetapp.data.network.model.GenreDto
 import com.example.moviespetapp.data.network.model.MovieDto
 import com.example.moviespetapp.data.network.model.ResponseListMovieDto
-import com.example.moviespetapp.Constants
 import com.example.moviespetapp.data.network.model.ResponseListMovieSearchResultDto
 import retrofit2.Response
 import retrofit2.http.GET
