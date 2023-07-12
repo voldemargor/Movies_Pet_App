@@ -43,6 +43,7 @@ class MoviesListAdapter(private val listType: ListType) :
             HORIZONTAL -> (holder.binding as ItemMovieHorizontalLayoutBinding).baseLayout
             GRID -> (holder.binding as ItemMovieGridLayoutBinding).baseLayout
         }
+
         fillViewWithData(movie, binding)
         checkIfReachEnd(position)
     }

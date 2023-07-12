@@ -28,6 +28,9 @@
     <color name="bg_genre_item">#2E2E2E</color>
     <color name="text_genre_item">#B4B4B4</color>
 
+    // Movie Cards
+    <color name="movie_card_text_genre">#747679</color>
+
     <color name="trailer_play_circle">#D63C3C3C</color>
 
 </resources>
