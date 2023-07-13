@@ -86,7 +86,7 @@ class MovieDetailsFragment : Fragment(), HasCustomTitle, HasBackIcon {
             else hideLoading()
         }
         viewModel.hasException.observe(viewLifecycleOwner) {
-            navigator().showExceptionDialog(it)
+            navigator().displayExceptionDialog(it)
         }
     }
 

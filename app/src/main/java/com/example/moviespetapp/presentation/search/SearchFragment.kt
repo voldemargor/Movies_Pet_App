@@ -117,7 +117,7 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
             if (it) binding.layoutSearchFoundNothing.root.visibility = View.VISIBLE
         }
         viewModel.hasException.observe(viewLifecycleOwner) {
-            navigator().showExceptionDialog(it)
+            navigator().displayExceptionDialog(it)
         }
     }
 

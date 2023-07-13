@@ -84,7 +84,7 @@ class MoviesListScreenFragment : Fragment(), HasCustomTitle, HasBackIcon {
             }
         }
         viewModel.hasException.observe(viewLifecycleOwner) {
-            navigator().showExceptionDialog(it)
+            navigator().displayExceptionDialog(it)
         }
     }
 

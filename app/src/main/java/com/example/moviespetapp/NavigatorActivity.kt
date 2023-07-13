@@ -37,25 +37,11 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
     private lateinit var binding: ActivityNavigatorBinding
 
-    private var currentFragment: Fragment? = null
-    private lateinit var latestCallFragment: Fragment
-
-    private val onBackPressedCallback: OnBackPressedCallback =
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                //if (!hasInternetConnection()) {
-                //    showNoInternetDialog()
-                //    return
-                //}
-                if (supportFragmentManager.backStackEntryCount > 1)
-                    supportFragmentManager.popBackStack()
-                else finish()
-            }
-        }
+    private var lastCallFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+        onBackPressedDispatcher.addCallback(this, getOnBackPressedCallback())
         binding = ActivityNavigatorBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
         observeViewModel()
@@ -84,15 +70,15 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     override fun displayScreen(scr: Screen) {
-        when (scr) {
-            is Main -> screenTransaction(MainFragment.newInstance())
-            is Bookmarks -> screenTransaction(BookmarksFragment.newInstance())
-            is Search -> screenTransaction(SearchFragment.newInstance())
-            is MoviesList -> screenTransaction(MoviesListScreenFragment.newInstance(scr.genreName))
-
-            is MovieDetails ->
-                screenTransaction(MovieDetailsFragment.newInstance(scr.movieId, scr.movieName))
+        val fragment: Fragment = when (scr) {
+            is Main -> MainFragment.newInstance()
+            is Bookmarks -> BookmarksFragment.newInstance()
+            is Search -> SearchFragment.newInstance()
+            is MoviesList -> MoviesListScreenFragment.newInstance(scr.genreName)
+            is MovieDetails -> MovieDetailsFragment.newInstance(scr.movieId, scr.movieName)
         }
+        lastCallFragment = fragment
+        screenTransaction(fragment)
     }
 
     override fun goBack() {
@@ -103,26 +89,8 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         supportActionBar?.title = title
     }
 
-    override fun showExceptionDialog(message: String) {
+    override fun displayExceptionDialog(message: String) {
         ExceptionDialog.newInstance(message).show(supportFragmentManager, ExceptionDialog.TAG)
-    }
-
-    override fun tryReconnect() {
-        if (hasInternetConnection())
-            screenTransaction(latestCallFragment)
-        else showNoInternetDialog()
-    }
-
-    override fun log(message: String) {
-        Log.d("mylog", message)
-    }
-
-    override fun toast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun closeApp() {
-        finish()
     }
 
     private fun displaySplash() {
@@ -182,58 +150,19 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         window.statusBarColor = getColor(R.color.background)
     }
 
-    private fun setBottomNavListener() {
-        binding.bottomNav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.navItemFirstScreen -> displayScreen(Main())
-                R.id.navItemBookmark -> displayScreen(Bookmarks())
-                R.id.navItemSearch -> displayScreen(Search())
-            }
-            true
-        }
-    }
-
-    private fun setFragmentLifecycleListener() {
-        fragmentLifecycleListener = object : FragmentManager.FragmentLifecycleCallbacks() {
-
-            //override fun onFragmentViewCreated(
-            //    fm: FragmentManager, fragment: Fragment, view: View, savedInstanceState: Bundle?
-            //) {
-            //    super.onFragmentViewCreated(fm, fragment, view, savedInstanceState)
-            //    log("onFragmentViewCreated")
-            //    if (!hasInternetConnection()) {
-            //        latestCallFragment = fragment
-            //        showNoInternetDialog()
-            //    }
-            //}
-
-            //override fun onFragmentViewCreated(
-            //    fm: FragmentManager, fragment: Fragment, v: View, savedInstanceState: Bundle?
-            //) {
-            //    super.onFragmentViewCreated(fm, fragment, v, savedInstanceState)
-            //    latestCallFragment = fragment
-            //}
-
-            override fun onFragmentStarted(fm: FragmentManager, fragment: Fragment) {
-                super.onFragmentStarted(fm, fragment)
-                if (fragment is SupportRequestManagerFragment) return
-                if (fragment is DialogFragment) return
-                updateUI(fragment)
-                currentFragment = fragment
-            }
-        }
-        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleListener, false)
-    }
-
     private fun screenTransaction(newFragment: Fragment) {
-        if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) {
-            (currentFragment as BottomNavItem).handleDoubleBottomMenuClick()
-            return
-        }
+        //if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) {
+        //    (lastCallFragment as BottomNavItem).handleDoubleBottomMenuClick()
+        //    return
+        //}
+
+        //if (newFragment is BottomNavItem && newFragment == lastCallFragment) {
+        //    (lastCallFragment as BottomNavItem).handleDoubleBottomMenuClick()
+        //    return
+        //}
 
         if (!hasInternetConnection()) {
-            latestCallFragment = newFragment
-            showNoInternetDialog()
+            displayNoInternetDialog()
             return
         }
 
@@ -267,13 +196,9 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     private fun isDoubleBottomNavClick(newFragment: Fragment): Boolean {
-        if (currentFragment !is BottomNavItem) return false
-        if (newFragment::class == currentFragment!!::class) return true
+        if (lastCallFragment !is BottomNavItem) return false
+        if (newFragment::class == lastCallFragment!!::class) return true
         return false
-    }
-
-    private fun showNoInternetDialog() {
-        NoInternetDialog.newInstance().show(supportFragmentManager, ExceptionDialog.TAG)
     }
 
     private fun hasInternetConnection(): Boolean {
@@ -287,6 +212,61 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
             else -> false
         }
+    }
+
+    private fun displayNoInternetDialog() {
+        NoInternetDialog.newInstance().show(supportFragmentManager, ExceptionDialog.TAG)
+    }
+
+    override fun tryReconnect() {
+        if (hasInternetConnection())
+            lastCallFragment?.let { screenTransaction(it) }
+        else displayNoInternetDialog()
+    }
+
+    private fun getOnBackPressedCallback() =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount <= 1)
+                    finish()
+                else if (!hasInternetConnection()) {
+                    displayNoInternetDialog()
+                    return
+                }
+                supportFragmentManager.popBackStack()
+            }
+        }
+
+    private fun setFragmentLifecycleListener() {
+        fragmentLifecycleListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentStarted(fm: FragmentManager, fragment: Fragment) {
+                super.onFragmentStarted(fm, fragment)
+                if (fragment is SupportRequestManagerFragment) return
+                if (fragment is DialogFragment) return
+                updateUI(fragment)
+                //currentFragment = fragment
+            }
+        }
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleListener, false)
+    }
+
+    private fun setBottomNavListener() {
+        binding.bottomNav.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.navItemFirstScreen -> displayScreen(Main())
+                R.id.navItemBookmark -> displayScreen(Bookmarks())
+                R.id.navItemSearch -> displayScreen(Search())
+            }
+            true
+        }
+    }
+
+    override fun log(message: String) {
+        Log.d("mylog", message)
+    }
+
+    override fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 }

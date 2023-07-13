@@ -87,7 +87,7 @@ class BookmarksFragment : Fragment(), HasCustomTitle, BottomNavItem {
             binding.layoutBookmarksEmptyState.root.visibility = View.VISIBLE
         }
         viewModel.hasException.observe(viewLifecycleOwner) {
-            navigator().showExceptionDialog(it)
+            navigator().displayExceptionDialog(it)
         }
     }
 

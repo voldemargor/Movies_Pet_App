@@ -91,7 +91,7 @@ class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack
             else binding.pbLoading.visibility = View.GONE
         }
         viewModel.hasException.observe(viewLifecycleOwner) {
-            navigator().showExceptionDialog(it)
+            navigator().displayExceptionDialog(it)
         }
         viewModel.newMovies.observe(viewLifecycleOwner) {
             if (it is DataLoadingResult.Success<*>)
