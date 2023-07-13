@@ -123,12 +123,15 @@ class SearchFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBacksta
 
     private fun setListeners() {
         binding.etSearch.doOnTextChanged { text, start, before, count ->
-            if (count == 0) binding.btnClearInput.visibility = View.GONE
-            if (count >= 1) binding.btnClearInput.visibility = View.VISIBLE
-            if (count >= 2) {
-                val input = text?.toString()
-                if (!input.isNullOrEmpty())
+            if (count == 0) {
+                binding.btnClearInput.visibility = View.GONE
+                viewModel.resetToDefault()
+            } else {
+                val input = text?.trim().toString()
+                if (input.isNotEmpty()) {
+                    binding.btnClearInput.visibility = View.VISIBLE
                     viewModel.loadMovies(input)
+                }
             }
         }
         binding.btnClearInput.setOnClickListener {

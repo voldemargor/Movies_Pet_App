@@ -74,9 +74,9 @@ class Utils {
 
         fun getStringCountryDurationAgeRating(movie: Movie): String {
             val builder = StrBuilder()
-            builder.append(movie.country.name.toString())
-            if (movie.movieLength != null) builder.append(", " + getStringDuration(movie.movieLength))
-            if (movie.ageRating != null) builder.append(", " + movie.ageRating + "+")
+            if (movie.country.name.trim().isNotEmpty()) builder.append(movie.country.name + ", ")
+            if (movie.movieLength != null) builder.append(getStringDuration(movie.movieLength) + ", ")
+            if (movie.ageRating != null) builder.append(movie.ageRating.toString() + "+")
             return builder.toString()
         }
 

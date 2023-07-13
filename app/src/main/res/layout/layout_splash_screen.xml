@@ -16,6 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon_film"
-        app:tint="@color/orange" />
+        app:tint="@color/main_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

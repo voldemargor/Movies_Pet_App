@@ -11,13 +11,13 @@
         android:layout_width="wrap_content"
         android:layout_height="140dp"
         android:adjustViewBounds="true"
-        android:alpha="0.9"
+        android:alpha="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/search_empty_state_icon"
-        app:tint="@color/button_orange" />
+        app:tint="@color/main_color" />
 
     <TextView
         android:id="@+id/textView"

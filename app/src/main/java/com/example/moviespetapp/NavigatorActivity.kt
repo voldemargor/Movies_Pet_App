@@ -43,6 +43,10 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     private val onBackPressedCallback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                //if (!hasInternetConnection()) {
+                //    showNoInternetDialog()
+                //    return
+                //}
                 if (supportFragmentManager.backStackEntryCount > 1)
                     supportFragmentManager.popBackStack()
                 else finish()
@@ -104,7 +108,8 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     override fun tryReconnect() {
-        if (hasInternetConnection()) screenTransaction(latestCallFragment)
+        if (hasInternetConnection())
+            screenTransaction(latestCallFragment)
         else showNoInternetDialog()
     }
 
@@ -190,6 +195,25 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
 
     private fun setFragmentLifecycleListener() {
         fragmentLifecycleListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+
+            //override fun onFragmentViewCreated(
+            //    fm: FragmentManager, fragment: Fragment, view: View, savedInstanceState: Bundle?
+            //) {
+            //    super.onFragmentViewCreated(fm, fragment, view, savedInstanceState)
+            //    log("onFragmentViewCreated")
+            //    if (!hasInternetConnection()) {
+            //        latestCallFragment = fragment
+            //        showNoInternetDialog()
+            //    }
+            //}
+
+            //override fun onFragmentViewCreated(
+            //    fm: FragmentManager, fragment: Fragment, v: View, savedInstanceState: Bundle?
+            //) {
+            //    super.onFragmentViewCreated(fm, fragment, v, savedInstanceState)
+            //    latestCallFragment = fragment
+            //}
+
             override fun onFragmentStarted(fm: FragmentManager, fragment: Fragment) {
                 super.onFragmentStarted(fm, fragment)
                 if (fragment is SupportRequestManagerFragment) return
