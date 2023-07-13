@@ -81,6 +81,40 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         screenTransaction(fragment)
     }
 
+    private fun screenTransaction(newFragment: Fragment) {
+        if (!hasInternetConnection()) {
+            displayNoInternetDialog()
+            return
+        }
+
+        var backstackInstance: Fragment? = null
+
+        if (newFragment is GetFromBackstack) backstackInstance =
+            supportFragmentManager.findFragmentByTag(newFragment.getFragmentTag())
+
+        if (backstackInstance == null) launchFragment(newFragment)
+        else launchFragment(backstackInstance)
+    }
+
+    private fun launchFragment(fragment: Fragment) {
+        var tag: String? = null
+        if (fragment is GetFromBackstack) tag = fragment.getFragmentTag()
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                androidx.appcompat.R.anim.abc_fade_in,
+                androidx.appcompat.R.anim.abc_fade_out
+            )
+            .setReorderingAllowed(true)
+            .replace(R.id.fragmentContainer, fragment, tag)
+            .addToBackStack(tag)
+            .commit()
+
+        for (fr in supportFragmentManager.fragments) {
+            log("Fragments in container: ${fr::class.simpleName.toString()}")
+        }
+    }
+
     override fun goBack() {
         onBackPressedDispatcher.onBackPressed()
     }
@@ -148,57 +182,6 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             )
         )
         window.statusBarColor = getColor(R.color.background)
-    }
-
-    private fun screenTransaction(newFragment: Fragment) {
-        //if (newFragment is BottomNavItem && isDoubleBottomNavClick(newFragment)) {
-        //    (lastCallFragment as BottomNavItem).handleDoubleBottomMenuClick()
-        //    return
-        //}
-
-        //if (newFragment is BottomNavItem && newFragment == lastCallFragment) {
-        //    (lastCallFragment as BottomNavItem).handleDoubleBottomMenuClick()
-        //    return
-        //}
-
-        if (!hasInternetConnection()) {
-            displayNoInternetDialog()
-            return
-        }
-
-        var backstackInstance: Fragment? = null
-
-        if (newFragment is GetFromBackstack) backstackInstance =
-            supportFragmentManager.findFragmentByTag(newFragment.getFragmentTag())
-
-        if (backstackInstance == null) launchFragment(newFragment)
-        else launchFragment(backstackInstance)
-    }
-
-    private fun launchFragment(fragment: Fragment) {
-        var tag: String? = null
-        if (fragment is GetFromBackstack) tag = fragment.getFragmentTag()
-
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                androidx.appcompat.R.anim.abc_fade_in,
-                androidx.appcompat.R.anim.abc_fade_out
-            )
-            .setReorderingAllowed(true)
-            .replace(R.id.fragmentContainer, fragment, tag)
-            .addToBackStack(tag)
-            .commit()
-
-        for (fr in supportFragmentManager.fragments) {
-            log("Fragments in container: ${fr::class.simpleName.toString()}")
-        }
-
-    }
-
-    private fun isDoubleBottomNavClick(newFragment: Fragment): Boolean {
-        if (lastCallFragment !is BottomNavItem) return false
-        if (newFragment::class == lastCallFragment!!::class) return true
-        return false
     }
 
     private fun hasInternetConnection(): Boolean {
