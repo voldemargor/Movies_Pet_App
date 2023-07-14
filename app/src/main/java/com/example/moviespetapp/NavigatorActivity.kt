@@ -1,11 +1,6 @@
 package com.example.moviespetapp
 
-import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
-import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
-import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,9 +28,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class NavigatorActivity : AppCompatActivity(), Navigator {
 
     private val viewModel by viewModels<NavigatorActivityViewModel>()
+    private val connection by lazy { NetworkConnectionService(this) }
 
-    private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
     private lateinit var binding: ActivityNavigatorBinding
+    private lateinit var fragmentLifecycleListener: FragmentManager.FragmentLifecycleCallbacks
 
     private var lastCallFragment: Fragment? = null
 
@@ -82,10 +78,8 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
     }
 
     private fun screenTransaction(newFragment: Fragment) {
-        if (!hasInternetConnection()) {
-            displayNoInternetDialog()
+        if (connection.shouldDisplayNoInternet())
             return
-        }
 
         var backstackInstance: Fragment? = null
 
@@ -184,27 +178,10 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
         window.statusBarColor = getColor(R.color.background)
     }
 
-    private fun hasInternetConnection(): Boolean {
-        val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-        return when {
-            capabilities.hasTransport(TRANSPORT_WIFI) -> true
-            capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-            capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
-            else -> false
-        }
-    }
-
-    private fun displayNoInternetDialog() {
-        NoInternetDialog.newInstance().show(supportFragmentManager, ExceptionDialog.TAG)
-    }
-
     override fun tryReconnect() {
-        if (hasInternetConnection())
+        if (connection.hasInternetConnection())
             lastCallFragment?.let { screenTransaction(it) }
-        else displayNoInternetDialog()
+        else connection.displayNoInternetDialog()
     }
 
     private fun getOnBackPressedCallback() =
@@ -212,10 +189,8 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
             override fun handleOnBackPressed() {
                 if (supportFragmentManager.backStackEntryCount <= 1)
                     finish()
-                else if (!hasInternetConnection()) {
-                    displayNoInternetDialog()
+                else if (connection.shouldDisplayNoInternet())
                     return
-                }
                 supportFragmentManager.popBackStack()
             }
         }
@@ -227,7 +202,6 @@ class NavigatorActivity : AppCompatActivity(), Navigator {
                 if (fragment is SupportRequestManagerFragment) return
                 if (fragment is DialogFragment) return
                 updateUI(fragment)
-                //currentFragment = fragment
             }
         }
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleListener, false)
