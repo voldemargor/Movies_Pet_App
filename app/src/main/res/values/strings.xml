@@ -2,4 +2,40 @@
     <string name="app_name">Movies Pet App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bottom_nav_main">Главное</string>
+    <string name="bottom_nav_bookmark">Моё</string>
+    <string name="bottom_nav_search">Поиск</string>
+    <string name="title_main">Главное</string>
+    <string name="title_bookmark">Моё</string>
+    <string name="title_search">Поиск</string>
+    <string name="icon_bookmark">Буду смотреть</string>
+    <string name="description_text">В далеком будущем возвращающийся на Землю грузовой космический корабль перехватывает исходящий с неизвестной планеты сигнал. Экипаж, в соответствии с основными инструкциями, обязан найти и исследовать источник сигнала. Оказавшись на планете, астронавты повсюду обнаруживают предметы, по виду напоминающие гигантские коконы.</string>
+    <string name="headline_trailer">Трейлер</string>
+    <string name="headline_rating">Рейтинг</string>
+    <string name="headline_similar_movies">Похожие фильмы</string>
+    <string name="raiting_kp">Рейтинг Кинопоиска</string>
+    <string name="rating_imdb">IMDb</string>
+    <string name="headline_genres">Жанры</string>
+    <string name="headline_new">Новое</string>
+    <string name="headline_soon">Скоро выйдут</string>
+    <string name="headline_popular">Популярное</string>
+    <string name="headline_fiction">Фантастика</string>
+    <string name="headline_comedy">Комедии</string>
+    <string name="headline_horror">Ужасы</string>
+    <string name="headline_for_kids">Детям</string>
+    <string name="bookmarks_empty_state">Тут пока ничего нет.\nДобавляйте фильмы в закладки\nи они появятся на этом экране</string>
+    <string name="search_hint">Фильмы, сериалы</string>
+    <string name="search_default_screen">Введите название фильма\nили сериала</string>
+    <string name="search_found_nothing">Ничего не нашлось</string>
+    <string name="content_description_clear">Clear</string>
+
+    <string name="dialog_exception_title">Ошибка загрузки данных</string>
+    <string name="dialog_exception_text">Попробуйте запустить приложение еще раз</string>
+    <string name="dialog_exception_button">Закрыть</string>
+    <string name="dialog_send_report">Сообщить об ошибке</string>
+
+    <string name="dialog_no_internet_title">Отсутствует соединение с сервером</string>
+    <string name="dialog_no_internet_text">Проверьте ваше соединение и попробуйте еще раз</string>
+    <string name="dialog_no_internet_button">Обновить</string>
+
 </resources>

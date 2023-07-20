@@ -1,18 +1,39 @@
 package com.example.moviespetapp.domain
 
-import androidx.lifecycle.LiveData
+import com.example.moviespetapp.domain.entity.Genre
+import com.example.moviespetapp.domain.entity.Movie
 
 interface Repository {
 
-    fun getMovies(): LiveData<List<Movie>>
+    suspend fun getMainScreenGenres(): List<Genre>
 
-    fun getFavMovies(): LiveData<List<Movie>>
+    suspend fun getMainScreenNewMovies(): DataLoadingResult
 
-    suspend fun getMovie(id: Int): Movie
+    suspend fun getMainScreenSoonMovies(): DataLoadingResult
 
-    suspend fun addToFavorites(movie: Movie): Long
+    suspend fun getMainScreenPopularMovies(): DataLoadingResult
 
-    suspend fun deleteFromFavorites(movie: Movie)
+    suspend fun getMainScreenFictionMovies(): DataLoadingResult
+
+    suspend fun getMainScreenComedyMovies(): DataLoadingResult
+
+    suspend fun getMainScreenHorrorMovies(): DataLoadingResult
+
+    suspend fun getMainScreenKidMovies(): DataLoadingResult
+
+
+    suspend fun getMoviesByGenre(genreName: String, page: Int): DataLoadingResult
+
+    suspend fun getMoviesBySearch(request: String, page: Int): DataLoadingResult
+
+    suspend fun getBookedMovies(ids: Array<String>, page: Int): DataLoadingResult
+
+
+    suspend fun getMovieDetails(id: Int): Movie
+
+    suspend fun addBookmark(movie: Movie)
+
+    suspend fun removeBookmark(movie: Movie)
 
 
 }

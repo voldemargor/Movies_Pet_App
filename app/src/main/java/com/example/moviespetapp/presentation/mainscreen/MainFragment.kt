@@ -1,0 +1,182 @@
+package com.example.moviespetapp.presentation.mainscreen
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.generateViewId
+import android.view.ViewGroup
+import android.widget.ScrollView
+import android.widget.TextView
+import androidx.constraintlayout.helper.widget.Flow
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.moviespetapp.R
+import com.example.moviespetapp.databinding.FragmentMainBinding
+import com.example.moviespetapp.domain.DataLoadingResult
+import com.example.moviespetapp.domain.entity.Movie
+import com.example.moviespetapp.presentation.contract.BottomNavItem
+import com.example.moviespetapp.presentation.contract.GetFromBackstack
+import com.example.moviespetapp.presentation.contract.HasCustomTitle
+import com.example.moviespetapp.presentation.contract.MovieDetails
+import com.example.moviespetapp.presentation.contract.MoviesList
+import com.example.moviespetapp.presentation.contract.navigator
+import com.example.moviespetapp.presentation.movieslist.MoviesListAdapter
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainFragment : Fragment(), HasCustomTitle, BottomNavItem, GetFromBackstack {
+
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding ?: throw RuntimeException("FragmentMainBinding is null")
+
+    private val viewModel by viewModels<MainFragmentViewModel>()
+    private lateinit var adapters: MainFragmentAdapters
+
+    private var isLaunchFirstTime = true
+
+    override fun setScreenTitle() =
+        navigator().setScreenTitle(resources.getString(R.string.title_main))
+
+    override fun getBottomNavItemId(): Int = R.id.navItemFirstScreen
+
+    override fun getFragmentTag() = FRAGMENT_TAG
+
+    override fun handleDoubleBottomMenuClick() {
+        binding.svMainScreen.fullScroll(ScrollView.FOCUS_UP)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState != null) isLaunchFirstTime = false
+
+        viewModel.loadSectionsData()
+        buildGenresSection()
+        adapters = MainFragmentAdapters()
+        initHorizontalListSection(adapters.New, binding.rvNew)
+        initHorizontalListSection(adapters.Soon, binding.rvSoon)
+        initHorizontalListSection(adapters.Popular, binding.rvPopular)
+        initHorizontalListSection(adapters.Fiction, binding.rvFiction)
+        initHorizontalListSection(adapters.Comedy, binding.rvComedy)
+        initHorizontalListSection(adapters.Horror, binding.rvHorror)
+        initHorizontalListSection(adapters.ForKids, binding.rvForKids)
+
+        observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setScreenTitle()
+        isLaunchFirstTime = false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun observeViewModel() {
+        viewModel.displayLoader.observe(viewLifecycleOwner) {
+            if (it) binding.pbLoading.visibility = View.VISIBLE
+            else binding.pbLoading.visibility = View.GONE
+        }
+        viewModel.hasException.observe(viewLifecycleOwner) {
+            navigator().displayExceptionDialog(it)
+        }
+        viewModel.newMovies.observe(viewLifecycleOwner) {
+            if (it is DataLoadingResult.Success<*>)
+                adapters.New.submitList(it.data as List<Movie>)
+        }
+        viewModel.soonMovies.observe(viewLifecycleOwner) {
+            if (it is DataLoadingResult.Success<*>)
+                adapters.Soon.submitList(it.data as List<Movie>)
+        }
+        viewModel.popularMovies.observe(viewLifecycleOwner) {
+            if (it is DataLoadingResult.Success<*>)
+                adapters.Popular.submitList(it.data as List<Movie>)
+        }
+        viewModel.fictionMovies.observe(viewLifecycleOwner) {
+            if (it is DataLoadingResult.Success<*>)
+                adapters.Fiction.submitList(it.data as List<Movie>)
+        }
+        viewModel.comedyMovies.observe(viewLifecycleOwner) {
+            if (it is DataLoadingResult.Success<*>)
+                adapters.Comedy.submitList(it.data as List<Movie>)
+        }
+        viewModel.horrorMovies.observe(viewLifecycleOwner) {
+            if (it is DataLoadingResult.Success<*>)
+                adapters.Horror.submitList(it.data as List<Movie>)
+        }
+        viewModel.kidMovies.observe(viewLifecycleOwner) {
+            if (it is DataLoadingResult.Success<*>)
+                adapters.ForKids.submitList(it.data as List<Movie>)
+        }
+    }
+
+    private fun buildGenresSection() {
+        viewModel.genres.observe(viewLifecycleOwner) {
+            binding.layoutGenresGroup.removeAllViews()
+            val flow = createFlowWidget()
+            binding.layoutGenresGroup.addView(flow)
+
+            for (genre in it) {
+                val itemView =
+                    layoutInflater.inflate(
+                        R.layout.item_genre,
+                        binding.layoutGenresGroup,
+                        false
+                    )
+                itemView.findViewById<TextView?>(R.id.tvGenreItem).text =
+                    genre.name.replaceFirstChar { it.uppercase() }
+                itemView.id = generateViewId()
+                itemView.setOnClickListener {
+                    navigator().displayScreen(MoviesList(genreName = genre.name))
+                }
+                binding.layoutGenresGroup.addView(itemView)
+                flow.addView(itemView)
+            }
+        }
+    }
+
+    private fun initHorizontalListSection(adapter: MoviesListAdapter, rv: RecyclerView) {
+        rv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        rv.adapter = adapter
+        adapter.onMovieClickListener = {
+            navigator().displayScreen(MovieDetails(it.id, it.name!!))
+        }
+    }
+
+    private fun createFlowWidget(): Flow {
+        val flow = Flow(requireActivity()).apply {
+            id = generateViewId()
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
+            )
+            setWrapMode(Flow.WRAP_CHAIN)
+            setHorizontalStyle(Flow.CHAIN_PACKED)
+            setHorizontalAlign(Flow.HORIZONTAL_ALIGN_START)
+            setHorizontalGap(10)
+            setVerticalGap(10)
+            setHorizontalBias(0f)
+            setOrientation(Flow.HORIZONTAL)
+        }
+        return flow
+    }
+
+    companion object {
+        val FRAGMENT_TAG = MainFragment::class.simpleName.toString()
+        fun newInstance() = MainFragment()
+    }
+
+}

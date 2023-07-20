@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flMainScreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".presentation.mainscreen.MainFragment">
+
+    <ScrollView
+        android:id="@+id/svMainScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvHeadlineGenres"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_genres"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutGenresGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlineGenres"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:layout_height="200dp">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tvHeadlineNew"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_new"
+                app:layout_constraintTop_toBottomOf="@+id/layoutGenresGroup" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlineNew"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:itemCount="5"
+                tools:layout_height="140dp" />
+
+            <TextView
+                android:id="@+id/tvHeadlineSoon"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_soon"
+                app:layout_constraintTop_toBottomOf="@+id/rvNew" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSoon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlineSoon"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:itemCount="5"
+                tools:layout_height="140dp" />
+
+            <TextView
+                android:id="@+id/tvHeadlinePopular"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_popular"
+                app:layout_constraintTop_toBottomOf="@+id/rvSoon" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPopular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlinePopular"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:itemCount="5"
+                tools:layout_height="140dp" />
+
+            <TextView
+                android:id="@+id/tvHeadlineFiction"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_fiction"
+                app:layout_constraintTop_toBottomOf="@+id/rvPopular" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFiction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlineFiction"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:itemCount="5"
+                tools:layout_height="140dp" />
+
+            <TextView
+                android:id="@+id/tvHeadlineComedy"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_comedy"
+                app:layout_constraintTop_toBottomOf="@+id/rvFiction" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComedy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlineComedy"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:itemCount="5"
+                tools:layout_height="140dp" />
+
+            <TextView
+                android:id="@+id/tvHeadlineHorror"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_horror"
+                app:layout_constraintTop_toBottomOf="@+id/rvComedy" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHorror"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlineHorror"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:itemCount="5"
+                tools:layout_height="140dp" />
+
+            <TextView
+                android:id="@+id/tvHeadlineForKids"
+                style="@style/Headline.MainFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/headline_for_kids"
+                app:layout_constraintTop_toBottomOf="@+id/rvHorror" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvForKids"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="10dp"
+                android:paddingEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeadlineForKids"
+                tools:alpha="0.3"
+                tools:background="@color/white"
+                tools:itemCount="5"
+                tools:layout_height="140dp" />
+
+            <Space
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/rvForKids" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@color/black"
+        android:indeterminateTint="@color/white"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
+        android:layout_gravity="end|bottom"
+        tools:visibility="visible" />
+
+</FrameLayout>

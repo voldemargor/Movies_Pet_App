@@ -7,4 +7,31 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+<!--    <color name="orange">#FC5503</color>-->
+    <color name="main_color">#39C53F</color>
+    <color name="button_orange">#EA4D00</color>
+    <color name="bottom_nav_unchecked">#979797</color>
+
+    <color name="bg_rating_positive">#39C53F</color>
+    <color name="bg_rating_neutral">#5A5A5A</color>
+    <color name="text_rating_positive">#3BB23A</color>
+    <color name="text_rating_neutral">#6E6E6E</color>
+
+    <color name="background">#0A0A0A</color>
+    <color name="loading_prototype_fill">#323232</color>
+    <color name="bg_rating_section">#1E1E1E</color>
+    <color name="text_rating_section_small">#8C8C8C</color>
+    <color name="text_search_empty_hint">#B4B4B4</color>
+    <color name="text_search_default">#C8C8C8</color>
+
+    // Genre item
+    <color name="bg_genre_item">#2E2E2E</color>
+    <color name="text_genre_item">#B4B4B4</color>
+
+    // Movie Cards
+    <color name="movie_card_text_genre">#747679</color>
+
+    <color name="trailer_play_circle">#D63C3C3C</color>
+
 </resources>
