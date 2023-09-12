@@ -4,3 +4,4 @@ MVVM архитектура, Single Activity и Fragment Navigation, Use cases, 
 ### Использовано
 Kotlin, Coroutines, Retrofit, Hilt, Jetpack Components (Lifecycle, LiveData, ViewModel, ViewBinding, etc), Fragment Navigation, RecyclerView, Glide, SharedPreferences, Sealed classes.
 ### Видео работы приложения
+https://drive.google.com/file/d/1kxPADYR60kfb3l_itJ5C5P9_ssxNP0A2/view?usp=sharing
